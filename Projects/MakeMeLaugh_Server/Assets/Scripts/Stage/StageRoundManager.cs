@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,6 +17,7 @@ public class StageRoundManager : MonoBehaviour
 
     private UIDocument _uiHost;
     private Label _subtitle;
+    public DialogOptionsTable closingLines;
     
     public Joke CurrentJoke { get; private set; }
     
@@ -37,12 +39,13 @@ public class StageRoundManager : MonoBehaviour
             var testPlayer = new Player(0, "Nobody");
 
             var joke = new Joke(testPlayer, new List<Player> { testPlayer });
-            joke.AddPunchlineSegment(new PunchlineSegment(testPlayer){Text = "To get to"});
+            joke.AddPunchlineSegment(new PunchlineSegment(testPlayer) {Text = "To get to"});
             joke.AddPunchlineSegment(new PunchlineSegment(testPlayer) { Text = "the other side!" });
             Jokes = new[] { joke };
         }
     }
 
+    [UsedImplicitly]
     public void SpeakAnnouncer(DialogOptionsTable dialog)
     {
         PlaybackSubtitle(dialog.GetRandomLine());
@@ -92,6 +95,6 @@ public class StageRoundManager : MonoBehaviour
             yield return new WaitForSeconds(2.0f);
         }
         
-        yield return SpeakComedian("You've been a wonderful audience. Good night!");
+        yield return SpeakComedian(closingLines.GetRandomLine());
     }
 }
