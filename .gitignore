@@ -73,3 +73,4 @@ crashlytics-build.properties
 /[Pp]rojects/[Mm]ake[Mm]e[Ll]augh_Client/[Ll]ibrary/**
 /[Pp]rojects/[Mm]ake[Mm]e[Ll]augh_Client/[Ll]ogs/**
 /[Pp]rojects/[Mm]ake[Mm]e[Ll]augh_Client/[Uu]serSettings/**
+.DS_Store
