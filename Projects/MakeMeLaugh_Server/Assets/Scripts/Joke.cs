@@ -7,8 +7,8 @@ public class PunchlineSegment
     {
         m_author = author;
     }
-    
-    private string m_punchline ="";
+
+    public string Text { get; set; } = "";
     private Player m_author;
     private bool m_isDone = false;
 
@@ -25,6 +25,11 @@ public class PunchlineSegment
     public Player GetAuthor()
     {
         return m_author;
+    }
+
+    public override string ToString()
+    {
+        return Text;
     }
 }
 
@@ -50,7 +55,7 @@ public class Joke
         m_setup = GetSetupTemplate();
     }
     
-    void AddPunchlineSegment(PunchlineSegment segment)
+    public void AddPunchlineSegment(PunchlineSegment segment)
     {
         m_punchlineSegments.Add(segment);
     }
@@ -78,6 +83,8 @@ public class Joke
     {
         return m_setup;
     }
+
+    public string CompletedPunchline => string.Join(" ", m_punchlineSegments);
 
     public void RunNextPunchlineSegment()
     {

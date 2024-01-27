@@ -27,6 +27,17 @@ public class StageRoundManager : MonoBehaviour
         _uiHost = GetComponent<UIDocument>();
         _subtitle = _uiHost.rootVisualElement.Q<Label>("Subtitle");
         _subtitle.text = String.Empty;
+
+        if (Jokes == null)
+        {
+            // Install some default jokes for now, for testing
+            var testPlayer = new Player(0, "Nobody");
+
+            var joke = new Joke(testPlayer, new List<Player> { testPlayer });
+            joke.AddPunchlineSegment(new PunchlineSegment(testPlayer){Text = "To get to"});
+            joke.AddPunchlineSegment(new PunchlineSegment(testPlayer) { Text = "the other side!" });
+            Jokes = new[] { joke };
+        }
     }
 
     public void SpeakAnnouncer(DialogOptionsTable dialog)
@@ -60,6 +71,23 @@ public class StageRoundManager : MonoBehaviour
 
     public void BeginTellingJokes()
     {
+        StartCoroutine(TellJokesCoroutine());
+    }
+
+    public Coroutine SpeakComedian(string line)
+    {
+        return StartCoroutine(PlaybackSubtitleCoroutine(line, 0.05f, 1.0f));
+    }
+
+    private IEnumerator TellJokesCoroutine()
+    {
+        foreach (var joke in Jokes)
+        {
+            yield return SpeakComedian(joke.GetSetup());
+            yield return SpeakComedian(joke.CompletedPunchline);
+            yield return new WaitForSeconds(2.0f);
+        }
         
+        yield return SpeakComedian("You've been a wonderful audience. Good night!");
     }
 }
