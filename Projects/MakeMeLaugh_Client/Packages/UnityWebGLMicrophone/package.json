@@ -1,21 +1,11 @@
 {
-  "name": "com.tgraupmann.webglmicrophone",
+  "name": "com.gfoot.webglmicrophone",
   "version": "0.2.0",
   "displayName": "WebGL Microphone",
-  "description": "This package provides a WebGL module that allows the UnityEngine.Microphone API to be used on the WebGL with the sample interface.",
-  "unity": "2019.1",
-  "unityRelease": "0b5",
-  "documentationUrl": "https://github.com/tgraupmann/UnityWebGLMicrophone/tree/master",
-  "changelogUrl": "https://github.com/tgraupmann/UnityWebGLMicrophone/tree/master",
-  "licensesUrl": "https://github.com/tgraupmann/UnityWebGLMicrophone/blob/master/LICENSE",
- "keywords": [
+  "description": "This package provides a WebGL module that allows recording microphone samples in the web browser.",
+  "keywords": [
     "WebGL",
     "Microphone",
     "Access"
-  ],
-  "author": {
-    "name": "tgraupmann",
-    "email": "tgraupmann@gmail.com",
-    "url": "https://github.com/tgraupmann/UnityWebGLMicrophone/"
-  }
+  ]
 }
