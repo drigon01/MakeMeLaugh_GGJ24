@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -35,7 +34,7 @@ public class MainUIViewModel : MonoBehaviour
     connectButton.clicked += OnConnectButtonClicked;
 
     serverIP.value = "127.0.0.1";
-    serverPort.value = "7777";
+    serverPort.value = "7771";
 
     serverIP.RegisterValueChangedCallback(OnIPChanged);
     serverPort.RegisterValueChangedCallback(OnPortChanged);
@@ -51,7 +50,7 @@ public class MainUIViewModel : MonoBehaviour
     }
     else
     {
-      throw new ArgumentException("Incccorrect value provided as port", nameof(Port));
+      throw new ArgumentException("Incccorrect value provided as port", "Port");
     }
   }
 

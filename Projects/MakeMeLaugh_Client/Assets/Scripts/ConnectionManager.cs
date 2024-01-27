@@ -5,25 +5,19 @@ using UnityEngine;
 
 public class ConnectionManager
 {
-  [SerializeField] private string serverAddress = "0.0.0.0";
-  [SerializeField] private ushort serverPort = 7771;
-
   private NetworkDriver _driver;
   private NetworkConnection _connection;
 
-  private string ClientUuid;
+  private string _clientUuid;
 
-  public ConnectionManager(string ip, ushort port)
+  public ConnectionManager(string address, ushort port)
   {
-    serverAddress = ip;
-    serverPort = port;
-
-    ClientUuid = System.Guid.NewGuid().ToString();
+    _clientUuid = System.Guid.NewGuid().ToString();
 
     _driver = NetworkDriver.Create(new WebSocketNetworkInterface());
-    var endpoint = NetworkEndpoint.Parse(serverAddress, serverPort);
+    var endpoint = NetworkEndpoint.Parse(address, port);
 
-    Debug.Log($"Initializing client {ClientUuid}");
+    Debug.Log($"Initializing client {_clientUuid}");
     Debug.Log($"Connecting to {endpoint}");
     _connection = _driver.Connect(endpoint);
     _driver.ScheduleUpdate().Complete();
@@ -56,27 +50,24 @@ public class ConnectionManager
         Debug.Log("We are now connected to the server.");
 
         // Send the handshake message including the client ID (uuid)
-        PlayerMessage handshakeMessage = new PlayerMessage(ClientUuid, MessageType.NEW_CLIENT_CONNECTION, "test submission");
+        PlayerMessage handshakeMessage = new PlayerMessage(_clientUuid, MessageType.NEW_CLIENT_CONNECTION, "test submission");
         _driver.BeginSend(_connection, out var writer);
-        NativeArray<byte> messageBytes = PlayerMessage.GetBytes(handshakeMessage);
+        string json = JsonUtility.ToJson(handshakeMessage);
 
-        writer.WriteBytes(messageBytes);
+        writer.WriteFixedString4096(json);
 
         _driver.EndSend(writer);
-        messageBytes.Dispose();
-        Debug.Log("Done with the message sending");
-
+        Debug.Log("Done with the message sending from the client");
       }
       else if (cmd == NetworkEvent.Type.Data)
       {
-
-        NativeArray<byte> rawMessage = new NativeArray<byte>(stream.Length, Allocator.Persistent);
-        stream.ReadBytes(rawMessage);
-        PlayerMessage playerMessage = PlayerMessage.FromBytes(rawMessage);
+        FixedString4096Bytes rawMessage = new FixedString4096Bytes();
+        rawMessage = stream.ReadFixedString4096();
+        PlayerMessage playerMessage = JsonUtility.FromJson<PlayerMessage>(rawMessage.ToString());
         Debug.Log("Got a message from server " + playerMessage.MessageContent);
 
-        // m_Connection.Disconnect(m_Driver);
-        // m_Connection = default;
+        // _connection.Disconnect(m_Driver);
+        // _connection = default;
       }
       else if (cmd == NetworkEvent.Type.Disconnect)
       {
