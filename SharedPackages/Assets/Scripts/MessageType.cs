@@ -1,0 +1,8 @@
+
+
+public enum MessageType
+{
+    NEW_CLIENT_CONNECTION,
+    PLAYER_ANSWER_SUBMISSION,
+    PLAYER_POINTS_SUBMISSION,
+}
