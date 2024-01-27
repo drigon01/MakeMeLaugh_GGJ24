@@ -1,13 +1,16 @@
 {
-    "name": "WebGLMicrophone",
+    "name": "WebGL",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:eb9397e2ab6e64a589bf9ca712274945",
+        "GUID:33c13e134a7ca400d9dab4512a35c777"
+    ],
     "includePlatforms": [
         "Editor",
         "WebGL"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
