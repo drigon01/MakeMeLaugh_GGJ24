@@ -20,6 +20,7 @@ public class StageRoundManager : MonoBehaviour
     public DialogOptionsTable closingLines;
     
     public Joke CurrentJoke { get; private set; }
+    public bool AcceptingLaughs { get; private set; }
     
     public static void BeginSet(IEnumerable<Joke> jokes)
     {
@@ -90,7 +91,10 @@ public class StageRoundManager : MonoBehaviour
         foreach (var joke in Jokes)
         {
             CurrentJoke = joke;
+            AcceptingLaughs = false; // Don't accept laughs until we've at least started the punchline
             yield return SpeakComedian(joke.GetSetup());
+
+            AcceptingLaughs = true;
             yield return SpeakComedian(joke.CompletedPunchline);
             yield return new WaitForSeconds(2.0f);
         }
