@@ -779,6 +779,8 @@ GameObject:
   m_Component:
   - component: {fileID: 938063549}
   - component: {fileID: 938063548}
+  - component: {fileID: 938063552}
+  - component: {fileID: 938063551}
   m_Layer: 0
   m_Name: Director
   m_TagString: Untagged
@@ -825,6 +827,35 @@ Transform:
   - {fileID: 154547752}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &938063551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938063547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d4325e595d42db9beb9466fe9565fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &938063552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938063547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: aa7429844c131436c889b6a7a040fe36, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: e571260167bb3493b8631b18df0c22b9,
+    type: 3}
+  m_SortingOrder: 0
 --- !u!4 &1120197296 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5917218908737838691, guid: 4654502d2cb499a4ab5213427f07869e,

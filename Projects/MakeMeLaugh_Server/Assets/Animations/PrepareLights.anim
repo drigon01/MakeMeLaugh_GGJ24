@@ -535,9 +535,10 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 1.3333334
-    functionName: TriggerAnnouncer
+    functionName: SpeakAnnouncer
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11400000, guid: 0fbc122747bca41f7a50742245dad6a4,
+      type: 2}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
