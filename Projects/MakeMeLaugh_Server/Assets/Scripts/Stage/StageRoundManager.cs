@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -12,6 +13,10 @@ using UnityEngine.Windows.Speech;
 public class StageRoundManager : MonoBehaviour
 {
     public static IEnumerable<Joke> Jokes { get; private set; }
+
+    public GameObject wideCamera;
+    public GameObject entryCamera;
+    public GameObject closeupCamera;
 
     private UIDocument _uiHost;
     
