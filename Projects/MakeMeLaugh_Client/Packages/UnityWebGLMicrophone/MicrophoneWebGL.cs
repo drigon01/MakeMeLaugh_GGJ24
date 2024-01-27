@@ -7,7 +7,6 @@ using UnityEngine;
 
 public static class MicrophoneWebGL
 {
-#if UNITY_WEBGL// && !UNITY_EDITOR
     [DllImport("__Internal")]
     private static extern void MicrophoneWebGL_Init(int bufferSize, int numberOfChannels);
 
@@ -73,5 +72,4 @@ public static class MicrophoneWebGL
     {
         return MicrophoneWebGL_GetSampleRate();
     }
-#endif
 }
