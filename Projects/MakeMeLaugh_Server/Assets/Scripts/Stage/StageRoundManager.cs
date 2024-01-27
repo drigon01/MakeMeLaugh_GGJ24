@@ -57,4 +57,9 @@ public class StageRoundManager : MonoBehaviour
         yield return new WaitForSeconds(postDelay);
         _subtitle.text = string.Empty;
     }
+
+    public void BeginTellingJokes()
+    {
+        
+    }
 }
