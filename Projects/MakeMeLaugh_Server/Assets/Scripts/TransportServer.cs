@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,14 +7,27 @@ using Unity.Collections;
 
 public class TransportServer : MonoBehaviour
 {
-    
+    public static TransportServer Instance { get; private set; }
+
     NetworkDriver m_Driver;
     NativeList<NetworkConnection> m_Connections;
+    public event EventHandler OnPlayerMessageReceived;
+
     private Dictionary<string, NetworkConnection> playerToNetworkConnection = new Dictionary<string, NetworkConnection>();
 
     [SerializeField] private ushort serverPort = 7771;
     [SerializeField] private int serverPlayerCapacity = 4;
 
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("More than one instance of TransportServer found! " + transform + " - " + Instance);
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
     
     void Start()
     {
@@ -61,6 +75,11 @@ public class TransportServer : MonoBehaviour
             Debug.Log("Accepted a connection.");
         }
 
+        // to be deleted.. just tesitng server-to-client comms
+        if (Input.GetKeyDown(KeyCode.T)) {
+            BroadcastMessage(MessageType.PLAYER_ANSWER_SUBMISSION, "broadcast there");
+        }
+        
         for (int i = 0; i < m_Connections.Length; i++)
         {
             DataStreamReader stream;
@@ -74,11 +93,17 @@ public class TransportServer : MonoBehaviour
                     NativeArray<byte> rawMessage = new NativeArray<byte>(stream.Length, Allocator.Persistent);
                     stream.ReadBytes(rawMessage);
                     PlayerMessage playerMessage = PlayerMessage.FromBytes(rawMessage);
-                    if (playerMessage.MessageType == ClientToServerMessageType.NEW_CLIENT_CONNECTION)
+                    if (playerMessage.MessageType == MessageType.NEW_CLIENT_CONNECTION)
                     {
                         registerNewPlayer(playerMessage, m_Connections[i]);
                     }
-
+                    else
+                    {
+                        // some kind of game events
+                        OnPlayerMessageReceived?.Invoke(this, EventArgs.Empty);
+                    }
+                    
+                    SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.NEW_CLIENT_CONNECTION, "connection confirmed");
                     rawMessage.Dispose();
                 }
                 else if (cmd == NetworkEvent.Type.Disconnect)
@@ -95,5 +120,23 @@ public class TransportServer : MonoBehaviour
     {
         Debug.Log("Registering new client (player): " + playerMessage.PlayerUuid);
         playerToNetworkConnection.Add(playerMessage.PlayerUuid, networkConnection);
+    }
+
+    public void BroadcastMessage(MessageType messageType, string messageContent)
+    {
+        foreach (var playerPair in playerToNetworkConnection)
+        {
+            SendMessageToPlayer(playerPair.Key, messageType, messageContent);
+        }
+    }
+
+    public void SendMessageToPlayer(string playerUuid, MessageType messageType, string messageContent)
+    {
+        PlayerMessage message = new PlayerMessage(playerUuid, messageType, messageContent);
+        NativeArray<byte> messageBytes = PlayerMessage.GetBytes(message);
+        m_Driver.BeginSend(NetworkPipeline.Null, playerToNetworkConnection[playerUuid], out var writer);
+        writer.WriteBytes(messageBytes);
+        m_Driver.EndSend(writer);
+        messageBytes.Dispose();
     }
 }

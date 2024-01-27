@@ -5,14 +5,14 @@ using Unity.Collections;
 public struct PlayerMessage
 {
     public string PlayerUuid;
-    public ClientToServerMessageType MessageType;
-    public string PlayerSubmission;
+    public MessageType MessageType;
+    public string MessageContent;
 
-    public PlayerMessage(string playerUuid, ClientToServerMessageType messageType, string playerSubmission)
+    public PlayerMessage(string playerUuid, MessageType messageType, string playerSubmission)
     {
         this.PlayerUuid = playerUuid;
         this.MessageType = messageType;
-        this.PlayerSubmission = playerSubmission;
+        this.MessageContent = playerSubmission;
     }
 
     public static NativeArray<byte> GetBytes(PlayerMessage playerMessage)

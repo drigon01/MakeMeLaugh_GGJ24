@@ -55,9 +55,10 @@ public class ClientTester : MonoBehaviour {
                 Debug.Log("We are now connected to the server.");
 
                 // Send the handshake message including the client ID (uuid)
-                PlayerMessage handshakeMessage = new PlayerMessage(ClientUuid, ClientToServerMessageType.NEW_CLIENT_CONNECTION, "test submission");
+                PlayerMessage handshakeMessage = new PlayerMessage(ClientUuid, MessageType.NEW_CLIENT_CONNECTION, "test submission");
                 m_Driver.BeginSend(m_Connection, out var writer);
                 NativeArray<byte> messageBytes = PlayerMessage.GetBytes(handshakeMessage);
+                
                 writer.WriteBytes(messageBytes);
                 
                 m_Driver.EndSend(writer);
@@ -67,8 +68,11 @@ public class ClientTester : MonoBehaviour {
             }
             else if (cmd == NetworkEvent.Type.Data)
             {
-                uint value = stream.ReadUInt();
-                Debug.Log($"Got the value {value} back from the server.");
+
+                NativeArray<byte> rawMessage = new NativeArray<byte>(stream.Length, Allocator.Persistent);
+                stream.ReadBytes(rawMessage);
+                PlayerMessage playerMessage = PlayerMessage.FromBytes(rawMessage);
+                Debug.Log("Got a message from server " + playerMessage.MessageContent);
 
                 // m_Connection.Disconnect(m_Driver);
                 // m_Connection = default;
