@@ -11,7 +11,7 @@ public class TransportServer : MonoBehaviour
 
     NetworkDriver m_Driver;
     NativeList<NetworkConnection> m_Connections;
-    public event EventHandler OnPlayerMessageReceived;
+    public event EventHandler<PlayerMessageEventArgs> OnPlayerMessageReceived;
 
     private Dictionary<string, NetworkConnection> playerToNetworkConnection = new Dictionary<string, NetworkConnection>();
 
@@ -74,12 +74,6 @@ public class TransportServer : MonoBehaviour
             m_Connections.Add(c);
             Debug.Log("Accepted a connection.");
         }
-
-        // to be deleted.. just tesitng server-to-client comms
-        if (Input.GetKeyDown(KeyCode.T)) {
-            BroadcastMessage(MessageType.PLAYER_ANSWER_SUBMISSION, "broadcast there");
-        }
-        
         for (int i = 0; i < m_Connections.Length; i++)
         {
             DataStreamReader stream;
@@ -96,16 +90,17 @@ public class TransportServer : MonoBehaviour
                     if (playerMessage.MessageType == MessageType.NEW_CLIENT_CONNECTION)
                     {
                         registerNewPlayer(playerMessage, m_Connections[i]);
-                        SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.PLAYER_ANSWER_SUBMISSION, "hello from server");
+                        
+                        // example of how to send data to a specific player
+                        // SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.PLAYER_ANSWER_SUBMISSION, "hello from server");
                     }
                     else
                     {
                         // some kind of game events
-                        // TODO: pass the even details
-                        OnPlayerMessageReceived?.Invoke(this, EventArgs.Empty);
+                        OnPlayerMessageReceived?.Invoke(this, new PlayerMessageEventArgs(playerMessage));
                     }
                     
-                    SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.NEW_CLIENT_CONNECTION, "connection confirmed");
+                    // SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.NEW_CLIENT_CONNECTION, "connection confirmed");
                     rawMessage.Dispose();
                 }
                 else if (cmd == NetworkEvent.Type.Disconnect)
