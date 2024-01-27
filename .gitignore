@@ -9,7 +9,9 @@
 /[Bb]uilds/
 **/[Ll]ogs/
 /[Uu]ser[Ss]ettings/
-
+**/.idea/
+**/obj/
+**/.DS_Store
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
@@ -24,7 +26,7 @@
 /[Aa]ssets/Plugins/Editor/JetBrains*
 
 # Visual Studio cache directory
-.vs/
+**/.vs/
 
 # Gradle cache directory
 .gradle/
@@ -73,3 +75,7 @@ crashlytics-build.properties
 /[Pp]rojects/[Mm]ake[Mm]e[Ll]augh_Client/[Ll]ibrary/**
 /[Pp]rojects/[Mm]ake[Mm]e[Ll]augh_Client/[Ll]ogs/**
 /[Pp]rojects/[Mm]ake[Mm]e[Ll]augh_Client/[Uu]serSettings/**
+.DS_Store
+**/.vsconfig
+**/*.cache
+Projects/MakeMeLaugh_Client/obj/Debug/Unity.Networking.Transport.Samples.SimpleClientServer.csproj.AssemblyReference.cache

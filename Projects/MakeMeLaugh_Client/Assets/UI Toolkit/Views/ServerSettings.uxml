@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/UnityThemes/ServerSettings.uss?fileID=7433441132597879392&amp;guid=864abf31655ea18468b022e6b3f23d7c&amp;type=3#ServerSettings" />
+    <ui:VisualElement name="Container" class="server-settings__container">
+        <ui:TextField picking-mode="Ignore" label="Server address" value="127.0.0.1" name="IP" class="server-settings__ip" />
+        <ui:TextField picking-mode="Ignore" label="Server Port" value="7777" name="Port" multiline="false" class="server-settings__port" />
+        <ui:Button text="Connect" parse-escape-sequences="false" display-tooltip-when-elided="false" name="Connect" enable-rich-text="false" class="server-settings__connect" />
+    </ui:VisualElement>
+</ui:UXML>

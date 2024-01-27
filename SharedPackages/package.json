@@ -1,0 +1,24 @@
+{
+    "name": "com.unity-peeps.shared-networking-utils",
+    "version": "1.2.3",
+    "displayName": "Networking utils",
+    "description": "Networking utils",
+    "unity": "2022.3",
+    "unityRelease": "0b5",
+    "documentationUrl": "https://example.com/",
+    "changelogUrl": "https://example.com/changelog.html",
+    "licensesUrl": "https://example.com/licensing.html",
+    "dependencies": {
+        "com.unity.transport": "2.1.0"
+    },
+   "keywords": [
+      "keyword1",
+      "keyword2",
+      "keyword3"
+    ],
+    "author": {
+      "name": "Unity",
+      "email": "unity@example.com",
+      "url": "https://www.unity3d.com"
+    }
+  }

@@ -1,0 +1,9 @@
+.popup {
+    position: absolute;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    height: 25%;
+    width: 45%;
+    top: 45%;
+}
