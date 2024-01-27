@@ -1,0 +1,8 @@
+{
+  "name": "yamnetunity",
+  "version": "1.0.0",
+  "displayName": "YamNet for Unity",
+  "dependencies": {
+    "com.unity.sentis": ""
+  }
+}
