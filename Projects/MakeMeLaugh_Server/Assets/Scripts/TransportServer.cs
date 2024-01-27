@@ -84,9 +84,13 @@ public class TransportServer : MonoBehaviour
                 {
                     Debug.Log("Accepting data from the client");
 
-                    NativeArray<byte> rawMessage = new NativeArray<byte>(stream.Length, Allocator.Persistent);
-                    stream.ReadBytes(rawMessage);
-                    PlayerMessage playerMessage = PlayerMessage.FromBytes(rawMessage);
+                    // NativeArray<byte> rawMessage = new NativeArray<byte>(stream.Length, Allocator.Persistent);
+                    FixedString4096Bytes rawMessage = new FixedString4096Bytes();
+                    rawMessage = stream.ReadFixedString4096();
+                    // PlayerMessage playerMessage = PlayerMessage.FromBytes(rawMessage);
+                    PlayerMessage playerMessage = JsonUtility.FromJson<PlayerMessage>(rawMessage.ToString());
+                    // PlayerMessage playerMessage = new PlayerMessage();
+                    
                     if (playerMessage.MessageType == MessageType.NEW_CLIENT_CONNECTION)
                     {
                         registerNewPlayer(playerMessage, m_Connections[i]);
@@ -101,7 +105,7 @@ public class TransportServer : MonoBehaviour
                     }
                     
                     // SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.NEW_CLIENT_CONNECTION, "connection confirmed");
-                    rawMessage.Dispose();
+                    // rawMessage.Dispose();
                 }
                 else if (cmd == NetworkEvent.Type.Disconnect)
                 {
@@ -130,10 +134,10 @@ public class TransportServer : MonoBehaviour
     public void SendMessageToPlayer(string playerUuid, MessageType messageType, string messageContent)
     {
         PlayerMessage message = new PlayerMessage(playerUuid, messageType, messageContent);
-        NativeArray<byte> messageBytes = PlayerMessage.GetBytes(message);
-        m_Driver.BeginSend(NetworkPipeline.Null, playerToNetworkConnection[playerUuid], out var writer);
-        writer.WriteBytes(messageBytes);
-        m_Driver.EndSend(writer);
-        messageBytes.Dispose();
+        // NativeArray<byte> messageBytes = PlayerMessage.GetBytes(message);
+        // m_Driver.BeginSend(NetworkPipeline.Null, playerToNetworkConnection[playerUuid], out var writer);
+        // writer.WriteBytes(messageBytes);
+        // m_Driver.EndSend(writer);
+        // messageBytes.Dispose();
     }
 }

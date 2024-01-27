@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Unity.Collections;
 
+[Serializable]
 public struct PlayerMessage
 {
     public string PlayerUuid;
