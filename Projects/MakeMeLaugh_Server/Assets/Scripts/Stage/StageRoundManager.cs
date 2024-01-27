@@ -15,6 +15,7 @@ public class StageRoundManager : MonoBehaviour
     public static IEnumerable<Joke> Jokes { get; private set; }
 
     private UIDocument _uiHost;
+    private Label _subtitle;
     
     public static void BeginSet(IEnumerable<Joke> jokes)
     {
@@ -24,8 +25,8 @@ public class StageRoundManager : MonoBehaviour
     void OnEnable()
     {
         _uiHost = GetComponent<UIDocument>();
-
-        PlaybackSubtitle("Ladies and gentlemen, please welcome to the stage, the star of tonight's entertainment, ComedyBot 5000!");
+        _subtitle = _uiHost.rootVisualElement.Q<Label>("Subtitle");
+        _subtitle.text = String.Empty;
     }
 
     public void SpeakAnnouncer(DialogOptionsTable dialog)
@@ -35,11 +36,10 @@ public class StageRoundManager : MonoBehaviour
 
     private void PlaybackSubtitle(string text)
     {
-        _uiHost.rootVisualElement.Q<Label>("Subtitle").text = "<color=#00000000>" + text + "</color>";
-        StartCoroutine(PlaybackSubtitleCoroutine(text, 0.05f));
+        StartCoroutine(PlaybackSubtitleCoroutine(text, 0.05f, 2.0f));
     }
 
-    private IEnumerator PlaybackSubtitleCoroutine(string text, float delay)
+    private IEnumerator PlaybackSubtitleCoroutine(string text, float delay, float postDelay)
     {
         int revealedIndex = 0;
         string prefix = String.Empty;
@@ -50,8 +50,11 @@ public class StageRoundManager : MonoBehaviour
             postfix = postfix.Remove(0, 1);
             revealedIndex++;
             
-            _uiHost.rootVisualElement.Q<Label>("Subtitle").text = prefix + "<color=#00000000>" + postfix + "</color>";
+            _subtitle.text = prefix + "<color=#00000000>" + postfix + "</color>";
             yield return new WaitForSeconds(delay);
         }
+
+        yield return new WaitForSeconds(postDelay);
+        _subtitle.text = string.Empty;
     }
 }
