@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,6 +10,8 @@ public class MainUIViewModel : MonoBehaviour
   [SerializeField] private VisualTreeAsset _serverSettingsTemplate;
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
+
+  ConnectionManager _connectionManager;
 
   private VisualElement settingsView;
 
@@ -33,7 +34,7 @@ public class MainUIViewModel : MonoBehaviour
     connectButton.clicked += OnConnectButtonClicked;
 
     serverIP.value = "127.0.0.1";
-    serverPort.value = "7777";
+    serverPort.value = "7771";
 
     serverIP.RegisterValueChangedCallback(OnIPChanged);
     serverPort.RegisterValueChangedCallback(OnPortChanged);
@@ -49,7 +50,7 @@ public class MainUIViewModel : MonoBehaviour
     }
     else
     {
-      throw new ArgumentException("Incccorrect value provided as port", nameof(Port));
+      throw new ArgumentException("Incccorrect value provided as port", "Port");
     }
   }
 
@@ -67,8 +68,21 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnConnectButtonClicked()
   {
+    if (_connectionManager == null) { 
+      _connectionManager = new ConnectionManager(_ip,_port);
+    }
+
     //TODO: add actual connection logic
     ClosePopUp(settingsView);
+  }
+
+
+  private void Update()
+  {
+    if (_connectionManager != null)
+    {
+      _connectionManager.ExecuteUpdate();
+    }
   }
 
   private void ShowPopUp(VisualElement popup)
