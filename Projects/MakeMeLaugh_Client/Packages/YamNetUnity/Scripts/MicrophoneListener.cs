@@ -15,6 +15,7 @@ namespace YamNetUnity
         /// </summary>
         public ISampleReceiver SampleReceiver { get; set; }
         
+        #if !UNITY_WEBGL || UNITY_EDITOR
         private AudioClip _clip;
         private string _microphoneDeviceName;
         private int _audioOffset;
@@ -69,5 +70,6 @@ namespace YamNetUnity
         {
             Microphone.End(_microphoneDeviceName);
         }
+        #endif
     }
 }
