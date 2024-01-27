@@ -31,17 +31,17 @@ public class TransportServer : MonoBehaviour
     
     void Start()
     {
-        m_Driver = NetworkDriver.Create();
+        m_Driver = NetworkDriver.Create(new WebSocketNetworkInterface());
         m_Connections = new NativeList<NetworkConnection>(serverPlayerCapacity, Allocator.Persistent);
 
         var endpoint = NetworkEndpoint.AnyIpv4.WithPort(serverPort);
         if (m_Driver.Bind(endpoint) != 0)
         {
-            Debug.LogError("Failed to bind to port 7777.");
+            Debug.LogError("Failed to bind to port " + serverPort);
             return;
         }
         m_Driver.Listen();
-        Debug.Log($"Started listening on {endpoint.Address}:{endpoint.Port}");
+        Debug.Log($"Started listening on {endpoint.Address}");
     }
     
     void OnDestroy()
@@ -96,10 +96,12 @@ public class TransportServer : MonoBehaviour
                     if (playerMessage.MessageType == MessageType.NEW_CLIENT_CONNECTION)
                     {
                         registerNewPlayer(playerMessage, m_Connections[i]);
+                        SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.PLAYER_ANSWER_SUBMISSION, "hello from server");
                     }
                     else
                     {
                         // some kind of game events
+                        // TODO: pass the even details
                         OnPlayerMessageReceived?.Invoke(this, EventArgs.Empty);
                     }
                     

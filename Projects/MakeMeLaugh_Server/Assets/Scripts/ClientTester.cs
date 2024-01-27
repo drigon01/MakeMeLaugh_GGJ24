@@ -13,7 +13,7 @@ public class ClientTester : MonoBehaviour {
     private string ClientUuid;
     void Start()
     {
-        m_Driver = NetworkDriver.Create();
+        m_Driver = NetworkDriver.Create(new WebSocketNetworkInterface());
         ClientUuid = Guid.NewGuid().ToString();
         var endpoint = NetworkEndpoint.Parse(serverAddress, serverPort);
         
