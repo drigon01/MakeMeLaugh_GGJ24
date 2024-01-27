@@ -57,25 +57,19 @@ public class ClientTester : MonoBehaviour {
                 // Send the handshake message including the client ID (uuid)
                 PlayerMessage handshakeMessage = new PlayerMessage(ClientUuid, MessageType.NEW_CLIENT_CONNECTION, "test submission");
                 m_Driver.BeginSend(m_Connection, out var writer);
-                // NativeArray<byte> messageBytes = PlayerMessage.GetBytes(handshakeMessage);
-                
                 string json = JsonUtility.ToJson(handshakeMessage);
-                Debug.Log(json);
                 
                 writer.WriteFixedString4096(json);
                 
                 m_Driver.EndSend(writer);
-                // messageBytes.Dispose();
-                Debug.Log("Done with the message sending");
-
+                Debug.Log("Done with the message sending from the client");
             }
             else if (cmd == NetworkEvent.Type.Data)
             {
-
-                // NativeArray<byte> rawMessage = new NativeArray<byte>(stream.Length, Allocator.Persistent);
-                // stream.ReadBytes(rawMessage);
-                // PlayerMessage playerMessage = PlayerMessage.FromBytes(rawMessage);
-                // Debug.Log("Got a message from server " + playerMessage.MessageContent);
+                FixedString4096Bytes rawMessage = new FixedString4096Bytes();
+                rawMessage = stream.ReadFixedString4096();
+                PlayerMessage playerMessage = JsonUtility.FromJson<PlayerMessage>(rawMessage.ToString());
+                Debug.Log("Got a message from server " + playerMessage.MessageContent);
 
                 // m_Connection.Disconnect(m_Driver);
                 // m_Connection = default;
