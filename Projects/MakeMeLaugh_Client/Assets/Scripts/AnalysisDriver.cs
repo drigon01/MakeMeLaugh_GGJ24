@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Sentis;
 using UnityEngine;
 using YamNetUnity;
@@ -10,10 +12,20 @@ public class AnalysisDriver : MonoBehaviour
     public ClassMap classMap;
 
     private Classifier _classifier;
+
+    public string[] classesOfInterest;
+    private int[] classIDsOfInterest;
+    public float[] currentScoresOfInterest;
+
+    public string maxClassName;
+    public float maxClassScore;
     
     void Start()
     {
-        _classifier = new Classifier(modelAsset, classMap);
+        classIDsOfInterest = classesOfInterest.Select(className => classMap[className]).ToArray();
+        currentScoresOfInterest = new float[classIDsOfInterest.Length];
+        
+        _classifier = new Classifier(modelAsset);
         _classifier.ResultReady += OnClassifierResultReady;
         
 #if UNITY_WEBGL
@@ -25,9 +37,20 @@ public class AnalysisDriver : MonoBehaviour
 #endif
     }
 
-    private void OnClassifierResultReady(int bestclassid, string bestclassname, float bestscore)
+    private void OnClassifierResultReady(ReadOnlySpan<float> classScores)
     {
-        Debug.Log(bestclassname);
+        for (int i = 0; i < classIDsOfInterest.Length; ++i)
+            currentScoresOfInterest[i] = classScores[i];
+
+        maxClassScore = -1;
+        for (int i = 0; i < classScores.Length; ++i)
+        {
+            if (classScores[i] > maxClassScore)
+            {
+                maxClassScore = classScores[i];
+                maxClassName = classMap[i];
+            }
+        }
     }
 
     void OnDestroy()
