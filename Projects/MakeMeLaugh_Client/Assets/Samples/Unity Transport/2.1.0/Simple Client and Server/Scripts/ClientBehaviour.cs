@@ -8,12 +8,20 @@ namespace Unity.Networking.Transport.Samples
     NetworkDriver m_Driver;
     NetworkConnection m_Connection;
 
+    [SerializeField] private string _serverIP;
+    [SerializeField] private ushort _serverPort = 7777;
+
+    public string ServerIP { get => _serverIP; set => _serverIP = value; }
+    public ushort ServerPort { get => _serverPort; set => _serverPort = value; }
+
     void Start()
-    {
-      m_Driver = NetworkDriver.Create();
-      var serverIP = System.Environment.GetEnvironmentVariable("SERVER_IP");
-      var endpoint = NetworkEndpoint.Parse(serverIP, 7777, NetworkFamily.Ipv4);
-      Debug.Log(serverIP);
+    {   
+      var endpoint = string.IsNullOrWhiteSpace(ServerIP) ? NetworkEndpoint.LoopbackIpv4.WithPort(ServerPort) :
+      NetworkEndpoint.Parse(ServerIP, ServerPort, NetworkFamily.Ipv4);
+
+      Debug.Log($"Connecting to {endpoint.Address} on port {endpoint.Port}");
+      m_Driver = NetworkDriver.Create(new WebSocketNetworkInterface());
+
       m_Connection = m_Driver.Connect(endpoint);
     }
 
