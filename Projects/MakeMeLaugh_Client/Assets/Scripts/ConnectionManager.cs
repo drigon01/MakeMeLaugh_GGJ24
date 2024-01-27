@@ -3,52 +3,53 @@ using Unity.Networking.Transport;
 using UnityEngine;
 
 
-public class ConnectionManaager : MonoBehaviour
+public class ConnectionManager
 {
-  NetworkDriver m_Driver;
-  NetworkConnection m_Connection;
   [SerializeField] private string serverAddress = "0.0.0.0";
   [SerializeField] private ushort serverPort = 7771;
 
+  private NetworkDriver _driver;
+  private NetworkConnection _connection;
+
   private string ClientUuid;
-  void Start()
+
+  public ConnectionManager(string ip, ushort port)
   {
-    m_Driver = NetworkDriver.Create(new WebSocketNetworkInterface());
+    serverAddress = ip;
+    serverPort = port;
+
     ClientUuid = System.Guid.NewGuid().ToString();
+
+    _driver = NetworkDriver.Create(new WebSocketNetworkInterface());
     var endpoint = NetworkEndpoint.Parse(serverAddress, serverPort);
 
     Debug.Log($"Initializing client {ClientUuid}");
     Debug.Log($"Connecting to {endpoint}");
-    m_Connection = m_Driver.Connect(endpoint);
-    m_Driver.ScheduleUpdate().Complete();
+    _connection = _driver.Connect(endpoint);
+    _driver.ScheduleUpdate().Complete();
 
-    if (m_Connection.IsCreated)
+    if (_connection.IsCreated)
     {
-      Debug.Log("Created connection: " + m_Connection);
+      Debug.Log("Created connection: " + _connection);
     }
     else
     {
-      Debug.Log("Connection missing " + m_Connection);
+      Debug.Log("Connection missing " + _connection);
     }
   }
 
-  void OnDestroy()
+  public void ExecuteUpdate()
   {
-    m_Driver.Dispose();
-  }
+    _driver.ScheduleUpdate().Complete();
 
-  void Update()
-  {
-    m_Driver.ScheduleUpdate().Complete();
-
-    if (!m_Connection.IsCreated)
+    if (!_connection.IsCreated)
     {
       return;
     }
 
-    Unity.Collections.DataStreamReader stream;
+    DataStreamReader stream;
     NetworkEvent.Type cmd;
-    while ((cmd = m_Connection.PopEvent(m_Driver, out stream)) != NetworkEvent.Type.Empty)
+    while ((cmd = _connection.PopEvent(_driver, out stream)) != NetworkEvent.Type.Empty)
     {
       if (cmd == NetworkEvent.Type.Connect)
       {
@@ -56,12 +57,12 @@ public class ConnectionManaager : MonoBehaviour
 
         // Send the handshake message including the client ID (uuid)
         PlayerMessage handshakeMessage = new PlayerMessage(ClientUuid, MessageType.NEW_CLIENT_CONNECTION, "test submission");
-        m_Driver.BeginSend(m_Connection, out var writer);
+        _driver.BeginSend(_connection, out var writer);
         NativeArray<byte> messageBytes = PlayerMessage.GetBytes(handshakeMessage);
 
         writer.WriteBytes(messageBytes);
 
-        m_Driver.EndSend(writer);
+        _driver.EndSend(writer);
         messageBytes.Dispose();
         Debug.Log("Done with the message sending");
 
@@ -80,7 +81,7 @@ public class ConnectionManaager : MonoBehaviour
       else if (cmd == NetworkEvent.Type.Disconnect)
       {
         Debug.Log("Client got disconnected from server.");
-        m_Connection = default;
+        _connection = default;
       }
     }
   }

@@ -12,6 +12,8 @@ public class MainUIViewModel : MonoBehaviour
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
 
+  ConnectionManager _connectionManager;
+
   private VisualElement settingsView;
 
   // Start is called before the first frame update
@@ -67,8 +69,21 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnConnectButtonClicked()
   {
+    if (_connectionManager == null) { 
+      _connectionManager = new ConnectionManager(_ip,_port);
+    }
+
     //TODO: add actual connection logic
     ClosePopUp(settingsView);
+  }
+
+
+  private void Update()
+  {
+    if (_connectionManager != null)
+    {
+      _connectionManager.ExecuteUpdate();
+    }
   }
 
   private void ShowPopUp(VisualElement popup)
