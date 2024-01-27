@@ -83,25 +83,21 @@ public class TransportServer : MonoBehaviour
                 if (cmd == NetworkEvent.Type.Data)
                 {
                     Debug.Log("Accepting data from the client");
-
-                    NativeArray<byte> rawMessage = new NativeArray<byte>(stream.Length, Allocator.Persistent);
-                    stream.ReadBytes(rawMessage);
-                    PlayerMessage playerMessage = PlayerMessage.FromBytes(rawMessage);
+                    FixedString4096Bytes rawMessage = new FixedString4096Bytes();
+                    rawMessage = stream.ReadFixedString4096();
+                    PlayerMessage playerMessage = JsonUtility.FromJson<PlayerMessage>(rawMessage.ToString());
                     if (playerMessage.MessageType == MessageType.NEW_CLIENT_CONNECTION)
                     {
                         registerNewPlayer(playerMessage, m_Connections[i]);
                         
-                        // example of how to send data to a specific player
+                        // EXAMPLE: how to send data to a specific player
                         // SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.PLAYER_ANSWER_SUBMISSION, "hello from server");
                     }
                     else
                     {
-                        // some kind of game events
+                        // propagate the player event containing data
                         OnPlayerMessageReceived?.Invoke(this, new PlayerMessageEventArgs(playerMessage));
                     }
-                    
-                    // SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.NEW_CLIENT_CONNECTION, "connection confirmed");
-                    rawMessage.Dispose();
                 }
                 else if (cmd == NetworkEvent.Type.Disconnect)
                 {
@@ -130,10 +126,9 @@ public class TransportServer : MonoBehaviour
     public void SendMessageToPlayer(string playerUuid, MessageType messageType, string messageContent)
     {
         PlayerMessage message = new PlayerMessage(playerUuid, messageType, messageContent);
-        NativeArray<byte> messageBytes = PlayerMessage.GetBytes(message);
+        string jsonMessage = JsonUtility.ToJson(message); 
         m_Driver.BeginSend(NetworkPipeline.Null, playerToNetworkConnection[playerUuid], out var writer);
-        writer.WriteBytes(messageBytes);
+        writer.WriteFixedString4096(jsonMessage);
         m_Driver.EndSend(writer);
-        messageBytes.Dispose();
     }
 }
