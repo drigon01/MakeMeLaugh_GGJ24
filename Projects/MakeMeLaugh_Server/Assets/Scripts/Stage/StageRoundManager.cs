@@ -17,6 +17,8 @@ public class StageRoundManager : MonoBehaviour
     private UIDocument _uiHost;
     private Label _subtitle;
     
+    public Joke CurrentJoke { get; private set; }
+    
     public static void BeginSet(IEnumerable<Joke> jokes)
     {
         Jokes = jokes.ToArray();
@@ -27,6 +29,7 @@ public class StageRoundManager : MonoBehaviour
         _uiHost = GetComponent<UIDocument>();
         _subtitle = _uiHost.rootVisualElement.Q<Label>("Subtitle");
         _subtitle.text = String.Empty;
+        CurrentJoke = null;
 
         if (Jokes == null)
         {
@@ -83,6 +86,7 @@ public class StageRoundManager : MonoBehaviour
     {
         foreach (var joke in Jokes)
         {
+            CurrentJoke = joke;
             yield return SpeakComedian(joke.GetSetup());
             yield return SpeakComedian(joke.CompletedPunchline);
             yield return new WaitForSeconds(2.0f);
