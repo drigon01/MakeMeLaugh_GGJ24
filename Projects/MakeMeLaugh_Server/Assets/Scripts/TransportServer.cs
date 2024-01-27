@@ -9,10 +9,12 @@ public class TransportServer : MonoBehaviour
     
     NetworkDriver m_Driver;
     NativeList<NetworkConnection> m_Connections;
-    [SerializeField] private ushort serverPort = 7771;
+    private Dictionary<string, NetworkConnection> playerToNetworkConnection = new Dictionary<string, NetworkConnection>();
 
+    [SerializeField] private ushort serverPort = 7771;
     [SerializeField] private int serverPlayerCapacity = 4;
-    // Start is called before the first frame update
+
+    
     void Start()
     {
         m_Driver = NetworkDriver.Create();
@@ -71,21 +73,13 @@ public class TransportServer : MonoBehaviour
 
                     NativeArray<byte> rawMessage = new NativeArray<byte>(stream.Length, Allocator.Persistent);
                     stream.ReadBytes(rawMessage);
-                    PlayerMessage<string> playerMessage = PlayerMessage<string>.FromBytes(rawMessage);
-                    Debug.Log("Player data");
-
-                    Debug.Log(playerMessage.PlayerSubmission);
-                    Debug.Log(playerMessage.PlayerUuid);
+                    PlayerMessage playerMessage = PlayerMessage.FromBytes(rawMessage);
+                    if (playerMessage.MessageType == ClientToServerMessageType.NEW_CLIENT_CONNECTION)
+                    {
+                        registerNewPlayer(playerMessage, m_Connections[i]);
+                    }
 
                     rawMessage.Dispose();
-
-                    //
-                    // Debug.Log($"Got {number} from a client, adding 2 to it.");
-                    // number = 42;
-
-                    // m_Driver.BeginSend(NetworkPipeline.Null, m_Connections[i], out var writer);
-                    // writer.WriteUInt(number);
-                    // m_Driver.EndSend(writer);
                 }
                 else if (cmd == NetworkEvent.Type.Disconnect)
                 {
@@ -95,5 +89,11 @@ public class TransportServer : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void registerNewPlayer(PlayerMessage playerMessage, NetworkConnection networkConnection)
+    {
+        Debug.Log("Registering new client (player): " + playerMessage.PlayerUuid);
+        playerToNetworkConnection.Add(playerMessage.PlayerUuid, networkConnection);
     }
 }

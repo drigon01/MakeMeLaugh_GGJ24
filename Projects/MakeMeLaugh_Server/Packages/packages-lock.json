@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.unity-peeps.shared-networking-utils": {
+      "version": "file:../../../SharedPackages",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.transport": "2.1.0"
+      }
+    },
     "com.unity.burst": {
       "version": "1.8.11",
       "depth": 1,

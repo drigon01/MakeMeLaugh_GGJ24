@@ -55,10 +55,9 @@ public class ClientTester : MonoBehaviour {
                 Debug.Log("We are now connected to the server.");
 
                 // Send the handshake message including the client ID (uuid)
-                PlayerMessage<string> handshakeMessage = new PlayerMessage<string>(ClientUuid, ClientToServerMessageType.NEW_CLIENT_CONNECTION, "test-user");
+                PlayerMessage handshakeMessage = new PlayerMessage(ClientUuid, ClientToServerMessageType.NEW_CLIENT_CONNECTION, "test submission");
                 m_Driver.BeginSend(m_Connection, out var writer);
-                NativeArray<byte> messageBytes = PlayerMessage<string>.GetBytes(handshakeMessage);
-                Debug.Log("writing bytes: " + messageBytes);
+                NativeArray<byte> messageBytes = PlayerMessage.GetBytes(handshakeMessage);
                 writer.WriteBytes(messageBytes);
                 
                 m_Driver.EndSend(writer);
