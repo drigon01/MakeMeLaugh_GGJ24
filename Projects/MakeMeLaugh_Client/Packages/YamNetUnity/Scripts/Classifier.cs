@@ -18,13 +18,12 @@ namespace YamNetUnity
         private readonly ITensorAllocator _tensorAllocator;
         private readonly Ops _tensorOps;
         private readonly AudioFeatureBuffer _featureBuffer;
-        private readonly ClassMap _classMap;
 
         private readonly string _outputName;
         private readonly TensorFloat _input;
         private TensorFloat _output;
         
-        public delegate void YamNetResultCallback(int bestClassId, string bestClassName, float bestScore);
+        public delegate void YamNetResultCallback(ReadOnlySpan<float> classScores);
 
         /// <summary>
         /// Event which is invoked when the classifier has classified a block of audio.
@@ -37,13 +36,10 @@ namespace YamNetUnity
         /// Creates a new YamNet audio classifier.
         /// </summary>
         /// <param name="modelAsset">The YamNet model to use.</param>
-        /// <param name="classMap">The list of possible classes the model can output.</param>
-        public Classifier(ModelAsset modelAsset, ClassMap classMap)
+        public Classifier(ModelAsset modelAsset)
         {
             if (!modelAsset)
                 throw new ArgumentNullException(nameof(modelAsset));
-            if (!classMap)
-                throw new ArgumentNullException(nameof(classMap));
 
             var backendType = SystemInfo.supportsComputeShaders ? BackendType.GPUCompute : BackendType.CPU;
             
@@ -52,7 +48,6 @@ namespace YamNetUnity
             _worker = WorkerFactory.CreateWorker(backendType, model);
             _tensorOps = WorkerFactory.CreateOps(backendType, _tensorAllocator);
 
-            _classMap = classMap;
             _featureBuffer = new AudioFeatureBuffer();
             
             var patchTensorShape = new TensorShape(1, 1, 96, 64);
@@ -135,20 +130,14 @@ namespace YamNetUnity
             _worker.Execute(_input);
 
             _output = _worker.PeekOutput(_outputName) as TensorFloat;
-            var argmax = _tensorOps.ArgMax(_output, -1, false);
-            argmax.AsyncReadbackRequest(success =>
+            _output.AsyncReadbackRequest(success =>
             {
                 if (!success)
                     return;
                     
-                argmax.MakeReadable();
-                int bestClassId = argmax[0];
-                    
                 _output.MakeReadable();
-                float bestScore = _output[0, 0, 0, bestClassId];
-                
-                string bestClassName = _classMap[bestClassId];
-                ResultReady?.Invoke(bestClassId, bestClassName, bestScore);
+                _output.ToReadOnlySpan();
+                ResultReady?.Invoke(_output.ToReadOnlySpan());
             });
             Profiler.EndSample();
         }
