@@ -3,60 +3,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-enum JokeState
-{
-    Setup,
-    Punchline,
-    Done,
-}
-
-// Round Messages
-struct PlayerSetupResponse
-{
-    public PlayerSetupResponse(string setup, string jokeId)
-    {
-        Setup = setup;
-        JokeId = jokeId;
-    }
-    public string Setup;
-    public string JokeId;
-}
-
-struct PlayerPunchlineResponse
-{
-    public PlayerPunchlineResponse(string punchlineSegment, string jokeId)
-    {
-        PunchlineSegment = punchlineSegment;
-        JokeId = jokeId;
-    }
-    public string PunchlineSegment;
-    public string JokeId;
-}
-
-struct PlayerPunchlineRequest 
-{
-    public PlayerPunchlineRequest(string setup, string punchlineTemplate, string jokeId)
-    {
-        Setup = setup;
-        PunchlineTemplate = punchlineTemplate;
-        JokeId = jokeId;
-    }
-    public string Setup;
-    public string PunchlineTemplate;
-    public string JokeId;
-}
-
-struct PlayerSetupRequest
-{
-    public PlayerSetupRequest(string setupTemplate, string jokeId)
-    {
-        SetupTemplate = setupTemplate;
-        JokeId = jokeId;
-    }
-    public string SetupTemplate;
-    public string JokeId;
-}
-
 
 public class WritingRoundManager: MonoBehaviour
 {

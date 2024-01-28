@@ -16,7 +16,7 @@ public class ConnectionManager
 
   public event Action Connected;
 
-  public event Action<JokeTempalte> JokesReceived;
+  public event Action<PlayerPunchlineRequest> JokesReceived;
 
   public ConnectionManager(string address, ushort port, string name)
   {
@@ -28,6 +28,7 @@ public class ConnectionManager
 
     Debug.Log($"Initializing client {_clientUuid}");
     Debug.Log($"Connecting to {endpoint}");
+
     _connection = _driver.Connect(endpoint);
     _driver.ScheduleUpdate().Complete();
 
@@ -47,8 +48,13 @@ public class ConnectionManager
 
     if (!_connection.IsCreated)
     {
+      Debug.Log("Conenction not created yet");
       return;
     }
+
+    Debug.Log("Connection state: " + _connection.GetState(_driver).ToString());
+
+
 
     DataStreamReader stream;
     NetworkEvent.Type cmd;
@@ -59,8 +65,13 @@ public class ConnectionManager
         Debug.Log("We are now connected to the server.");
 
         // Send the handshake message including the client ID (uuid)
-        PlayerMessage handshakeMessage = new PlayerMessage(_clientUuid, MessageType.NEW_CLIENT_CONNECTION, _name);
-        SendMessageToServer(handshakeMessage);
+        PlayerMessage handshakeMessage = new PlayerMessage(ClientUUID, MessageType.NEW_CLIENT_CONNECTION, "welcome from the client");
+        _driver.BeginSend(_connection, out var writer);
+        string json = JsonUtility.ToJson(handshakeMessage);
+
+        writer.WriteFixedString4096(json);
+
+        _driver.EndSend(writer);
         Debug.Log("Done with the message sending from the client");
       }
       else if (cmd == NetworkEvent.Type.Data)
@@ -70,8 +81,36 @@ public class ConnectionManager
         PlayerMessage playerMessage = JsonUtility.FromJson<PlayerMessage>(rawMessage.ToString());
         Debug.Log("Got a message from server " + playerMessage.MessageContent);
 
-        // _connection.Disconnect(m_Driver);
+        // _connection.Disconnect(_driver);
         // _connection = default;
+
+        // WRITING ROUND EVENTS
+        if (playerMessage.MessageType == MessageType.SERVER_SETUP_REQUEST)
+        {
+          Debug.Log("Client got a setup request from server");
+          PlayerPunchlineRequest request = JsonUtility.FromJson<PlayerPunchlineRequest>(playerMessage.MessageContent);
+
+          PlayerMessage message = new PlayerMessage(ClientUUID, MessageType.PLAYER_SETUP_RESPONSE, JsonUtility.ToJson(new PlayerSetupResponse("HERE IS MY SETUP", request.JokeId)));
+          _driver.BeginSend(_connection, out var writer);
+          string json = JsonUtility.ToJson(message);
+
+          writer.WriteFixedString4096(json);
+
+          _driver.EndSend(writer);
+        }
+        else if (playerMessage.MessageType == MessageType.SERVER_PUNCHLINE_REQUEST)
+        {
+          Debug.Log("Client got a punchline request from server");
+          PlayerSetupRequest request = JsonUtility.FromJson<PlayerSetupRequest>(playerMessage.MessageContent);
+
+          PlayerMessage message = new PlayerMessage(ClientUUID, MessageType.PLAYER_PUNCHLINE_RESPONSE, JsonUtility.ToJson(new PlayerPunchlineResponse("HERE IS MY PUNCHLINE", request.JokeId)));
+          _driver.BeginSend(_connection, out var writer);
+          string json = JsonUtility.ToJson(message);
+
+          writer.WriteFixedString4096(json);
+
+          _driver.EndSend(writer);
+        }
       }
       else if (cmd == NetworkEvent.Type.Disconnect)
       {
