@@ -88,6 +88,8 @@ public class MainUIViewModel : MonoBehaviour
     {
         //TODO: add actual connection logic
         ClosePopUp(_settingsView);
+
+        TransportServer.Instance.StartServerer();
     }
     
     private void ShowPopUp(VisualElement popup)

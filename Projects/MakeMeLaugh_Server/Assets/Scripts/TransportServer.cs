@@ -30,7 +30,7 @@ public class TransportServer : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
     
-    void Start()
+    public void StartServerer()
     {
         m_Driver = NetworkDriver.Create(new WebSocketNetworkInterface());
         m_Connections = new NativeList<NetworkConnection>(serverPlayerCapacity, Allocator.Persistent);
