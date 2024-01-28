@@ -5,28 +5,15 @@ public class PunchlineSegment
 {
     public PunchlineSegment(Player author)
     {
-        m_author = author;
-    }
-
-    public string Text { get; set; } = "";
-    private Player m_author;
-    private bool m_isDone = false;
-
-    public bool IsDone()
-    {
-        return m_isDone;
+        Author = author;
+        IsDone = false;
+        Text = "";
     }
     
-    public void SetIsDone(bool done)
-    {
-        m_isDone = done;
-    }
+    public string Text { get; set; }
+    public Player Author { get; }
+    public bool IsDone { get; set; }
     
-    public Player GetAuthor()
-    {
-        return m_author;
-    }
-
     public override string ToString()
     {
         return Text;
@@ -36,35 +23,58 @@ public class PunchlineSegment
 
 public class Joke
 {
-    public static int MAX_SEGMENTS = 4;
-    private string m_setup;
-    private List<PunchlineSegment> m_punchlineSegments;
+    public static string[] jokeTemplates = { 
+        "I told my _BLANK_ I needed a break.", 
+        "Why did the _BLANK_ cross the road?",
+        "My _BLANK_ used to chase people on a bike.",
+        "I'm reading a book on _BLANK_.",
+        "I tried to catch some _BLANK_ yesterday.",
+    };
+    
+    public static int MAX_SEGMENTS = 3;
+    public List<PunchlineSegment> PunchlineSegments { get; }
+    public string Setup { get; set; }
+    public string JokeId { get; }
     
     private Player m_author;
     private int m_points;
     
     public Joke(Player author, List<Player> coauthors)
     {
+        JokeId = Guid.NewGuid().ToString();
         m_author = author;
-        m_punchlineSegments = new List<PunchlineSegment>();
+        PunchlineSegments = new List<PunchlineSegment>();
         foreach (var coauthor in coauthors)
         {
-            m_punchlineSegments.Add(new PunchlineSegment(coauthor));   
+            PunchlineSegments.Add(new PunchlineSegment(coauthor));   
         }
         
-        m_setup = GetSetupTemplate();
+        Setup = GetSetupTemplate();
     }
     
     public void AddPunchlineSegment(PunchlineSegment segment)
     {
-        m_punchlineSegments.Add(segment);
+        PunchlineSegments.Add(segment);
+    }
+    
+    public void AddPunchlineSegmentText(string segmentText)
+    {
+        // find the first segment that is not done
+        foreach (var s in PunchlineSegments)
+        {
+            if (!s.IsDone)
+            {
+                s.Text = segmentText;
+                return;
+            }
+        }
     }
 
-    public bool IsDone()
+    public bool IsPunchlineComplete()
     {
-        foreach (var segment in m_punchlineSegments)
+        foreach (var segment in PunchlineSegments)
         {
-            if (!segment.IsDone())
+            if (!segment.IsDone)
             {
                 return false;
             }
@@ -76,27 +86,42 @@ public class Joke
     // TODO: Implement
     string GetSetupTemplate()
     {
-        return "Why did the _BLANK_ cross the road?";
+        // get random joke setup
+        return jokeTemplates[UnityEngine.Random.Range(0, jokeTemplates.Length)];
+        
     }
 
-    public string GetSetup()
-    {
-        return m_setup;
-    }
-
-    public string CompletedPunchline => string.Join(" ", m_punchlineSegments);
+    public string CompletedPunchline => string.Join(" ", PunchlineSegments);
 
     public void RunNextPunchlineSegment()
     {
-        foreach(var segment in m_punchlineSegments)
+        foreach(var segment in PunchlineSegments)
         {
-            if (!segment.IsDone())
+            if (!segment.IsDone)
             {
-                segment.GetAuthor().SendPunchline(m_setup, m_punchlineSegments);
+                segment.Author.SendPunchline(this);
                 // Pain
-                segment.SetIsDone(true);
+                segment.IsDone = true;
                 return;
             }
         }
+    }
+
+    public string CurrentPunchlineTemplate()
+    {
+        string template = "";
+        foreach(var segment in PunchlineSegments)
+        {
+            if(segment.IsDone)
+            {
+                template += segment.ToString();
+            }
+            else
+            {
+                template += "_BLANK_";
+                return template;
+            }
+        }
+        return template;
     }
 }
