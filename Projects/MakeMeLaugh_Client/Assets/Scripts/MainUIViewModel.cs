@@ -9,6 +9,7 @@ public class MainUIViewModel : MonoBehaviour
   private VisualElement _popupHost;
   [SerializeField] private VisualTreeAsset _serverSettingsTemplate;
   [SerializeField] private VisualTreeAsset _waitingScreenTemplate;
+  [SerializeField] private VisualTreeAsset _jokeEditorTemplate;
   [SerializeField] private StyleSheet _mainStyleSheet;
 
   [SerializeField] private ushort _port;
