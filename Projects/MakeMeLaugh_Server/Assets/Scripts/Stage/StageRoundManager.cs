@@ -43,7 +43,13 @@ public class StageRoundManager : MonoBehaviour
             var joke = new Joke(testPlayer, new List<Player> { testPlayer });
             joke.AddPunchlineSegment(new PunchlineSegment(testPlayer) {Text = "To get to"});
             joke.AddPunchlineSegment(new PunchlineSegment(testPlayer) { Text = "the other side!" });
-            Jokes = new[] { joke };
+            var joke2 = new Joke(testPlayer, new List<Player> { testPlayer });
+            joke2.AddPunchlineSegment(new PunchlineSegment(testPlayer) { Text = "Because it was stapled to" });
+            joke2.AddPunchlineSegment(new PunchlineSegment(testPlayer) { Text = "the tortoise!" });
+            var joke3 = new Joke(testPlayer, new List<Player> { testPlayer });
+            joke3.AddPunchlineSegment(new PunchlineSegment(testPlayer)
+                { Text = "It's really none of our goddamned business." });
+            Jokes = new[] { joke, joke2, joke3 };
         }
     }
 
