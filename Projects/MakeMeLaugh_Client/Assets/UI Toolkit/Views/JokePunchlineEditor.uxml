@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="Container" style="flex-grow: 1; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;);">
-        <ui:Label tabindex="-1" text="Existing fragements" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Fragments" />
-        <ui:Label tabindex="-1" text="Add your punchline fragment!" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+    <ui:VisualElement name="Container" style="flex-grow: 1; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); background-image: resource(&apos;Sign&apos;); color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 24px; max-width: 300px; flex-wrap: wrap;">
+        <ui:Label tabindex="-1" text="Existing fragements" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Fragments" style="flex-wrap: wrap; flex-grow: 1;" />
+        <ui:Label tabindex="-1" text="Add your punchline fragment!" parse-escape-sequences="true" display-tooltip-when-elided="true" style="flex-wrap: nowrap; flex-grow: 1;" />
         <ui:VisualElement name="JokeView" style="flex-grow: 0; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); white-space: normal; flex-direction: row;">
             <ui:TextField picking-mode="Ignore" value="continue the punchlie" name="Fragment" />
         </ui:VisualElement>

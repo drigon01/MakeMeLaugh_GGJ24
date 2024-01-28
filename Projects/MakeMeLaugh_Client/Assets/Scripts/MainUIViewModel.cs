@@ -28,7 +28,8 @@ public class MainUIViewModel : MonoBehaviour
   private VisualElement _jokeEditor;
   private JokeEditorController _jokeEditController;
   private Button _connectButton;
-
+  private VisualElement _setupEditor;
+  private VisualElement _jokePunchline;
 
   [ContextMenu("TestSetup")]
   void TestSetup()
@@ -70,6 +71,7 @@ public class MainUIViewModel : MonoBehaviour
   {
     _jokeEditor = new VisualElement();
     _jokeEditController = new JokeEditorController(_jokeEditor, _jokePunchlineTemplate, _jokeSetupTemplate);
+    _jokeEditController.Done += OnDone;
 
     _rootElement.Add(_jokeEditor);
   }
@@ -159,6 +161,7 @@ public class MainUIViewModel : MonoBehaviour
       ConnectionManager.Connected += OnConnectedToServer;
       ConnectionManager.JokeSetupRequested += OnJokeSetupRequested;
       ConnectionManager.JokePunchlineRequested += OnJokePunchlineRequested;
+
     }
 
     //should we validate befoore closing?
@@ -174,19 +177,25 @@ public class MainUIViewModel : MonoBehaviour
   private void OnJokeSetupRequested(PlayerSetupRequest request)
   {
     ClosePopUp(_waitingScreen);
-    //ClosePopUp(_settingsView);
-
-    _jokeEditController.ShowSetupEditor(request);
+    _setupEditor = _jokeEditController.CreateSetupEditor(request);
+    ShowPopUp(_setupEditor);    
   }
 
   private void OnJokePunchlineRequested(PlayerPunchlineRequest request)
   {
-    //ClosePopUp(_waitingScreen);
-    //ClosePopUp(_settingsView);
+    ClosePopUp(_setupEditor);
+    _jokePunchline = _jokeEditController.CreatePunchlineEditor(request);
 
-    _jokeEditController.ShowPunchlineEditor(request);
+
+    ShowPopUp(_jokePunchline);
   }
 
+  private void OnDone(MessageType type)
+  {
+    if (MessageType.PLAYER_PUNCHLINE_RESPONSE == type) {
+      ClosePopUp(_jokePunchline);
+    }
+  }
 
   private void OnConnectedToServer()
   {
