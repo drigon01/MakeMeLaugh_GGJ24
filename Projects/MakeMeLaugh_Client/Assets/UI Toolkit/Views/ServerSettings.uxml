@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/UnityThemes/ServerSettings.uss?fileID=7433441132597879392&amp;guid=864abf31655ea18468b022e6b3f23d7c&amp;type=3#ServerSettings" />
     <ui:VisualElement name="Container" class="server-settings__container" style="flex-direction: row; flex-grow: 1; width: 358px; height: 200px;">
+        <ui:TextField picking-mode="Ignore" value="myName" name="Name" style="position: absolute; font-size: 12px; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); top: 97px; left: 156px; height: 17px; width: 85px;" />
         <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: column-reverse; width: auto;">
             <ui:Button text="Connect" parse-escape-sequences="false" display-tooltip-when-elided="false" name="Connect" enable-rich-text="false" class="server-settings__connect" style="width: 44px; flex-shrink: 1; position: absolute; top: 123px; left: 46px; font-size: 10px; height: 40px; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); -unity-font-style: bold;" />
         </ui:VisualElement>
