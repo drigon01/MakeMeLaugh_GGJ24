@@ -13,11 +13,13 @@ public class Player
     public PlayerState State { get; set; }
     public string Uuid { get; }
     public string Name { get; }
+    public int Points { get; set; }
 
     public Player(string uuid, string name)
     {
         Uuid = uuid;
         Name = name;
+        Points = 0;
         State = PlayerState.Done;
         
         // TransportServer.Instance.OnPlayerMessageReceived += TransportServer_OnPlayerMessageReceived;

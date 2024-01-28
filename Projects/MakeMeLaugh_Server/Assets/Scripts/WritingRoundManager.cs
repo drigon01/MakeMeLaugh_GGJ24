@@ -19,11 +19,8 @@ public class WritingRoundManager: MonoBehaviour
     private List<Joke> m_jokes;
     private int m_currentPlayerIndex;
     
-    public TextMeshPro m_text;
-    
     public void Start()
     {
-        m_text.text = "Hello World";
         m_players = GameObject.Find("GameManager").GetComponent<GameManager>().GetPlayers();
         m_jokes = new List<Joke>();
         
@@ -111,20 +108,17 @@ public class WritingRoundManager: MonoBehaviour
     {
         if (!CheckPlayersDone())
         {
-            m_text.text = "Waiting for Players";
             return;
         }
         if (m_state == JokeState.Setup)
         {
             Debug.Log("Running Setup");
-            m_text.text = "Running Setup";
             RunSetup();
             return;
         }
         if(m_state == JokeState.Punchline)
         {
             Debug.Log("Running Punchline");
-            m_text.text = "Running Punchline";
             RunPunchline();
             return;
         }
@@ -132,7 +126,6 @@ public class WritingRoundManager: MonoBehaviour
         if (m_state == JokeState.Done)
         { 
             // Debug.Log("RoundManager Done");
-            m_text.text = "Awesome Jokes Everyone!";
             // SwitchScene();
             // print out jokes
             foreach (Joke joke in m_jokes)

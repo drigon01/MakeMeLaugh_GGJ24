@@ -97,6 +97,7 @@ public class Joke
     {
         JokeId = Guid.NewGuid().ToString();
         m_author = author;
+        m_points = 0;
         PunchlineSegments = new List<PunchlineSegment>();
         foreach (var coauthor in coauthors)
         {
@@ -151,7 +152,7 @@ public class Joke
 
     public void RunNextPunchlineSegment()
     {
-        foreach(var segment in PunchlineSegments)
+        foreach (var segment in PunchlineSegments)
         {
             if (!segment.IsDone)
             {
@@ -179,5 +180,11 @@ public class Joke
             }
         }
         return template;
+    }
+
+    void UpdatePoints()
+    {
+        
+        
     }
 }
