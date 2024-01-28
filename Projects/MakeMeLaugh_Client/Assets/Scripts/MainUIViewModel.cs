@@ -29,6 +29,21 @@ public class MainUIViewModel : MonoBehaviour
   private JokeEditorController _jokeEditController;
   private Button _connectButton;
 
+
+  [ContextMenu("TestSetup")]
+  void TestSetup()
+  {
+    StartCoroutine(nameof(CreateJokesScreen));
+    StartCoroutine(nameof(OnJokeSetupRequested), new PlayerSetupRequest("asd _BLANK_ asd", "312"));
+  }
+
+  [ContextMenu("TestPunchiles")]
+  void TestPunchiles()
+  {
+
+    StartCoroutine(nameof(OnJokePunchlineRequested), new PlayerPunchlineRequest("setup", "whatever", "312"));
+  }
+
   // Start is called before the first frame update
   private void Awake()
   {
@@ -54,7 +69,7 @@ public class MainUIViewModel : MonoBehaviour
   private void CreateJokesScreen()
   {
     _jokeEditor = new VisualElement();
-   _jokeEditController=  new JokeEditorController(_jokeEditor, ConnectionManager, _jokePunchlineTemplate, _jokeSetupTemplate);
+    _jokeEditController = new JokeEditorController(_jokeEditor, ConnectionManager, _jokePunchlineTemplate, _jokeSetupTemplate);
 
     _rootElement.Add(_jokeEditor);
   }
@@ -158,16 +173,16 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnJokeSetupRequested(PlayerSetupRequest request)
   {
-    ClosePopUp(_waitingScreen);
-    ClosePopUp(_settingsView);
+    //ClosePopUp(_waitingScreen);
+    //ClosePopUp(_settingsView);
 
     _jokeEditController.ShowSetupEditor(request);
   }
 
   private void OnJokePunchlineRequested(PlayerPunchlineRequest request)
   {
-    ClosePopUp(_waitingScreen);
-    ClosePopUp(_settingsView);
+    //ClosePopUp(_waitingScreen);
+    //ClosePopUp(_settingsView);
 
     _jokeEditController.ShowPunchlineEditor(request);
   }

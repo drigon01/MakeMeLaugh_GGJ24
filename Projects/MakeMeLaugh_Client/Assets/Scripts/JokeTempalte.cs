@@ -25,8 +25,6 @@ public class JokeEditorController
     this.connectionManager = connectionManager;
     this.punchlineTemplate = punchlineTemplate;
     this.setupTemplate = setupTemplate;
-
-
   }
 
   public void ShowPunchlineEditor(PlayerPunchlineRequest request)
