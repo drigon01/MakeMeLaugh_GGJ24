@@ -17,6 +17,7 @@ public class RelayStateManager : MonoBehaviour
     
     void Start()
     {
+        GetComponent<UIDocument>().rootVisualElement.visible = false;
         _initAndAuthTask = InitializeAndAuthenticate();
     }
 
@@ -37,5 +38,6 @@ public class RelayStateManager : MonoBehaviour
         JoinCode = await RelayService.Instance.GetJoinCodeAsync(hostAllocation.AllocationId);
 
         GetComponent<UIDocument>().rootVisualElement.Q<Label>("JOIN_CODE").text = JoinCode;
+        GetComponent<UIDocument>().rootVisualElement.visible = true;
     }
 }

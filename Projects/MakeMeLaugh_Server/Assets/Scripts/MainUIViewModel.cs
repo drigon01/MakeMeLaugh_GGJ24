@@ -70,7 +70,14 @@ public class MainUIViewModel : MonoBehaviour
         
         serverPort.RegisterValueChangedCallback(OnPortChanged);
 
-        ShowPopUp(_settingsView);
+        if (_useRelay)
+        {
+            BeginWaitingForPlayers();
+        }
+        else
+        {
+            ShowPopUp(_settingsView);
+        }
     }
 
     private void OnPortChanged(ChangeEvent<string> evt)
@@ -95,6 +102,12 @@ public class MainUIViewModel : MonoBehaviour
 
     private void OnServeButtonClicked()
     {
+        ClosePopUp(_settingsView);
+        BeginWaitingForPlayers();
+    }
+
+    private void BeginWaitingForPlayers()
+    {
         if (_useRelay)
         {
             relayStateManager.StartHostingGame(_transportServer.ServerPlayerCapacity);
@@ -104,12 +117,9 @@ public class MainUIViewModel : MonoBehaviour
             _transportServer.StartServer(_ip, _port);
         }
 
-        // GameManager.ChangeToWritingRoom();
         waitingPlayersUI.SetActive(true);
-        //TODO: add actual connection logic
-        ClosePopUp(_settingsView);
     }
-    
+
     private void ShowPopUp(VisualElement popup)
     {
         popup.AddToClassList("popup");
