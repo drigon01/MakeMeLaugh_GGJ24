@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/UnityThemes/WaitingIndicator.uss?fileID=7433441132597879392&amp;guid=7ee20b8bbe8ab764fb4ff2e895fe07c0&amp;type=3#WaitingIndicator" />
+    <ui:VisualElement name="Container" class="waiting_background" style="align-items: center; margin-top: -40px;">
+        <ui:Label tabindex="-1" text="Title" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="waiting_title" />
+        <ui:VisualElement name="LoadingIndicator" class="waiting_loading">
+            <ui:Label tabindex="-1" text="90%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PercentIndicator" />
+        </ui:VisualElement>
+        <ui:Label tabindex="-1" text="..." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Description" class="waiting_decription" />
+    </ui:VisualElement>
+</ui:UXML>
