@@ -65,7 +65,7 @@ public class ConnectionManager
         Debug.Log("We are now connected to the server.");
 
         // Send the handshake message including the client ID (uuid)
-        PlayerMessage handshakeMessage = new PlayerMessage(ClientUUID, MessageType.NEW_CLIENT_CONNECTION, "foobar");
+        PlayerMessage handshakeMessage = new PlayerMessage(ClientUUID, MessageType.NEW_CLIENT_CONNECTION, "welcome from the client");
         _driver.BeginSend(_connection, out var writer);
         string json = JsonUtility.ToJson(handshakeMessage);
 
