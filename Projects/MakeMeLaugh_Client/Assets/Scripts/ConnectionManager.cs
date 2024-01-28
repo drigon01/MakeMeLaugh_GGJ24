@@ -84,7 +84,6 @@ public class ConnectionManager
           Debug.Log("Client got a punchline request from server");
           PlayerPunchlineRequest request = JsonUtility.FromJson<PlayerPunchlineRequest>(playerMessage.MessageContent);
           JokePunchlineRequested?.Invoke(request);
-
         }
         else if (playerMessage.MessageType == MessageType.SERVER_SCENE_CHANGE_STAGE)
         {
