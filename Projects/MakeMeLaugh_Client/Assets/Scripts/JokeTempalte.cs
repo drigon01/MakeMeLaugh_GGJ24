@@ -35,7 +35,7 @@ public class JokeEditorController
 
   private void OnSubmitPunchline()
   {
-    var message = new punchline($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID) { };
+    var message = new PlayerPunchlineResponse($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID) { };
     connectionManager.SendMessageToServer(message);
 
     DoneEditing?.Invoke();
