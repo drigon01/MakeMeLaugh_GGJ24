@@ -10,11 +10,14 @@ public class ClientTester : MonoBehaviour {
     [SerializeField] private string serverAddress = "0.0.0.0";
     [SerializeField] private ushort serverPort = 7771;
 
-    private string ClientUuid;
+    public string ClientUuid;
+    
     void Start()
     {
         m_Driver = NetworkDriver.Create(new WebSocketNetworkInterface());
-        ClientUuid = Guid.NewGuid().ToString();
+        // ClientUuid = Guid.NewGuid().ToString();
+        // ClientUuid = "hi";
+
         var endpoint = NetworkEndpoint.Parse(serverAddress, serverPort);
         
         Debug.Log($"Initializing client {ClientUuid}");
@@ -45,6 +48,31 @@ public class ClientTester : MonoBehaviour {
         {
             return;
         }
+        
+        if (Input.GetKeyDown(KeyCode.S)) {
+            Debug.Log("CLIENT SETUP SEND");
+
+            PlayerMessage message = new PlayerMessage(ClientUuid, MessageType.PLAYER_SETUP_RESPONSE, JsonUtility.ToJson(new PlayerSetupResponse("HERE IS MY SETUP", "1")));
+            m_Driver.BeginSend(m_Connection, out var writer);
+            string json = JsonUtility.ToJson(message);
+                
+            writer.WriteFixedString4096(json);
+                
+            m_Driver.EndSend(writer);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.P)) {
+            Debug.Log("CLIENT PUNCHLINE SEND");
+
+            PlayerMessage message = new PlayerMessage(ClientUuid, MessageType.PLAYER_PUNCHLINE_RESPONSE, JsonUtility.ToJson(new PlayerPunchlineResponse("HERE IS MY PUNCHLINE", "1")));
+            
+            m_Driver.BeginSend(m_Connection, out var writer);
+            string json = JsonUtility.ToJson(message);
+                
+            writer.WriteFixedString4096(json);
+                
+            m_Driver.EndSend(writer);
+        }
 
         Unity.Collections.DataStreamReader stream;
         NetworkEvent.Type cmd;
@@ -73,6 +101,34 @@ public class ClientTester : MonoBehaviour {
 
                 // m_Connection.Disconnect(m_Driver);
                 // m_Connection = default;
+                
+                // WRITING ROUND EVENTS
+                if (playerMessage.MessageType == MessageType.SERVER_SETUP_REQUEST)
+                {
+                    Debug.Log("Client got a setup request from server");
+                    PlayerPunchlineRequest request = JsonUtility.FromJson<PlayerPunchlineRequest>(playerMessage.MessageContent);
+
+                    PlayerMessage message = new PlayerMessage(ClientUuid, MessageType.PLAYER_SETUP_RESPONSE, JsonUtility.ToJson(new PlayerSetupResponse("HERE IS MY SETUP", request.JokeId)));
+                    m_Driver.BeginSend(m_Connection, out var writer);
+                    string json = JsonUtility.ToJson(message);
+                
+                    writer.WriteFixedString4096(json);
+                
+                    m_Driver.EndSend(writer);
+                }
+                else if (playerMessage.MessageType == MessageType.SERVER_PUNCHLINE_REQUEST)
+                {
+                    Debug.Log("Client got a punchline request from server");
+                    PlayerSetupRequest request = JsonUtility.FromJson<PlayerSetupRequest>(playerMessage.MessageContent);
+
+                    PlayerMessage message = new PlayerMessage(ClientUuid, MessageType.PLAYER_PUNCHLINE_RESPONSE, JsonUtility.ToJson(new PlayerPunchlineResponse("HERE IS MY PUNCHLINE", request.JokeId)));
+                    m_Driver.BeginSend(m_Connection, out var writer);
+                    string json = JsonUtility.ToJson(message);
+                
+                    writer.WriteFixedString4096(json);
+                
+                    m_Driver.EndSend(writer);
+                }
             }
             else if (cmd == NetworkEvent.Type.Disconnect)
             {
