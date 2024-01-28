@@ -29,7 +29,8 @@ public class JokeEditorController
 
   public void ShowPunchlineEditor(PlayerPunchlineRequest request)
   {
-    punchlineTemplate.CloneTree(root);
+    var punchlineEditor = new VisualElement() { name = "punchline" };
+    punchlineTemplate.CloneTree(punchlineEditor);
 
     _fragments = root.Q<Label>("Fragements");
     _fragmentInput = root.Q<TextField>("Fragment");
@@ -38,6 +39,8 @@ public class JokeEditorController
     _fragments.text = request.PunchlineTemplate;
 
     submit.clicked += OnSubmitPunchline;
+
+    root.Add(punchlineEditor);
   }
 
   private void OnSubmitPunchline()
@@ -45,12 +48,24 @@ public class JokeEditorController
     var message = new PlayerPunchlineResponse($"{_fragmentInput.text}", _jokeID) { };
     connectionManager.SendMessageToServer(message);
 
+    if (root.Q("punchline") is VisualElement punchline)
+    {
+      root.Remove(punchline);
+    }
+
+    if (root.Q("setup") is VisualElement setup)
+    {
+      root.Remove(setup);
+    }
+
     DoneEditing?.Invoke();
   }
 
-
   public void ShowSetupEditor(PlayerSetupRequest request)
   {
+
+    var setupEditor = new VisualElement() { name = "setup" };
+
     setupTemplate.CloneTree(root);
     var match = blankRegex.Match(request.SetupTemplate);
 
@@ -63,15 +78,26 @@ public class JokeEditorController
 
     _jokeID = request.JokeId;
 
-
     var submit = root.Q<Button>();
     submit.clicked += OnSubmitSetup;
+
+    root.Add(setupEditor);
   }
 
   private void OnSubmitSetup()
   {
     var message = new PlayerSetupResponse($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID) { };
     connectionManager.SendMessageToServer(message);
+
+    if (root.Q("punchline") is VisualElement punchline)
+    {
+      root.Remove(punchline);
+    }
+
+    if (root.Q("setup") is VisualElement setup)
+    {
+      root.Remove(setup);
+    }
 
     DoneEditing?.Invoke();
   }

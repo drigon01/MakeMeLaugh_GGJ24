@@ -173,7 +173,7 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnJokeSetupRequested(PlayerSetupRequest request)
   {
-    //ClosePopUp(_waitingScreen);
+    ClosePopUp(_waitingScreen);
     //ClosePopUp(_settingsView);
 
     _jokeEditController.ShowSetupEditor(request);
@@ -181,7 +181,7 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnJokePunchlineRequested(PlayerPunchlineRequest request)
   {
-    //ClosePopUp(_waitingScreen);
+    ClosePopUp(_waitingScreen);
     //ClosePopUp(_settingsView);
 
     _jokeEditController.ShowPunchlineEditor(request);
