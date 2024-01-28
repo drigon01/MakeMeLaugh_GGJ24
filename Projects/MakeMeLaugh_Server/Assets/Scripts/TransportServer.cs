@@ -19,6 +19,7 @@ public class TransportServer : MonoBehaviour
 
     [SerializeField] private ushort serverPort = 7771;
     [SerializeField] private int serverPlayerCapacity = 4;
+    public int ServerPlayerCapacity => serverPlayerCapacity;
 
     private void Awake()
     {

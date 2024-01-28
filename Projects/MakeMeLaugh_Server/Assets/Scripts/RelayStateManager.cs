@@ -17,11 +17,13 @@ public class RelayStateManager : MonoBehaviour
     
     void Start()
     {
-        _initAndAuthTask = Task.Run(async () =>
-        {
-            await UnityServices.InitializeAsync();
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        });
+        _initAndAuthTask = InitializeAndAuthenticate();
+    }
+
+    private async Task InitializeAndAuthenticate()
+    {
+        await UnityServices.InitializeAsync();
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
     public async void StartHostingGame(int maxConnections)
