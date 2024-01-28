@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 183972540}
   - component: {fileID: 183972543}
   - component: {fileID: 183972542}
-  - component: {fileID: 183972541}
+  - component: {fileID: 183972544}
   m_Layer: 0
   m_Name: Entry dolly
   m_TagString: Untagged
@@ -185,26 +185,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 183972539}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.08977019, y: 0.4274025, z: 0.042698506, w: 0.8985796}
+  m_LocalRotation: {x: -0.08977019, y: 0.4274025, z: 0.04269851, w: 0.8985796}
   m_LocalPosition: {x: 5.781761, y: 1.5859985, z: -6.141337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1401609259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &183972541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 183972539}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LookAtOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &183972542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,6 +269,35 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &183972544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183972539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetOffset: {x: 0, y: 0, z: 0}
+  Lookahead:
+    Enabled: 0
+    Time: 0
+    Smoothing: 0
+    IgnoreY: 0
+  Damping: {x: 0.5, y: 2}
+  Composition:
+    ScreenPosition: {x: 0, y: 0}
+    DeadZone:
+      Enabled: 1
+      Size: {x: 0, y: 1}
+    HardLimits:
+      Enabled: 0
+      Size: {x: 0.8, y: 1}
+      Offset: {x: 0, y: 0}
+  CenterOnActivate: 1
 --- !u!1 &247562933
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,7 +460,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 442764062}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.08977019, y: 0.4274025, z: 0.042698506, w: 0.8985796}
+  m_LocalRotation: {x: -0.08977019, y: 0.4274025, z: 0.04269851, w: 0.8985796}
   m_LocalPosition: {x: 5.781761, y: 1.5859985, z: -6.141337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -840,6 +856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closingLines: {fileID: 11400000, guid: 8e7e334d0c0974e859414d8cacdbe10e, type: 2}
+  comedian: {fileID: 1390283586}
 --- !u!114 &938063552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1155,6 +1172,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4654502d2cb499a4ab5213427f07869e, type: 3}
+--- !u!114 &1390283586 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5414714021634875632, guid: 4654502d2cb499a4ab5213427f07869e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1390283585}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 871ac7426d66cb147ad670f10bcc081d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1401609258
 GameObject:
   m_ObjectHideFlags: 0
@@ -1312,7 +1341,7 @@ GameObject:
   - component: {fileID: 1855328620}
   - component: {fileID: 1855328619}
   - component: {fileID: 1855328622}
-  - component: {fileID: 1855328621}
+  - component: {fileID: 1855328623}
   m_Layer: 0
   m_Name: Closeup
   m_TagString: Untagged
@@ -1372,25 +1401,12 @@ Transform:
   m_GameObject: {fileID: 1855328618}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.6729206, y: 2.309, z: -3.8191879}
+  m_LocalPosition: {x: 8.560924, y: 2.309, z: -4.8807974}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1401609259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1855328621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1855328618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LookAtOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &1855328622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1410,6 +1426,35 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
+--- !u!114 &1855328623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855328618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetOffset: {x: 0, y: 0, z: 0}
+  Lookahead:
+    Enabled: 0
+    Time: 0
+    Smoothing: 0
+    IgnoreY: 0
+  Damping: {x: 0.5, y: 1}
+  Composition:
+    ScreenPosition: {x: 0, y: 0}
+    DeadZone:
+      Enabled: 1
+      Size: {x: 0.2, y: 1}
+    HardLimits:
+      Enabled: 0
+      Size: {x: 0.8, y: 1}
+      Offset: {x: 0, y: 0}
+  CenterOnActivate: 1
 --- !u!1 &1869820264
 GameObject:
   m_ObjectHideFlags: 0

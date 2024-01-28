@@ -18,6 +18,7 @@ public class StageRoundManager : MonoBehaviour
     private UIDocument _uiHost;
     private Label _subtitle;
     public DialogOptionsTable closingLines;
+    public ComedianController comedian;
     
     public Joke CurrentJoke { get; private set; }
     public bool AcceptingLaughs { get; private set; }
@@ -86,6 +87,16 @@ public class StageRoundManager : MonoBehaviour
         return StartCoroutine(PlaybackSubtitleCoroutine(line, 0.05f, 1.0f));
     }
 
+    public void SetComedianWalking()
+    {
+        comedian.BodyWalk();
+    }
+
+    public void SetComedianIdle()
+    {
+        comedian.BodyIdle();
+    }
+
     private IEnumerator TellJokesCoroutine()
     {
         foreach (var joke in Jokes)
@@ -96,6 +107,8 @@ public class StageRoundManager : MonoBehaviour
 
             AcceptingLaughs = true;
             yield return SpeakComedian(joke.CompletedPunchline);
+            comedian.BodyTurn();
+            
             yield return new WaitForSeconds(2.0f);
         }
         
