@@ -1,0 +1,5 @@
+.player_waiting__row {
+    width: auto;
+    height: 50%;
+    max-width: 80%;
+}
