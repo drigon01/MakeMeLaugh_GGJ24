@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 public class JokeEditorController
 {
   private VisualElement root;
+  private readonly string uuid;
   private readonly ConnectionManager connectionManager;
   private readonly VisualTreeAsset punchlineTemplate;
   private readonly VisualTreeAsset setupTemplate;
@@ -19,10 +21,11 @@ public class JokeEditorController
 
   public event Action DoneEditing;
 
-  public JokeEditorController(VisualElement root, ConnectionManager connectionManager, VisualTreeAsset punchlineTemplate, VisualTreeAsset setupTemplate)
+  public JokeEditorController(VisualElement root, VisualTreeAsset punchlineTemplate, VisualTreeAsset setupTemplate)
   {
     this.root = root;
-    this.connectionManager = connectionManager;
+    this.uuid = uuid;
+    this.connectionManager = MainUIViewModel.ConnectionManager;
     this.punchlineTemplate = punchlineTemplate;
     this.setupTemplate = setupTemplate;
   }
@@ -32,9 +35,9 @@ public class JokeEditorController
     var punchlineEditor = new VisualElement() { name = "punchline" };
     punchlineTemplate.CloneTree(punchlineEditor);
 
-    _fragments = root.Q<Label>("Fragements");
-    _fragmentInput = root.Q<TextField>("Fragment");
-    var submit = root.Q<Button>();
+    _fragments = punchlineEditor.Q<Label>("Fragments");
+    _fragmentInput = punchlineEditor.Q<TextField>("Fragment");
+    var submit = punchlineEditor.Q<Button>();
 
     _fragments.text = request.PunchlineTemplate;
 
@@ -45,8 +48,9 @@ public class JokeEditorController
 
   private void OnSubmitPunchline()
   {
-    var message = new PlayerPunchlineResponse($"{_fragmentInput.text}", _jokeID) { };
-    connectionManager.SendMessageToServer(message);
+    var message =
+    new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID, MessageType.PLAYER_PUNCHLINE_RESPONSE, JsonUtility.ToJson(new PlayerPunchlineResponse($"{_fragmentInput.text}", _jokeID)));
+    MainUIViewModel.ConnectionManager.SendMessageToServer(message);
 
     if (root.Q("punchline") is VisualElement punchline)
     {
@@ -86,8 +90,10 @@ public class JokeEditorController
 
   private void OnSubmitSetup()
   {
-    var message = new PlayerSetupResponse($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID) { };
-    connectionManager.SendMessageToServer(message);
+
+    var message =
+ new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID, MessageType.PLAYER_SETUP_RESPONSE, JsonUtility.ToJson(new PlayerSetupResponse($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID)));
+    MainUIViewModel.ConnectionManager.SendMessageToServer(message);
 
     if (root.Q("punchline") is VisualElement punchline)
     {

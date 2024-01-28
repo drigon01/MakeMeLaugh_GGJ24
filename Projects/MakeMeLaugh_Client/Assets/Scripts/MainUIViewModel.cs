@@ -69,7 +69,7 @@ public class MainUIViewModel : MonoBehaviour
   private void CreateJokesScreen()
   {
     _jokeEditor = new VisualElement();
-    _jokeEditController = new JokeEditorController(_jokeEditor, ConnectionManager, _jokePunchlineTemplate, _jokeSetupTemplate);
+    _jokeEditController = new JokeEditorController(_jokeEditor, _jokePunchlineTemplate, _jokeSetupTemplate);
 
     _rootElement.Add(_jokeEditor);
   }
@@ -181,7 +181,7 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnJokePunchlineRequested(PlayerPunchlineRequest request)
   {
-    ClosePopUp(_waitingScreen);
+    //ClosePopUp(_waitingScreen);
     //ClosePopUp(_settingsView);
 
     _jokeEditController.ShowPunchlineEditor(request);
