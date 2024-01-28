@@ -9,6 +9,7 @@ public class TransportServer : MonoBehaviour
 {
     public static TransportServer Instance { get; private set; }
 
+    private bool isInitialized;
     NetworkDriver m_Driver;
     NativeList<NetworkConnection> m_Connections;
     public event EventHandler<PlayerMessageEventArgs> OnPlayerMessageReceived;
@@ -30,15 +31,16 @@ public class TransportServer : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
     
-    void Start()
+    public void StartServer(string ip, ushort port)
     {
+        isInitialized = true;
         m_Driver = NetworkDriver.Create(new WebSocketNetworkInterface());
         m_Connections = new NativeList<NetworkConnection>(serverPlayerCapacity, Allocator.Persistent);
 
-        var endpoint = NetworkEndpoint.AnyIpv4.WithPort(serverPort);
+        var endpoint = NetworkEndpoint.Parse(ip, port); //AnyIpv4.WithPort(port);
         if (m_Driver.Bind(endpoint) != 0)
         {
-            Debug.LogError("Failed to bind to port " + serverPort);
+            Debug.LogError("Failed to bind to port " + port);
             return;
         }
         m_Driver.Listen();
@@ -56,6 +58,10 @@ public class TransportServer : MonoBehaviour
 
     void Update()
     {
+        if (!isInitialized)
+        {
+            return;
+        }
         m_Driver.ScheduleUpdate().Complete();
 
         // Clean up connections.

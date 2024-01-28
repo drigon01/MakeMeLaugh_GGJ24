@@ -36,6 +36,8 @@ public class MainUIViewModel : MonoBehaviour
     [SerializeField] private VisualTreeAsset _serverSettingsTemplate;
     [SerializeField] private ushort _port;
     [SerializeField] private string _ip;
+    [SerializeField] private TransportServer _transportServer;
+
     
     // Start is called before the first frame update
 
@@ -57,9 +59,13 @@ public class MainUIViewModel : MonoBehaviour
         serveButton.clicked += OnServeButtonClicked;
         
         var ip = IPManager.GetLocalIPAddress();
+
+        _ip = ip;
+        _port = ushort.Parse("7777");
+
         Debug.Log(ip);
         serverIP.text = ip;
-        serverPort.value = "7777"; 
+        serverPort.value = _port.ToString();
         
         serverPort.RegisterValueChangedCallback(OnPortChanged);
 
@@ -86,6 +92,7 @@ public class MainUIViewModel : MonoBehaviour
 
     private void OnServeButtonClicked()
     {
+        _transportServer.StartServer(_ip, _port);
         GameManager.ChangeToWritingRoom();
         //TODO: add actual connection logic
         ClosePopUp(_settingsView);

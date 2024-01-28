@@ -1094,9 +1094,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _serverSettingsTemplate: {fileID: 9197481963319205126, guid: f0d7efb6e931fed9fa55dddacd0dc86a,
     type: 3}
-  _joinedPlayerUI: {fileID: 1099996518}
   _port: 0
   _ip: 
+  _transportServer: {fileID: 1478110722}
 --- !u!1001 &975723757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1488,6 +1488,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 975723757}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1478110722 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 533207255203037922, guid: d417c714d628342f1b330d7e213396a0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1265804164}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d746c0881ab65423283211f92c516330, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1526021022
 GameObject:
   m_ObjectHideFlags: 0
