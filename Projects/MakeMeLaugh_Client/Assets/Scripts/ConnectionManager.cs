@@ -15,8 +15,8 @@ public class ConnectionManager
   public string ClientUUID => _clientUuid;
 
   public event Action Connected;
-
-  public event Action<JokeTempalte> JokesReceived;
+  public event Action<PlayerSetupRequest> JokeSetupRequested;
+  public event Action<PlayerPunchlineRequest> JokePunchlineRequested;
 
   public ConnectionManager(string address, ushort port, string name)
   {
@@ -81,7 +81,7 @@ public class ConnectionManager
     }
   }
 
-  public void SendMessageToServer(PlayerMessage message)
+  public void SendMessageToServer<T>(T message)
   {
     _driver.BeginSend(_connection, out var writer);
     string json = JsonUtility.ToJson(message);
