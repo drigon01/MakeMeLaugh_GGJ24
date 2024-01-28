@@ -26,31 +26,51 @@ public class WritingRoundManager: MonoBehaviour
         m_text.text = "Hello World";
         m_players = GameObject.Find("GameManager").GetComponent<GameManager>().GetPlayers();
         m_jokes = new List<Joke>();
-
+        
         foreach (var player in m_players)
         {
             Debug.Log("Player: " + player.Name);
         }
         
-        for (int i = 0; i < m_players.Count; i++)
-        {  
-            Player author = m_players[i];
-            List<Player> playersNoAuthor = new List<Player>(m_players);
-            playersNoAuthor.Remove(author);
-            playersNoAuthor.AddRange(playersNoAuthor);
-            
-            // NOTTODO: Do not try to understand this code
-            List<Player> coauthors = new List<Player>();
-            for (int j = i; j < i + Joke.MAX_SEGMENTS; j++)
-            {
-                coauthors.Add(playersNoAuthor[j]);
-            }
-            
-            m_jokes.Add(new Joke(author, coauthors));
+        if (m_players.Count == 1)
+        {
+            Joke.MAX_SEGMENTS = 1;
+            m_jokes.Add(new Joke(m_players[0], new List<Player> {m_players[0]}));
         }
-    
-    TransportServer.Instance.OnPlayerMessageReceived += TransportServer_OnPlayerMessageReceived;
-}
+        else if(m_players.Count == 2)
+        {
+            Joke.MAX_SEGMENTS = 1;
+            m_jokes.Add(new Joke(m_players[0], new List<Player>{m_players[1]}));
+            m_jokes.Add(new Joke(m_players[1], new List<Player>{m_players[0]}));
+        }
+
+        else if (m_players.Count == 3)
+        {
+            Joke.MAX_SEGMENTS = 2;
+            m_jokes.Add(new Joke(m_players[0], new List<Player>{m_players[1], m_players[2]}));
+            m_jokes.Add(new Joke(m_players[1], new List<Player>{m_players[2], m_players[0]}));
+            m_jokes.Add(new Joke(m_players[2], new List<Player>{m_players[0], m_players[1]}));
+        }
+        else
+        {
+            for (int i = 0; i < m_players.Count; i++)
+            {  
+                Player author = m_players[i];
+                List<Player> playersNoAuthor = new List<Player>(m_players);
+                playersNoAuthor.Remove(author);
+                playersNoAuthor.AddRange(playersNoAuthor);
+            
+                // NOTTODO: Do not try to understand this code
+                List<Player> coauthors = new List<Player>();
+                for (int j = i; j < i + Joke.MAX_SEGMENTS; j++)
+                {
+                    coauthors.Add(playersNoAuthor[j]);
+                }
+                m_jokes.Add(new Joke(author, coauthors));
+            }
+        }
+        TransportServer.Instance.OnPlayerMessageReceived += TransportServer_OnPlayerMessageReceived;
+    }
 
     void OnDestroy()
     {
