@@ -1172,7 +1172,7 @@ MonoBehaviour:
   _port: 0
   _ip: 
   _transportServer: {fileID: 498178904}
-  waitingPlayersUI: {fileID: 0}
+  waitingPlayersUI: {fileID: 1099996518}
   _useRelay: 1
   relayStateManager: {fileID: 919574666}
 --- !u!1001 &975723757
@@ -1186,7 +1186,7 @@ PrefabInstance:
     - target: {fileID: 2725909848570591165, guid: 39c901e9f724e0648a8b348f54ac220f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.70999956
+      value: 0.70999956    
       objectReference: {fileID: 0}
     - target: {fileID: 2725909848570591165, guid: 39c901e9f724e0648a8b348f54ac220f,
         type: 3}

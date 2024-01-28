@@ -39,8 +39,7 @@ public class GameManager : MonoBehaviour
         {
             case (MessageType.NEW_CLIENT_CONNECTION):
                 Debug.Log("GameManager Received a new client connection");
-                string [] names = {"Jami", "Olga", "Kalman", "Layla", "James", "Richard", "August", "Lily", "Bob", "PotatoMan"};
-                Player player = new Player(eventArgs.EventPlayerMessage.PlayerUuid, names[Random.Range(0, names.Length)]);
+                Player player = new Player(eventArgs.EventPlayerMessage.PlayerUuid, eventArgs.EventPlayerMessage.MessageContent);
                 m_players.Add(player);
                 break;
         }
