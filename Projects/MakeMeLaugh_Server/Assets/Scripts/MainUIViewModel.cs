@@ -101,5 +101,4 @@ public class MainUIViewModel : MonoBehaviour
     {
         _rootElement.Remove(popup);
     }
-
 }

@@ -3,5 +3,5 @@
 }
 
 #Container {
-    background-image: url('project://database/Assets/TutorialInfo/Icons/URP.png?fileID=2800000&guid=727a75301c3d24613a3ebcec4a24c2c8&type=3#URP');
+    background-image: none;
 }
