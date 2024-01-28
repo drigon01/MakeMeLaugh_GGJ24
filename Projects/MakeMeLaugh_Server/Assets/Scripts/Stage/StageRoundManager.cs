@@ -4,12 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
-using UnityEngine.Windows.Speech;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(UIDocument))]
@@ -210,10 +206,10 @@ public class StageRoundManager : MonoBehaviour
 
     private IEnumerator SpeakComedianCoroutine(string line)
     {
-        comedian.HeadTalking();
+        comedian.IsTalking = true;
         yield return StartCoroutine(PlaybackSubtitleCoroutine(line, 0.05f, 0));
         _subtitle.text = line;
-        comedian.HeadIdle();
+        comedian.IsTalking = false;
         yield return new WaitForSeconds(2.0f);
         _subtitle.text = string.Empty;
     }
@@ -247,9 +243,9 @@ public class StageRoundManager : MonoBehaviour
             float roll = Random.value;
             if (roll < 0.1f)
             {
-                director.SetBool("WideShot", true);
+                director.SetBool("Wideshot", true);
                 yield return new WaitForSeconds(PlaySegueClip());
-                director.SetBool("WideShot", false);
+                director.SetBool("Wideshot", false);
                 yield return new WaitForSeconds(0.2f);
             }
             else if(roll < 0.3f)
