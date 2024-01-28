@@ -19,7 +19,7 @@ public class JoinedPlayersUIViewModel : MonoBehaviour
     private const float DotUpdateInterval = 0.5f; // Update interval in seconds
     private Coroutine dotCycleCoroutine;
     private Button startGameButton;
-    
+
     [SerializeField] private VisualTreeAsset UserAvatarTemplate;
     [SerializeField] private int EnableStartAtPlayerCount = 2;
     private void Awake()
@@ -140,6 +140,6 @@ public class JoinedPlayersUIViewModel : MonoBehaviour
 
     private void OnStartGameButtonClicked()
     {
-        SceneManager.LoadScene("WritingRoom");
+        GameManager.ChangeToWritingRoom();
     }
 }
