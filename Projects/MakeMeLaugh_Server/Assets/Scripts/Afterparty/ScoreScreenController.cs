@@ -33,11 +33,6 @@ public class ScoreScreenController : MonoBehaviour
 
     void Start()
     {
-        SetScores(new Dictionary<string, int>()
-        {
-            {"Player one", 123},
-            {"Player two", 456},
-            {"Player three", -1201}
-        });
+        SetScores(GameManager.Instance.GetPlayers().ToDictionary(p => p.Name, p => p.Points));
     }
 }
