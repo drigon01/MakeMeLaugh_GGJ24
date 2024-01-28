@@ -19,6 +19,7 @@ public class StageRoundManager : MonoBehaviour
 
     private UIDocument _uiHost;
     private Label _subtitle;
+    public Animator director;
     public DialogOptionsTable closingLines;
     public ComedianController comedian;
     
@@ -246,7 +247,10 @@ public class StageRoundManager : MonoBehaviour
             float roll = Random.value;
             if (roll < 0.1f)
             {
-                yield return new WaitForSeconds(PlaySegueClip() + 0.2f);
+                director.SetBool("WideShot", true);
+                yield return new WaitForSeconds(PlaySegueClip());
+                director.SetBool("WideShot", false);
+                yield return new WaitForSeconds(0.2f);
             }
             else if(roll < 0.3f)
             {
