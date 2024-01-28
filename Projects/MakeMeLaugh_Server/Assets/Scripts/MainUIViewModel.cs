@@ -57,6 +57,7 @@ public class MainUIViewModel : MonoBehaviour
         serveButton.clicked += OnServeButtonClicked;
         
         var ip = IPManager.GetLocalIPAddress();
+        Debug.Log(ip);
         serverIP.text = ip;
         serverPort.value = "7777";
 
