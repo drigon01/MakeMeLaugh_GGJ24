@@ -185,7 +185,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 183972539}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.08977019, y: 0.4274025, z: 0.04269851, w: 0.8985796}
+  m_LocalRotation: {x: -0.089778274, y: 0.42737365, z: 0.042698853, w: 0.8985925}
   m_LocalPosition: {x: 5.781761, y: 1.5859985, z: -6.141337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -487,7 +487,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 442764062}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.08977019, y: 0.4274025, z: 0.04269851, w: 0.8985796}
+  m_LocalRotation: {x: -0.089778274, y: 0.42737365, z: 0.042698853, w: 0.8985925}
   m_LocalPosition: {x: 5.781761, y: 1.5859985, z: -6.141337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -885,6 +885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94d4325e595d42db9beb9466fe9565fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  director: {fileID: 938063548}
   closingLines: {fileID: 11400000, guid: 8e7e334d0c0974e859414d8cacdbe10e, type: 2}
   comedian: {fileID: 1390283586}
   segueClips:
