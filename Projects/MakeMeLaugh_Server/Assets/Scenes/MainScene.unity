@@ -1094,6 +1094,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _serverSettingsTemplate: {fileID: 9197481963319205126, guid: f0d7efb6e931fed9fa55dddacd0dc86a,
     type: 3}
+  _joinedPlayerUI: {fileID: 1099996518}
   _port: 0
   _ip: 
 --- !u!1001 &975723757
@@ -1290,13 +1291,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1099996520}
   - component: {fileID: 1099996519}
+  - component: {fileID: 1099996521}
   m_Layer: 5
   m_Name: JoinedPlayersUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1099996519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1311,7 +1313,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: aa7429844c131436c889b6a7a040fe36, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 4a7efbd6deb464d20b2b3d1cee35da10,
+    type: 3}
   m_SortingOrder: 0
 --- !u!4 &1099996520
 Transform:
@@ -1328,6 +1331,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1099996521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099996518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ba80bb015084794a9a5238a14dd0107, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UserAvatarTemplate: {fileID: 9197481963319205126, guid: 1e45900dc681343b48a18966a32efef0,
+    type: 3}
+  EnableStartAtPlayerCount: 2
 --- !u!1001 &1265804164
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1690,6 +1708,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestClient
       objectReference: {fileID: 0}
+    - target: {fileID: 4508478078770487825, guid: 592d80da9e76b4d2f8484d01e6aeb48f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1928,5 +1951,5 @@ SceneRoots:
   - {fileID: 853211004}
   - {fileID: 266119763}
   - {fileID: 956829223}
-  - {fileID: 1099996520}
   - {fileID: 1526021023}
+  - {fileID: 1099996520}

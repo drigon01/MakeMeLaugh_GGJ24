@@ -1,15 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/Styles/ServerSettings.uss?fileID=7433441132597879392&amp;guid=2983891a898e410fc96f66b1be29f6db&amp;type=3#ServerSettings" />
-    <ui:VisualElement name="Container" style="flex-grow: 1;">
+    <ui:VisualElement name="Container" style="flex-grow: 1; background-color: rgba(148, 164, 202, 0.75);">
         <ui:VisualElement style="justify-content: center;">
-            <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
-                <ui:Label tabindex="-1" text="IP" parse-escape-sequences="true" display-tooltip-when-elided="true" name="IP_LABEL" />
-                <ui:Label tabindex="-1" text="1.2.3.4" parse-escape-sequences="true" display-tooltip-when-elided="true" name="IP_VALUE" />
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; -unity-font-style: bold;">
+                <ui:Label tabindex="-1" text="  IP" parse-escape-sequences="true" display-tooltip-when-elided="true" name="IP_LABEL" style="-unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;);" />
+                <ui:Label tabindex="-1" text="1.2.3.4" parse-escape-sequences="true" display-tooltip-when-elided="true" name="IP_VALUE" style="-unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); -unity-font-style: bold;" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1;">
-                <ui:TextField picking-mode="Ignore" value="number" name="PORT" label="Port" />
+                <ui:TextField picking-mode="Ignore" value="number" name="PORT" label="Port" style="-unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); -unity-font-style: bold;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:Button text="Serve" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SERVE" />
+        <ui:Button text="Serve" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SERVE" style="background-color: rgb(64, 44, 144); color: rgb(255, 255, 255);" />
     </ui:VisualElement>
 </ui:UXML>
