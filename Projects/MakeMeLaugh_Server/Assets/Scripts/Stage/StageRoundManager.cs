@@ -7,8 +7,10 @@ using JetBrains.Annotations;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using UnityEngine.Windows.Speech;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(UIDocument))]
 public class StageRoundManager : MonoBehaviour
@@ -34,6 +36,9 @@ public class StageRoundManager : MonoBehaviour
         _subtitle = _uiHost.rootVisualElement.Q<Label>("Subtitle");
         _subtitle.text = String.Empty;
         CurrentJoke = null;
+        
+        if (TransportServer.Instance != null)
+            TransportServer.Instance.OnPlayerMessageReceived += OnPlayerMessageReceived;
 
         if (Jokes == null)
         {
@@ -51,6 +56,120 @@ public class StageRoundManager : MonoBehaviour
                 { Text = "It's really none of our goddamned business." });
             Jokes = new[] { joke, joke2, joke3 };
         }
+    }
+
+    void OnDisable()
+    {
+        if (TransportServer.Instance != null)
+            TransportServer.Instance.OnPlayerMessageReceived -= OnPlayerMessageReceived;
+    }
+
+    private void OnPlayerMessageReceived(object sender, PlayerMessageEventArgs e)
+    {
+        switch (e.EventPlayerMessage.MessageType)
+        {
+            case MessageType.PLAYER_DEPLOY_TOMATO:
+            {
+                ThrowTomato();
+                break;
+            }
+
+            case MessageType.PLAYER_DEPLOY_ROSE:
+            {
+                ThrowRose();
+                break;
+            }
+
+            case MessageType.PLAYER_DEPLOY_RIMSHOT:
+            {
+                DoRimshot();
+                break;
+            }
+
+            case MessageType.PLAYER_DEPLOY_TRUMPET:
+            {
+                DoTrumpet();
+                break;
+            }
+
+            case MessageType.PLAYER_LAUGHED:
+            {
+                throw new NotImplementedException();
+            }
+
+            default:
+            {
+                break;
+            }
+        }
+    }
+
+    public AudioClip[] segueClips;
+    public AudioSource seguePlayer;
+
+    public float PlaySegueClip()
+    {
+        seguePlayer.clip = segueClips[Random.Range(0, segueClips.Length)];
+        seguePlayer.Play();
+        return seguePlayer.clip.length;
+    }
+
+    public AudioSource trumpetPlayer;
+    
+    [ContextMenu("Do trumpet")]
+    private void DoTrumpet()
+    {
+        trumpetPlayer.Play();
+    }
+
+    public AudioSource rimshotPlayer;
+
+    [ContextMenu("Do rimshot")]
+    private void DoRimshot()
+    {
+        rimshotPlayer.Play();
+    }
+
+    [ContextMenu("Throw rose")]
+    private void ThrowRose()
+    {
+        ThrowInstanceOfPrefab(RosePrefab);
+    }
+
+    public GameObject TomatoPrefab;
+    public GameObject RosePrefab;
+    public float MinThrowForce = 8f;
+    public float MaxThrowForce = 12f;
+
+    private void ThrowInstanceOfPrefab(GameObject prefab)
+    {
+        // We want an x offset which is off the screen, so between (-1,0) or (1, 2)
+        var xOffset = UnityEngine.Random.Range(-1, 1);
+        if (xOffset >= 0)
+            xOffset += 1;
+
+        var yOffset = 0.25f;
+
+        var spawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(xOffset, yOffset, -1));
+        var instance = Instantiate(prefab, spawnPosition, Quaternion.identity);
+
+        var aimPort = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 2f));
+        var throwDirection = (aimPort - spawnPosition).normalized;
+        if (throwDirection.y < 0.2f)
+        {
+            throwDirection.y = 0.2f;
+            throwDirection.Normalize();
+        }
+        
+        // Throw the tomato upwards and towards the center of the screen
+        instance.GetComponent<Rigidbody>().AddForce((aimPort - spawnPosition).normalized * UnityEngine.Random.Range(MinThrowForce, MaxThrowForce), ForceMode.Impulse);
+
+    }
+
+    [ContextMenu("Throw tomato")]
+    private void ThrowTomato()
+    {
+        ThrowInstanceOfPrefab(TomatoPrefab);
     }
 
     [UsedImplicitly]
@@ -123,9 +242,21 @@ public class StageRoundManager : MonoBehaviour
 
             AcceptingLaughs = true;
             yield return SpeakComedian(joke.CompletedPunchline);
-            comedian.BodyTurn();
-            
-            yield return new WaitForSeconds(2.0f);
+
+            float roll = Random.value;
+            if (roll < 0.1f)
+            {
+                yield return new WaitForSeconds(PlaySegueClip() + 0.2f);
+            }
+            else if(roll < 0.3f)
+            {
+                comedian.BodyTurn();
+                yield return new WaitForSeconds(2.0f);
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
         }
         
         yield return SpeakComedian(closingLines.GetRandomLine());

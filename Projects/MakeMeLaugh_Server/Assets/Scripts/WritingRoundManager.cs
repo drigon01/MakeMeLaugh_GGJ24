@@ -98,6 +98,11 @@ public class WritingRoundManager: MonoBehaviour
     
     TransportServer.Instance.OnPlayerMessageReceived += TransportServer_OnPlayerMessageReceived;
 }
+
+    void OnDestroy()
+    {
+        TransportServer.Instance.OnPlayerMessageReceived -= TransportServer_OnPlayerMessageReceived;
+    }
     
     private void TransportServer_OnPlayerMessageReceived (object sender, PlayerMessageEventArgs eventArgs) {
         Debug.Log("(ATTENTION!) Received the following from the client: " + eventArgs.EventPlayerMessage.MessageType + " " + eventArgs.EventPlayerMessage.MessageContent);
