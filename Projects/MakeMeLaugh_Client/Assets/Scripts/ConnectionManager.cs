@@ -72,6 +72,19 @@ public class ConnectionManager
 
         // _connection.Disconnect(m_Driver);
         // _connection = default;
+        if (playerMessage.MessageType == MessageType.SERVER_SETUP_REQUEST)
+        {
+          Debug.Log("Client got a setup request from server");
+          PlayerSetupRequest request = JsonUtility.FromJson<PlayerSetupRequest>(playerMessage.MessageContent);
+          JokeSetupRequested?.Invoke(request);
+        }
+        else if (playerMessage.MessageType == MessageType.SERVER_PUNCHLINE_REQUEST)
+        {
+          Debug.Log("Client got a punchline request from server");
+          PlayerPunchlineRequest request = JsonUtility.FromJson<PlayerPunchlineRequest>(playerMessage.MessageContent);
+          JokePunchlineRequested?.Invoke(request);
+          
+        }
       }
       else if (cmd == NetworkEvent.Type.Disconnect)
       {
