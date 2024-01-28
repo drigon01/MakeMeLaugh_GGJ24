@@ -80,3 +80,6 @@ crashlytics-build.properties
 **/*.cache
 Projects/MakeMeLaugh_Client/obj/Debug/Unity.Networking.Transport.Samples.SimpleClientServer.csproj.AssemblyReference.cache
 **/UserSettings/**
+
+# jetbrains
+**/.idea
