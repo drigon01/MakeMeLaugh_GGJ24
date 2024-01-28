@@ -5,11 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
+    
     private List<Player> m_players = new List<Player>{};
     
     // Start is called before the first frame update
     void Start()
-    {              
+    {
+        Instance = this;
         DontDestroyOnLoad(this.gameObject);
         TransportServer.Instance.OnPlayerMessageReceived += TransportServer_OnPlayerMessageReceived;
     }

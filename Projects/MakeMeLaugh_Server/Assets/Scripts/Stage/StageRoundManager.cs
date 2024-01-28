@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
@@ -270,6 +271,6 @@ public class StageRoundManager : MonoBehaviour
         
         yield return SpeakComedian(closingLines.GetRandomLine());
 
-        OnFinishedSet?.Invoke();
+        SceneManager.LoadScene("Afterparty");
     }
 }
