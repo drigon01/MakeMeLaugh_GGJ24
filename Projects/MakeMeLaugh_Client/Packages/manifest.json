@@ -9,6 +9,7 @@
     "com.unity.render-pipelines.universal": "14.0.10",
     "com.unity.sentis": "1.2.0-exp.2",
     "com.unity.services.lobby": "1.1.2",
+    "com.unity.services.relay": "1.0.5",
     "com.unity.test-framework": "1.1.33",
     "com.unity.timeline": "1.7.6",
     "com.unity.toolchain.macos-arm64-linux-x86_64": "2.0.0",

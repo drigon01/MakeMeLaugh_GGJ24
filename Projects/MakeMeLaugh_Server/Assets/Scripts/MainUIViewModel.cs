@@ -38,6 +38,7 @@ public class MainUIViewModel : MonoBehaviour
     [SerializeField] private string _ip;
     [SerializeField] private TransportServer _transportServer;
     [SerializeField] private GameObject waitingPlayersUI;
+    [SerializeField] private bool _useRelay;
     
     // Start is called before the first frame update
 
@@ -69,7 +70,14 @@ public class MainUIViewModel : MonoBehaviour
         
         serverPort.RegisterValueChangedCallback(OnPortChanged);
 
-        ShowPopUp(_settingsView);
+        if (_useRelay)
+        {
+            BeginWaitingForPlayers();
+        }
+        else
+        {
+            ShowPopUp(_settingsView);
+        }
     }
 
     private void OnPortChanged(ChangeEvent<string> evt)
@@ -90,15 +98,28 @@ public class MainUIViewModel : MonoBehaviour
         
     }
 
+    public RelayStateManager relayStateManager;
+
     private void OnServeButtonClicked()
     {
-        _transportServer.StartServer(_ip, _port);
-        // GameManager.ChangeToWritingRoom();
-        waitingPlayersUI.SetActive(true);
-        //TODO: add actual connection logic
         ClosePopUp(_settingsView);
+        BeginWaitingForPlayers();
     }
-    
+
+    private void BeginWaitingForPlayers()
+    {
+        if (_useRelay)
+        {
+            relayStateManager.StartHostingGame(_transportServer.ServerPlayerCapacity);
+        }
+        else
+        {
+            _transportServer.StartServer(_ip, _port);
+        }
+
+        waitingPlayersUI.SetActive(true);
+    }
+
     private void ShowPopUp(VisualElement popup)
     {
         popup.AddToClassList("popup");

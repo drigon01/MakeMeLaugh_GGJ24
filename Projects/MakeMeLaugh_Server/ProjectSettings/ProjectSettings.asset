@@ -78,7 +78,7 @@ PlayerSettings:
   androidFullscreenMode: 1
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
-  runInBackground: 0
+  runInBackground: 1
   captureSingleScreen: 0
   muteOtherAudioSources: 0
   Prepare IOS For Recording: 0
@@ -910,11 +910,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 103ccd12-f92c-47f2-9bee-0000191ca338
+  cloudProjectId: 98fed49e-56f1-4243-9d19-fc631339e18e
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: MakeMeLaugh_Server
-  organizationId: belavina
+  projectName: TheLaughHole
+  organizationId: ggj2024-thelaughhole
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
