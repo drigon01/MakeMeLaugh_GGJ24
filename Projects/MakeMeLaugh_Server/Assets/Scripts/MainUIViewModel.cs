@@ -59,8 +59,8 @@ public class MainUIViewModel : MonoBehaviour
         var ip = IPManager.GetLocalIPAddress();
         Debug.Log(ip);
         serverIP.text = ip;
-        serverPort.value = "7777";
-
+        serverPort.value = "7777"; 
+        
         serverPort.RegisterValueChangedCallback(OnPortChanged);
 
         ShowPopUp(_settingsView);
@@ -86,6 +86,7 @@ public class MainUIViewModel : MonoBehaviour
 
     private void OnServeButtonClicked()
     {
+        GameManager.ChangeToWritingRoom();
         //TODO: add actual connection logic
         ClosePopUp(_settingsView);
     }

@@ -98,7 +98,6 @@ public class TransportServer : MonoBehaviour
                         // SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.PLAYER_ANSWER_SUBMISSION, "hello from server");
                     }
                     OnPlayerMessageReceived?.Invoke(this, new PlayerMessageEventArgs(playerMessage));
-
                 }
                 else if (cmd == NetworkEvent.Type.Disconnect)
                 {
