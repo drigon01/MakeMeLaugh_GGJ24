@@ -4,6 +4,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+public static class IPManager
+{
+    public static string GetLocalIPAddress()
+    {
+        var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
+        foreach (var ip in host.AddressList)
+        {
+            if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+            {
+                return ip.ToString();
+            }
+        }
+
+        throw new System.Exception("No network adapters with an IPv4 address in the system!");
+    }
+}
+
 public class MainUIViewModel : MonoBehaviour
 {
     private VisualElement _rootElement;
@@ -31,8 +48,9 @@ public class MainUIViewModel : MonoBehaviour
         var serverPort = _settingsView.Q<TextField>("PORT");
 
         serveButton.clicked += OnServeButtonClicked;
-
-        serverIP.text = "127.0.0.1";
+        
+        var ip = IPManager.GetLocalIPAddress();
+        serverIP.text = ip;
         serverPort.value = "7777";
 
         serverPort.RegisterValueChangedCallback(OnPortChanged);
