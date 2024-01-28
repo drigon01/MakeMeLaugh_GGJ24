@@ -12,7 +12,7 @@ public class ConnectionManager
   private string _clientUuid;
   private string _name;
 
-  public string clientUuid => _clientUuid;
+  public string ClientUUID => _clientUuid;
 
   public event Action Connected;
 
@@ -65,7 +65,7 @@ public class ConnectionManager
         Debug.Log("We are now connected to the server.");
 
         // Send the handshake message including the client ID (uuid)
-        PlayerMessage handshakeMessage = new PlayerMessage(clientUuid, MessageType.NEW_CLIENT_CONNECTION, "foobar");
+        PlayerMessage handshakeMessage = new PlayerMessage(ClientUUID, MessageType.NEW_CLIENT_CONNECTION, "foobar");
         _driver.BeginSend(_connection, out var writer);
         string json = JsonUtility.ToJson(handshakeMessage);
 
@@ -90,7 +90,7 @@ public class ConnectionManager
           Debug.Log("Client got a setup request from server");
           PlayerPunchlineRequest request = JsonUtility.FromJson<PlayerPunchlineRequest>(playerMessage.MessageContent);
 
-          PlayerMessage message = new PlayerMessage(clientUuid, MessageType.PLAYER_SETUP_RESPONSE, JsonUtility.ToJson(new PlayerSetupResponse("HERE IS MY SETUP", request.JokeId)));
+          PlayerMessage message = new PlayerMessage(ClientUUID, MessageType.PLAYER_SETUP_RESPONSE, JsonUtility.ToJson(new PlayerSetupResponse("HERE IS MY SETUP", request.JokeId)));
           _driver.BeginSend(_connection, out var writer);
           string json = JsonUtility.ToJson(message);
 
@@ -103,7 +103,7 @@ public class ConnectionManager
           Debug.Log("Client got a punchline request from server");
           PlayerSetupRequest request = JsonUtility.FromJson<PlayerSetupRequest>(playerMessage.MessageContent);
 
-          PlayerMessage message = new PlayerMessage(clientUuid, MessageType.PLAYER_PUNCHLINE_RESPONSE, JsonUtility.ToJson(new PlayerPunchlineResponse("HERE IS MY PUNCHLINE", request.JokeId)));
+          PlayerMessage message = new PlayerMessage(ClientUUID, MessageType.PLAYER_PUNCHLINE_RESPONSE, JsonUtility.ToJson(new PlayerPunchlineResponse("HERE IS MY PUNCHLINE", request.JokeId)));
           _driver.BeginSend(_connection, out var writer);
           string json = JsonUtility.ToJson(message);
 
