@@ -16,6 +16,7 @@ public class MainUIViewModel : MonoBehaviour
   [SerializeField] private VisualTreeAsset _serverSettingsTemplate;
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
+  private bool _serverRunnig;
 
   // Start is called before the first frame update
 
@@ -65,7 +66,11 @@ public class MainUIViewModel : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-
+    if (_serverRunnig)
+    {
+      TransportServer.Instance.ExecuteUpdate();
+    }
+    
   }
 
   private void OnServeButtonClicked()
@@ -75,6 +80,7 @@ public class MainUIViewModel : MonoBehaviour
 
     SaveToPlayerPrefs();
 
+    _serverRunnig = true;
     TransportServer.Instance.StartServerer(_port);
 
     //TODO: add actual connection logic

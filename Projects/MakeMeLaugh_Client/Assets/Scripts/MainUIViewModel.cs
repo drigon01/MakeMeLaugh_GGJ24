@@ -150,7 +150,7 @@ public class MainUIViewModel : MonoBehaviour
     ShowPopUp(_waitingScreen);
   }
 
-  private void OnJokeReceived(JokeTempalte obj)
+  private void OnJokeReceived(PlayerPunchlineRequest request)
   {
     ClosePopUp(_waitingScreen);
     UpdateJokes();

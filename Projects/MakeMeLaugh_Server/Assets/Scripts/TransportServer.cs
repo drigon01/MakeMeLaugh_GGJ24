@@ -54,7 +54,7 @@ public class TransportServer : MonoBehaviour
         }
     }
 
-    void Update()
+    public void ExecuteUpdate()
     {
         m_Driver.ScheduleUpdate().Complete();
 
