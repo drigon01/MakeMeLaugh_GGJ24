@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,13 +9,19 @@ public static class IPManager
 {
     public static string GetLocalIPAddress()
     {
-        var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
-        foreach (var ip in host.AddressList)
+        var nics = NetworkInterface.GetAllNetworkInterfaces();
+        foreach (var nic in nics)
         {
-            if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+            if(nic.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 || nic.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
             {
-                return ip.ToString();
-            }
+                foreach (UnicastIPAddressInformation ip in nic.GetIPProperties().UnicastAddresses)
+                {
+                    if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                    {
+                        return ip.Address.ToString();
+                    }
+                }
+            }  
         }
 
         throw new System.Exception("No network adapters with an IPv4 address in the system!");
