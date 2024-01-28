@@ -135,12 +135,13 @@ public class WritingRoundManager: MonoBehaviour
             m_text.text = "Awesome Jokes Everyone!";
             // SwitchScene();
             // print out jokes
+            string jokeStrings = "";
             foreach (Joke joke in m_jokes)
             {
-                Debug.Log(joke.CompletedJoke);
+                jokeStrings += joke.CompletedJoke + "\n";
             }
+            Debug.Log(jokeStrings);
             return;
-            
         }
         throw new System.Exception("RoundManager in invalid state");
     }
