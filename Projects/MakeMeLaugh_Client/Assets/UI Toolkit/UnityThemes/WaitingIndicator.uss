@@ -1,0 +1,16 @@
+.waiting_loading {
+    flex-grow: 0;
+    height: 300px;
+    width: 300px;
+    align-items: center;
+    justify-content: center;
+    transition-property: rotate;
+    transition-timing-function: ease-in-sine;
+    transition-duration: 4s;
+    background-image: resource('loading');
+}
+
+.waiting_title {
+    font-size: 30px;
+    -unity-font-style: bold;
+}
