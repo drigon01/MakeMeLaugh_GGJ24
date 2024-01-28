@@ -10,15 +10,17 @@ public class MainUIViewModel : MonoBehaviour
   private const string DefaultPlayerName = "JerrySeinfeld";
   private VisualElement _rootElement;
   private VisualElement _popupHost;
+
   [SerializeField] private VisualTreeAsset _serverSettingsTemplate;
   [SerializeField] private VisualTreeAsset _waitingScreenTemplate;
-  [SerializeField] private VisualTreeAsset _jokeEditorTemplate;
+  [SerializeField] private VisualTreeAsset _jokePunchlineTemplate;
+  [SerializeField] private VisualTreeAsset _jokeSetupTemplate;
   [SerializeField] private StyleSheet _mainStyleSheet;
 
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
   [SerializeField] private string _name;
-  
+
   public static ConnectionManager ConnectionManager { get; private set; }
 
   private VisualElement _settingsView;
@@ -52,7 +54,9 @@ public class MainUIViewModel : MonoBehaviour
   private void CreateJokesScreen()
   {
     _jokeEditor = new VisualElement();
-    _jokeEditorTemplate.CloneTree(_jokeEditor);
+    new JokeEditorController(_jokeEditor, ConnectionManager, _jokePunchlineTemplate, _jokeSetupTemplate);
+
+    _rootElement.Add(_jokeEditor);
   }
 
   private void CreateWaitingScreen()
@@ -82,7 +86,7 @@ public class MainUIViewModel : MonoBehaviour
     serverIP.RegisterValueChangedCallback(OnIPChanged);
     serverPort.RegisterValueChangedCallback(OnPortChanged);
     nameField.RegisterValueChangedCallback(OnNameChanged);
-    
+
     serverIP.value = _ip;
     serverPort.value = _port.ToString();
     nameField.value = _name;
@@ -131,14 +135,15 @@ public class MainUIViewModel : MonoBehaviour
   {
     if (!ValidateSettings())
       throw new InvalidOperationException("Invalid settings, can't connect");
-    
+
     SaveToPlayerPrefs();
-    
+
     if (ConnectionManager == null)
     {
       ConnectionManager = new ConnectionManager(_ip, _port, _name);
       ConnectionManager.Connected += OnConnectedToServer;
-      ConnectionManager.JokesReceived += OnJokeReceived;
+      ConnectionManager.JokeSetupRequested += OnJokeSetupRequested;
+      ConnectionManager.JokePunchlineRequested += OnJokePunchlineRequested;
     }
 
     //should we validate befoore closing?
@@ -151,7 +156,15 @@ public class MainUIViewModel : MonoBehaviour
     ShowPopUp(_waitingScreen);
   }
 
-  private void OnJokeReceived(JokeTempalte obj)
+  private void OnJokeSetupRequested(PlayerSetupRequest request)
+  {
+    ClosePopUp(_waitingScreen);
+    UpdateJokes();
+
+    ShowPopUp(_jokeEditor);
+  }
+
+  private void OnJokePunchlineRequested(PlayerPunchlineRequest request)
   {
     ClosePopUp(_waitingScreen);
     UpdateJokes();
@@ -161,7 +174,7 @@ public class MainUIViewModel : MonoBehaviour
 
   private void UpdateJokes()
   {
-     //Template logic to update the jokes go here
+    //Template logic to update the jokes go here
 
   }
 
