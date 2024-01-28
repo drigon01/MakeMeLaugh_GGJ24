@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -238,7 +239,12 @@ public class MainUIViewModel : MonoBehaviour
 
   private void ClosePopUp(VisualElement popupContent)
   {
-    _popupHost.Remove(popupContent);
+    var canRemove = _popupHost.Children().Contains(popupContent);
+
+    if (canRemove)
+    {
+      _popupHost.Remove(popupContent);
+    }
   }
 
   private void SetupLoadingAnimation(VisualElement root)
