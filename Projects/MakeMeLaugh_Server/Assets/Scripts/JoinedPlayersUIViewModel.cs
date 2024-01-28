@@ -19,6 +19,7 @@ public class JoinedPlayersUIViewModel : MonoBehaviour
     private const float DotUpdateInterval = 0.5f; // Update interval in seconds
     private Coroutine dotCycleCoroutine;
     private Button startGameButton;
+    private AudioSource[] audioSources;
 
     [SerializeField] private VisualTreeAsset UserAvatarTemplate;
     [SerializeField] private int EnableStartAtPlayerCount = 2;
@@ -30,6 +31,7 @@ public class JoinedPlayersUIViewModel : MonoBehaviour
 
     private void Start()
     {
+        audioSources = GetComponents<AudioSource>();
         TransportServer.Instance.OnPlayerMessageReceived += TransportServer_OnPlayerMessageReceived;
         startGameButton = uiDocument.rootVisualElement.Q<Button>("StartGameButton");
         startGameButton.clicked += OnStartGameButtonClicked;
@@ -131,6 +133,7 @@ public class JoinedPlayersUIViewModel : MonoBehaviour
             RemoveTextElement();
             numberConnectedClients++;
             addNewPlayerAvatar(eventArgs.EventPlayerMessage.MessageContent);
+            audioSources[1].Play();
             if (numberConnectedClients >= EnableStartAtPlayerCount)
             {
                 startGameButton.SetEnabled(true);
