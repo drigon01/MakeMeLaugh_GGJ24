@@ -2,7 +2,6 @@
     flex-grow: 1;
     background-image: resource('serveroptions');
     -unity-background-scale-mode: scale-and-crop;
-    -unity-font-style: bold;
 }
 
 .server-settings__ip {
