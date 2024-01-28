@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,31 +40,45 @@ public class StageViewUIController : MonoBehaviour
 
         _laughterDetected.style.visibility = Visibility.Hidden;
     }
+
+    public float CooldownBetweenLaughterDetections = 0.5f;
+    private float _lastLaughterAt;
     
     public void Update()
     {
         bool laughterDetected = _analysisDriver.classIDsOfInterest.Contains(_analysisDriver.maxClassId);
+        if (laughterDetected && (_lastLaughterAt + CooldownBetweenLaughterDetections < Time.time))
+        {
+            var message = new PlayerMessage(PlayerUUID, MessageType.PLAYER_LAUGHED);
+            MainUIViewModel.ConnectionManager.SendMessageToServer(message);
+        }
         _laughterDetected.style.visibility = laughterDetected ? Visibility.Visible : Visibility.Hidden;
     }
 
-    private void OnTrumpetClicked()
+    private string PlayerUUID => MainUIViewModel.ConnectionManager.ClientUUID;
+    
+    private void OnTomatoClicked()
     {
-        
-    }
-
-    private void OnRimshotClicked()
-    {
-        
+        var message = new PlayerMessage(PlayerUUID, MessageType.PLAYER_DEPLOY_TOMATO);
+        MainUIViewModel.ConnectionManager.SendMessageToServer(message);
     }
 
     private void OnRoseClicked()
     {
-        
+        var message = new PlayerMessage(PlayerUUID, MessageType.PLAYER_DEPLOY_ROSE);
+        MainUIViewModel.ConnectionManager.SendMessageToServer(message);
     }
-
-    private void OnTomatoClicked()
+    
+    private void OnRimshotClicked()
     {
-        
+        var message = new PlayerMessage(PlayerUUID, MessageType.PLAYER_DEPLOY_RIMSHOT);
+        MainUIViewModel.ConnectionManager.SendMessageToServer(message);
+    }
+    
+    private void OnTrumpetClicked()
+    {
+        var message = new PlayerMessage(PlayerUUID, MessageType.PLAYER_DEPLOY_TRUMPET);
+        MainUIViewModel.ConnectionManager.SendMessageToServer(message);
     }
 
     public void OnDisable()

@@ -9,6 +9,7 @@ public class ConnectionManager
   private NetworkConnection _connection;
 
   private string _clientUuid;
+  public string ClientUUID => _clientUuid;
 
   public ConnectionManager(string address, ushort port)
   {
@@ -51,12 +52,7 @@ public class ConnectionManager
 
         // Send the handshake message including the client ID (uuid)
         PlayerMessage handshakeMessage = new PlayerMessage(_clientUuid, MessageType.NEW_CLIENT_CONNECTION, "test submission");
-        _driver.BeginSend(_connection, out var writer);
-        string json = JsonUtility.ToJson(handshakeMessage);
-
-        writer.WriteFixedString4096(json);
-
-        _driver.EndSend(writer);
+        SendMessageToServer(handshakeMessage);
         Debug.Log("Done with the message sending from the client");
       }
       else if (cmd == NetworkEvent.Type.Data)
@@ -75,6 +71,16 @@ public class ConnectionManager
         _connection = default;
       }
     }
+  }
+
+  public void SendMessageToServer(PlayerMessage message)
+  {
+    _driver.BeginSend(_connection, out var writer);
+    string json = JsonUtility.ToJson(message);
+
+    writer.WriteFixedString4096(json);
+
+    _driver.EndSend(writer);
   }
 }
 

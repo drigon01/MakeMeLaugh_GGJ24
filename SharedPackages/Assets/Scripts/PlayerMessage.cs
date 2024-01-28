@@ -9,7 +9,7 @@ public struct PlayerMessage
     public MessageType MessageType;
     public string MessageContent;
 
-    public PlayerMessage(string playerUuid, MessageType messageType, string playerSubmission)
+    public PlayerMessage(string playerUuid, MessageType messageType, string playerSubmission = null)
     {
         this.PlayerUuid = playerUuid;
         this.MessageType = messageType;
