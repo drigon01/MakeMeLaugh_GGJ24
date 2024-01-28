@@ -16,7 +16,7 @@ public class ConnectionManager
 
   public event Action Connected;
 
-  public event Action<JokeTempalte> JokesReceived;
+  public event Action<PlayerPunchlineRequest> JokesReceived;
 
   public ConnectionManager(string address, ushort port, string name)
   {

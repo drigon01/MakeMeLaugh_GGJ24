@@ -9,13 +9,13 @@ public class TransportServer : MonoBehaviour
 {
     public static TransportServer Instance { get; private set; }
 
+
     NetworkDriver m_Driver;
     NativeList<NetworkConnection> m_Connections;
     public event EventHandler<PlayerMessageEventArgs> OnPlayerMessageReceived;
 
     private Dictionary<string, NetworkConnection> playerToNetworkConnection = new Dictionary<string, NetworkConnection>();
 
-    [SerializeField] private ushort serverPort = 7771;
     [SerializeField] private int serverPlayerCapacity = 4;
 
     private void Awake()
@@ -30,15 +30,15 @@ public class TransportServer : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
     
-    public void StartServerer()
+    public void StartServerer(ushort port)
     {
         m_Driver = NetworkDriver.Create(new WebSocketNetworkInterface());
         m_Connections = new NativeList<NetworkConnection>(serverPlayerCapacity, Allocator.Persistent);
 
-        var endpoint = NetworkEndpoint.AnyIpv4.WithPort(serverPort);
+        var endpoint = NetworkEndpoint.AnyIpv4.WithPort(port);
         if (m_Driver.Bind(endpoint) != 0)
         {
-            Debug.LogError("Failed to bind to port " + serverPort);
+            Debug.LogError("Failed to bind to port " + port);
             return;
         }
         m_Driver.Listen();
