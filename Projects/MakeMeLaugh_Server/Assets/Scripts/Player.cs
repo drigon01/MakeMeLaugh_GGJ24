@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,12 +9,13 @@ public enum PlayerState
     Done,
 }
 
+[Serializable]
 public class Player
 {
-    public PlayerState State { get; set; }
-    public string Uuid { get; }
-    public string Name { get; }
-    public int Points { get; set; }
+    [field:SerializeField] public PlayerState State { get; set; }
+    [field:SerializeField] public string Uuid { get; private set; }
+    [field:SerializeField] public string Name { get; private set; }
+    [field:SerializeField]public int Points { get; set; }
 
     public Player(string uuid, string name)
     {
