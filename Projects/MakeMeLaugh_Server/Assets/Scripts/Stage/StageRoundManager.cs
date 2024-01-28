@@ -109,10 +109,12 @@ public class StageRoundManager : MonoBehaviour
         
     }
 
+    public AudioSource rimshotPlayer;
+
     [ContextMenu("Do rimshot")]
     private void DoRimshot()
     {
-        
+        rimshotPlayer.Play();
     }
 
     [ContextMenu("Throw rose")]
