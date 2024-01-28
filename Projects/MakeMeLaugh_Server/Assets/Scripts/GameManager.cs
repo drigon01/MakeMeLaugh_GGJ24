@@ -45,14 +45,9 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
     public static void ChangeToWritingRoom()
     {
-        {
-            TransportServer.Instance.BroadcastMessage(MessageType.SERVER_SCENE_CHANGE_WRITING_ROOM, "");
-            SceneManager.LoadScene("WritingRoom");
-        }
-
-        return;
+        TransportServer.Instance.BroadcastMessage(MessageType.SERVER_SCENE_CHANGE_WRITING_ROOM, "");
+        SceneManager.LoadScene("WritingRoom");
     }
 }
