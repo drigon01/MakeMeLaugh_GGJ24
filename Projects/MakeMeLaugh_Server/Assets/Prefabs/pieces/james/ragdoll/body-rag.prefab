@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1206528572641552747}
   - component: {fileID: 2370182664819320010}
   - component: {fileID: 1053770341704187331}
+  - component: {fileID: 1692554510419790246}
   m_Layer: 0
   m_Name: body-rag
   m_TagString: Untagged
@@ -84,6 +85,27 @@ CapsuleCollider:
   m_Height: 0.55
   m_Direction: 1
   m_Center: {x: -0.04, y: -0.07, z: -0.09}
+--- !u!95 &1692554510419790246
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7465854373275194768}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4466d09054ed79140b8e300ade4dd3ec, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &356664850686899023
 PrefabInstance:
   m_ObjectHideFlags: 0
