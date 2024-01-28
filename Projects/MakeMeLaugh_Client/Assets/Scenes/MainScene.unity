@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -598,6 +598,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _serverSettingsTemplate: {fileID: 9197481963319205126, guid: e289bcbaff464c345ac741f828001e00,
     type: 3}
+  _serverSettingsRelayTemplate: {fileID: 9197481963319205126, guid: c37fda8c316dc41e1b040255af73bdd1,
+    type: 3}
   _waitingScreenTemplate: {fileID: 9197481963319205126, guid: c609c1e44d3ad2b4e9e32b4b722aa627,
     type: 3}
   _jokePunchlineTemplate: {fileID: 9197481963319205126, guid: bc57a6de4d960cf41921aa9950ea2dab,
@@ -609,6 +611,7 @@ MonoBehaviour:
   _port: 0
   _ip: 
   _name: 
+  UseRelay: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class MainUIViewModel : MonoBehaviour
   private VisualElement _popupHost;
 
   [SerializeField] private VisualTreeAsset _serverSettingsTemplate;
+  [SerializeField] private VisualTreeAsset _serverSettingsRelayTemplate;
   [SerializeField] private VisualTreeAsset _waitingScreenTemplate;
   [SerializeField] private VisualTreeAsset _jokePunchlineTemplate;
   [SerializeField] private VisualTreeAsset _jokeSetupTemplate;
@@ -22,6 +23,7 @@ public class MainUIViewModel : MonoBehaviour
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
   [SerializeField] private string _name;
+  [SerializeField] private string _joinCode;
 
   public static ConnectionManager ConnectionManager { get; private set; }
 
@@ -89,26 +91,37 @@ public class MainUIViewModel : MonoBehaviour
   private void CreateServerSettings()
   {
     _settingsView = new VisualElement();
-    _serverSettingsTemplate.CloneTree(_settingsView);
 
     _ip = PlayerPrefs.GetString("DefaultIPAddress", DefaultIPAddress);
     _port = (ushort)PlayerPrefs.GetInt("DefaultPort", DefaultPort);
     _name = PlayerPrefs.GetString("DefaultPlayerName", DefaultPlayerName);
+    
+    if (UseRelay)
+    {
+      _serverSettingsRelayTemplate.CloneTree(_settingsView);
+      
+      var joinCode = _settingsView.Q<TextField>("JoinCode");
+      joinCode.RegisterValueChangedCallback(OnJoinCodeChanged);
+    }
+    else
+    {
+      _serverSettingsTemplate.CloneTree(_settingsView);
+      
+      var serverIP = _settingsView.Q<TextField>("IP");
+      serverIP.RegisterValueChangedCallback(OnIPChanged);
+      serverIP.value = _ip;
 
-    _connectButton = _settingsView.Q<Button>("Connect");
-    var serverIP = _settingsView.Q<TextField>("IP");
-    var serverPort = _settingsView.Q<TextField>("Port");
+      var serverPort = _settingsView.Q<TextField>("Port");
+      serverPort.RegisterValueChangedCallback(OnPortChanged);
+      serverPort.value = _port.ToString();
+    }
+
     var nameField = _settingsView.Q<TextField>("Name");
-
-    _connectButton.clicked += OnConnectButtonClicked;
-
-    serverIP.RegisterValueChangedCallback(OnIPChanged);
-    serverPort.RegisterValueChangedCallback(OnPortChanged);
     nameField.RegisterValueChangedCallback(OnNameChanged);
-
-    serverIP.value = _ip;
-    serverPort.value = _port.ToString();
     nameField.value = _name;
+    
+    _connectButton = _settingsView.Q<Button>("Connect");
+    _connectButton.clicked += OnConnectButtonClicked;
   }
 
   private void SaveToPlayerPrefs()
@@ -136,13 +149,27 @@ public class MainUIViewModel : MonoBehaviour
     _connectButton.SetEnabled(ValidateSettings());
   }
 
+  private void OnJoinCodeChanged(ChangeEvent<string> evt)
+  {
+    _joinCode = evt.newValue;
+    _connectButton.SetEnabled(ValidateSettings());
+  }
+
   private bool ValidateSettings()
   {
-    if (string.IsNullOrWhiteSpace(_ip))
-      return false;
+    if (UseRelay)
+    {
+      if (string.IsNullOrWhiteSpace(_joinCode))
+        return false;
+    }
+    else
+    {
+      if (string.IsNullOrWhiteSpace(_ip))
+        return false;
 
-    if (_port == 0)
-      return false;
+      if (_port == 0)
+        return false;
+    }
 
     if (string.IsNullOrWhiteSpace(_name))
       return false;
@@ -163,7 +190,7 @@ public class MainUIViewModel : MonoBehaviour
     {
       if (UseRelay)
       {
-        ConnectionManager = new ConnectionManager(_ip, _name);
+        ConnectionManager = new ConnectionManager(_joinCode, _name);
       }
       else
       {
