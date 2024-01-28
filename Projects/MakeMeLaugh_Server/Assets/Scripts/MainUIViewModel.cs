@@ -37,7 +37,7 @@ public class MainUIViewModel : MonoBehaviour
     [SerializeField] private ushort _port;
     [SerializeField] private string _ip;
     [SerializeField] private TransportServer _transportServer;
-
+    [SerializeField] private GameObject waitingPlayersUI;
     
     // Start is called before the first frame update
 
@@ -93,7 +93,8 @@ public class MainUIViewModel : MonoBehaviour
     private void OnServeButtonClicked()
     {
         _transportServer.StartServer(_ip, _port);
-        GameManager.ChangeToWritingRoom();
+        // GameManager.ChangeToWritingRoom();
+        waitingPlayersUI.SetActive(true);
         //TODO: add actual connection logic
         ClosePopUp(_settingsView);
     }
