@@ -34,7 +34,7 @@ public class MainUIViewModel : MonoBehaviour
     connectButton.clicked += OnConnectButtonClicked;
 
     serverIP.value = "127.0.0.1";
-    serverPort.value = "7771";
+    serverPort.value = "7777";
 
     serverIP.RegisterValueChangedCallback(OnIPChanged);
     serverPort.RegisterValueChangedCallback(OnPortChanged);
@@ -50,7 +50,7 @@ public class MainUIViewModel : MonoBehaviour
     }
     else
     {
-      throw new ArgumentException("Incccorrect value provided as port", "Port");
+      throw new ArgumentException("Incorrect value provided as port", "Port");
     }
   }
 
@@ -62,13 +62,13 @@ public class MainUIViewModel : MonoBehaviour
     }
     else
     {
-      throw new ArgumentException("Incccorrect value provided for ip", nameof(IPAddress));
+      throw new ArgumentException("Incorrect value provided for ip", nameof(IPAddress));
     }
   }
 
   private void OnConnectButtonClicked()
   {
-    if (_connectionManager == null) { 
+    if (_connectionManager == null) {
       _connectionManager = new ConnectionManager(_ip,_port);
     }
 

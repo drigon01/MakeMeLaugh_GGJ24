@@ -1,0 +1,7 @@
+.popup {
+    position: absolute;
+    height: 25%;
+    width: 50%;
+    top: 37.5%;
+    left: 25%;
+}
