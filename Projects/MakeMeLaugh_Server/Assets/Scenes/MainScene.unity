@@ -1097,6 +1097,7 @@ MonoBehaviour:
   _port: 0
   _ip: 
   _transportServer: {fileID: 1478110722}
+  waitingPlayersUI: {fileID: 1099996518}
 --- !u!1001 &975723757
 PrefabInstance:
   m_ObjectHideFlags: 0
