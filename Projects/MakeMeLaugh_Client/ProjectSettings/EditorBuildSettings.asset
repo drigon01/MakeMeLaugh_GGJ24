@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
-    path: Assets/Samples/Unity Transport/2.1.0/Simple Client and Server/Scenes/SimpleClientServer.unity
-    guid: 0906cbb2ca4d20e4c880d99410cea54f
+  - enabled: 1
+    path: Assets/Scenes/StageModeScene.unity
+    guid: 25b9be5db7d94496c96a43f6b9d07570
   m_configObjects: {}
