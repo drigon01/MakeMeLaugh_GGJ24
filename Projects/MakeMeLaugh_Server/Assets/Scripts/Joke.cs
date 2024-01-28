@@ -86,6 +86,7 @@ public class Joke
     };
     
     public static int MAX_SEGMENTS = 3;
+    public static double COAUTHOR_POINTS_MULTIPLIER = 0.1;
     public List<PunchlineSegment> PunchlineSegments { get; }
     public string Setup { get; set; }
     public string JokeId { get; }
@@ -182,9 +183,14 @@ public class Joke
         return template;
     }
 
-    void UpdatePoints()
+    // TODO: call this when the joke is done presenting
+    void UpdatePlayerPoints()
     {
-        
+        m_author.Points += m_points;
+        foreach (var segment in PunchlineSegments)
+        {
+            segment.Author.Points += (int)(m_points * COAUTHOR_POINTS_MULTIPLIER);
+        }
         
     }
 }
