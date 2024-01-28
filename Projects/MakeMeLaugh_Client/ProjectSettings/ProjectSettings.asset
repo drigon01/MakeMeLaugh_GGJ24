@@ -910,11 +910,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: b181aac0-451e-4798-8c9b-5b6bcd0469e9
+  cloudProjectId: 98fed49e-56f1-4243-9d19-fc631339e18e
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: My project
-  organizationId: b-lint-k-lm-n
+  projectName: TheLaughHole
+  organizationId: ggj2024-thelaughhole
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
