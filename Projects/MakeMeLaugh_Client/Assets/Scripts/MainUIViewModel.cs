@@ -8,12 +8,15 @@ public class MainUIViewModel : MonoBehaviour
   private VisualElement _rootElement;
 
   [SerializeField] private VisualTreeAsset _serverSettingsTemplate;
+  [SerializeField] private VisualTreeAsset _waitingScreenTemplate;
+
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
 
   public static ConnectionManager ConnectionManager { get; private set; }
 
-  private VisualElement settingsView;
+  private VisualElement _settingsView;
+  private VisualElement _waitingScreen;
 
   // Start is called before the first frame update
   private void Awake()
@@ -24,12 +27,26 @@ public class MainUIViewModel : MonoBehaviour
 
   private void Start()
   {
-    settingsView = new VisualElement();
-    _serverSettingsTemplate.CloneTree(settingsView);
+    CreateServerSettings();
+    CreateWaitingScreen();
 
-    var connectButton = settingsView.Q<Button>("Connect");
-    var serverIP = settingsView.Q<TextField>("IP");
-    var serverPort = settingsView.Q<TextField>("Port");
+    ShowPopUp(_settingsView);
+  }
+
+  private void CreateWaitingScreen()
+  {
+    _waitingScreen = new VisualElement();
+    _waitingScreenTemplate.CloneTree(_waitingScreen);
+  }
+
+  private void CreateServerSettings()
+  {
+    _settingsView = new VisualElement();
+    _serverSettingsTemplate.CloneTree(_settingsView);
+
+    var connectButton = _settingsView.Q<Button>("Connect");
+    var serverIP = _settingsView.Q<TextField>("IP");
+    var serverPort = _settingsView.Q<TextField>("Port");
 
     connectButton.clicked += OnConnectButtonClicked;
 
@@ -41,8 +58,6 @@ public class MainUIViewModel : MonoBehaviour
 
     serverIP.RegisterValueChangedCallback(OnIPChanged);
     serverPort.RegisterValueChangedCallback(OnPortChanged);
-
-    ShowPopUp(settingsView);
   }
 
   private void OnPortChanged(ChangeEvent<string> evt)
@@ -71,14 +86,35 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnConnectButtonClicked()
   {
-    if (ConnectionManager == null) {
-      ConnectionManager = new ConnectionManager(_ip,_port);
+
+    if (ConnectionManager == null)
+    {
+       ConnectionManager = new ConnectionManager(_ip,_port);
     }
 
-    //TODO: add actual connection logic
-    ClosePopUp(settingsView);
+    //should we validate befoore closing?
+    ClosePopUp(_settingsView);
+
+    //go to waiting popup
+    var waitingInfo = new WaitingInfo("TEST", "asdas", "42%");
+
+    UpdateWaitingScreeen(waitingInfo);
+
+    ShowPopUp(_waitingScreen);
   }
 
+  private void UpdateWaitingScreeen(WaitingInfo info)
+  {
+    var title = _waitingScreen.Q<Label>("Title");
+    var description = _waitingScreen.Q<Label>("Description");
+    var percentage = _waitingScreen.Q<Label>("PercentIndicator");
+
+
+    title.text = info.Title;
+    description.text = info.Text;
+    percentage.text = info.Percent;
+
+  }
 
   private void Update()
   {
@@ -97,5 +133,6 @@ public class MainUIViewModel : MonoBehaviour
   private void ClosePopUp(VisualElement popup)
   {
     _rootElement.Remove(popup);
+
   }
 }

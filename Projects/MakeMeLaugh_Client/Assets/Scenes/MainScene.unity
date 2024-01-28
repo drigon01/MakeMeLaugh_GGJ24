@@ -491,6 +491,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _serverSettingsTemplate: {fileID: 9197481963319205126, guid: e289bcbaff464c345ac741f828001e00,
     type: 3}
+  _waitingScreenTemplate: {fileID: 9197481963319205126, guid: c785404139558ed469afb9c84fa0bb90,
+    type: 3}
+  _port: 0
+  _ip: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
