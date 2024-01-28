@@ -141,6 +141,7 @@ public class MainUIViewModel : MonoBehaviour
       ConnectionManager.JokesReceived += OnJokeReceived;
     }
 
+    //should we validate befoore closing?
     ClosePopUp(_settingsView);
 
     //go to waiting popup
@@ -150,7 +151,7 @@ public class MainUIViewModel : MonoBehaviour
     ShowPopUp(_waitingScreen);
   }
 
-  private void OnJokeReceived(PlayerPunchlineRequest request)
+  private void OnJokeReceived(JokeTempalte obj)
   {
     ClosePopUp(_waitingScreen);
     UpdateJokes();
