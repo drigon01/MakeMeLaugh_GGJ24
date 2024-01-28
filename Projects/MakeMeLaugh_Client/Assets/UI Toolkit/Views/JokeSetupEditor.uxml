@@ -2,7 +2,7 @@
     <ui:VisualElement name="Container" style="flex-grow: 1; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;);">
         <ui:Label tabindex="-1" text="Complete the below setup!" parse-escape-sequences="true" display-tooltip-when-elided="true" />
         <ui:VisualElement name="JokeView" style="flex-grow: 0; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); white-space: normal; flex-direction: row;">
-            <ui:Label tabindex="-1" text="The setup of the joke." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Setup" />
+            <ui:Label tabindex="-1" text="The setup of the joke." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Setup_Part1" />
             <ui:TextField picking-mode="Ignore" value="_BLANK_" name="BLANK" />
             <ui:Label tabindex="-1" text="Now tell me the best filler!" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="false" name="Setup_Part2" />
         </ui:VisualElement>
