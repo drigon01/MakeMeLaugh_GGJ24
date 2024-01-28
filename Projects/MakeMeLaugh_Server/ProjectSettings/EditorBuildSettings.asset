@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/art-scenes/stage.unity
     guid: 71d5dfdd133b4534bafbaebeabbcb848
+  - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: 92c508313f29cc872b37fdeb71d33a5b
+  - enabled: 1
+    path: Assets/Scenes/WritingRoom.unity
+    guid: eebe934c142aa43349e62c4c7c5a7b98
   m_configObjects: {}

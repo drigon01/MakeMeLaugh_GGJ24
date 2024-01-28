@@ -14,9 +14,9 @@ public class ClientTester : MonoBehaviour {
     
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
         m_Driver = NetworkDriver.Create(new WebSocketNetworkInterface());
-        // ClientUuid = Guid.NewGuid().ToString();
-        // ClientUuid = "hi";
+        ClientUuid = Guid.NewGuid().ToString();
 
         var endpoint = NetworkEndpoint.Parse(serverAddress, serverPort);
         

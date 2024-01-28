@@ -92,6 +92,8 @@ public class Joke
     }
 
     public string CompletedPunchline => string.Join(" ", PunchlineSegments);
+    
+    public string CompletedJoke => Setup + " " + CompletedPunchline;
 
     public void RunNextPunchlineSegment()
     {
