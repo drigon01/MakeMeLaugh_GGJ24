@@ -73,10 +73,14 @@ public class MainUIViewModel : MonoBehaviour
     serverIP.RegisterValueChangedCallback(OnIPChanged);
     serverPort.RegisterValueChangedCallback(OnPortChanged);
     name.RegisterValueChangedCallback(OnNameChanged);
-    
-    serverIP.value = "127.0.0.1";
-    serverPort.value = "7777";
-    name.value = "Joe";
+
+    _ip = "127.0.0.1";
+    _port = ushort.Parse("7777");
+    _name = "Joe";
+
+    serverIP.value = _ip;
+    serverPort.value = _port.ToString();
+    name.value = _name;
   }
 
   private void OnPortChanged(ChangeEvent<string> evt)
