@@ -15,6 +15,7 @@ public class JokeEditorController
   private Label _setupPart1;
   private Label _fragments;
   private TextField _fragmentInput;
+  private Button _submitPunchline;
   private Label _setupPart2;
   private TextField _setupBlank;
   private VisualElement _punchlineEditor;
@@ -23,7 +24,7 @@ public class JokeEditorController
 
   public event Action<MessageType> Done;
 
-  public JokeEditorController(VisualElement root, VisualTreeAsset punchlineTemplate, VisualTreeAsset setupTemplate)
+  public JokeEditorController(VisualTreeAsset punchlineTemplate, VisualTreeAsset setupTemplate)
   {
     this.connectionManager = MainUIViewModel.ConnectionManager;
     this.punchlineTemplate = punchlineTemplate;
@@ -37,11 +38,13 @@ public class JokeEditorController
 
     _fragments = _punchlineEditor.Q<Label>("Fragments");
     _fragmentInput = _punchlineEditor.Q<TextField>("Fragment");
-    var submit = _punchlineEditor.Q<Button>();
+    _submitPunchline = _punchlineEditor.Q<Button>();
 
+
+    _jokeID = request.JokeId;
     _fragments.text = request.PunchlineTemplate;
 
-    submit.clicked += OnSubmitPunchline;
+    _submitPunchline.clicked += OnSubmitPunchline;
 
     return _punchlineEditor;
   }
@@ -49,16 +52,19 @@ public class JokeEditorController
   private void OnSubmitPunchline()
   {
     var message =
-    new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID, MessageType.PLAYER_PUNCHLINE_RESPONSE, JsonUtility.ToJson(new PlayerPunchlineResponse($"{_fragmentInput.text}", _jokeID)));
+    new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID,
+    MessageType.PLAYER_PUNCHLINE_RESPONSE, 
+    JsonUtility.ToJson(new PlayerPunchlineResponse($"{_fragmentInput.text}", _jokeID)));
     MainUIViewModel.ConnectionManager.SendMessageToServer(message);
+
+
+    _submitPunchline.clicked -= OnSubmitPunchline;
+
     Done?.Invoke(MessageType.PLAYER_PUNCHLINE_RESPONSE);
-
-
   }
 
   public VisualElement CreateSetupEditor(PlayerSetupRequest request)
   {
-
     _setupEditor = new VisualElement() { name = "setup" };
 
     setupTemplate.CloneTree(_setupEditor);
@@ -83,7 +89,9 @@ public class JokeEditorController
   {
 
     var message =
- new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID, MessageType.PLAYER_SETUP_RESPONSE, JsonUtility.ToJson(new PlayerSetupResponse($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID)));
+ new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID, 
+ MessageType.PLAYER_SETUP_RESPONSE, 
+ JsonUtility.ToJson(new PlayerSetupResponse($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID)));
     MainUIViewModel.ConnectionManager.SendMessageToServer(message);
 
     Done?.Invoke(MessageType.PLAYER_SETUP_RESPONSE);
