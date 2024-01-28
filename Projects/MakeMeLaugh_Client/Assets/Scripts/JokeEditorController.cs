@@ -39,10 +39,12 @@ public class JokeEditorController
     _fragments = _punchlineEditor.Q<Label>("Fragments");
     _fragmentInput = _punchlineEditor.Q<TextField>("Fragment");
     _submitPunchline = _punchlineEditor.Q<Button>();
-
+    var setup = _punchlineEditor.Q<Label>("Setup");
 
     _jokeID = request.JokeId;
     _fragments.text = request.PunchlineTemplate;
+
+    setup.text = request.PunchlineTemplate;
 
     _submitPunchline.clicked += OnSubmitPunchline;
 
