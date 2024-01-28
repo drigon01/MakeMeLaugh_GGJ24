@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 enum JokeState
 {
@@ -24,7 +25,7 @@ public class WritingRoundManager: MonoBehaviour
     public void Start()
     {
         m_text.text = "Hello World";
-        m_players = GameObject.Find("GameManager").GetComponent<GameManager>().GetPlayers();
+        m_players = GameManager.Instance.GetPlayers();
         m_jokes = new List<Joke>();
         
         foreach (var player in m_players)
@@ -133,14 +134,8 @@ public class WritingRoundManager: MonoBehaviour
         { 
             // Debug.Log("RoundManager Done");
             m_text.text = "Awesome Jokes Everyone!";
-            // SwitchScene();
-            // print out jokes
-            string jokeStrings = "";
-            foreach (Joke joke in m_jokes)
-            {
-                jokeStrings += joke.CompletedJoke + "\n";
-            }
-            Debug.Log(jokeStrings);
+            StageRoundManager.BeginSet(m_jokes);
+            SceneManager.LoadScene("stage");
             return;
         }
         throw new System.Exception("RoundManager in invalid state");
