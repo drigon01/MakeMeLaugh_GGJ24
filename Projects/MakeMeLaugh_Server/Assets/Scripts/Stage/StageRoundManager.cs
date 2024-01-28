@@ -18,6 +18,8 @@ public class StageRoundManager : MonoBehaviour
     public Animator director;
     public DialogOptionsTable closingLines;
     public ComedianController comedian;
+
+    public event Action OnFinishedSet;
     
     public Joke CurrentJoke { get; private set; }
     public bool AcceptingLaughs { get; private set; }
@@ -267,5 +269,7 @@ public class StageRoundManager : MonoBehaviour
         }
         
         yield return SpeakComedian(closingLines.GetRandomLine());
+
+        OnFinishedSet?.Invoke();
     }
 }
