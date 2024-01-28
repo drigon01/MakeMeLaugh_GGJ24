@@ -83,7 +83,7 @@ public class ClientTester : MonoBehaviour {
                 Debug.Log("We are now connected to the server.");
 
                 // Send the handshake message including the client ID (uuid)
-                PlayerMessage handshakeMessage = new PlayerMessage(ClientUuid, MessageType.NEW_CLIENT_CONNECTION, "test submission");
+                PlayerMessage handshakeMessage = new PlayerMessage(ClientUuid, MessageType.NEW_CLIENT_CONNECTION, "foobar");
                 m_Driver.BeginSend(m_Connection, out var writer);
                 string json = JsonUtility.ToJson(handshakeMessage);
                 

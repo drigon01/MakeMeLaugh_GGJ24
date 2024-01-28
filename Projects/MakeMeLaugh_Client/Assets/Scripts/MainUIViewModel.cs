@@ -14,7 +14,8 @@ public class MainUIViewModel : MonoBehaviour
 
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
-
+  [SerializeField] private string _name;
+  
   public static ConnectionManager ConnectionManager { get; private set; }
 
   private VisualElement _settingsView;
@@ -65,14 +66,17 @@ public class MainUIViewModel : MonoBehaviour
     var connectButton = _settingsView.Q<Button>("Connect");
     var serverIP = _settingsView.Q<TextField>("IP");
     var serverPort = _settingsView.Q<TextField>("Port");
+    var name = _settingsView.Q<TextField>("Name");
 
     connectButton.clicked += OnConnectButtonClicked;
 
     serverIP.RegisterValueChangedCallback(OnIPChanged);
     serverPort.RegisterValueChangedCallback(OnPortChanged);
-
+    name.RegisterValueChangedCallback(OnNameChanged);
+    
     serverIP.value = "127.0.0.1";
     serverPort.value = "7777";
+    name.value = "Joe";
   }
 
   private void OnPortChanged(ChangeEvent<string> evt)
@@ -84,6 +88,18 @@ public class MainUIViewModel : MonoBehaviour
     else
     {
       throw new ArgumentException("Incorrect value provided as port", "Port");
+    }
+  }
+
+  private void OnNameChanged(ChangeEvent<string> evt)
+  {
+    if (!string.IsNullOrWhiteSpace(evt.newValue))
+    {
+      _name = evt.newValue;
+    }
+    else
+    {
+      throw new ArgumentException("Missing name");
     }
   }
 
@@ -103,7 +119,7 @@ public class MainUIViewModel : MonoBehaviour
   {
     if (ConnectionManager == null)
     {
-      ConnectionManager = new ConnectionManager(_ip, _port);
+      ConnectionManager = new ConnectionManager(_ip, _port, _name);
       ConnectionManager.Connected += OnConnectedToServer;
       ConnectionManager.JokesReceived += OnJokeReceived;
     }

@@ -10,16 +10,18 @@ public class ConnectionManager
   private NetworkConnection _connection;
 
   private string _clientUuid;
-  public string ClientUUID => _clientUuid;
+  private string _name;
 
+  public string ClientUUID => _clientUuid;
 
   public event Action Connected;
 
   public event Action<JokeTempalte> JokesReceived;
 
-  public ConnectionManager(string address, ushort port)
+  public ConnectionManager(string address, ushort port, string name)
   {
     _clientUuid = System.Guid.NewGuid().ToString();
+    _name = name;
 
     _driver = NetworkDriver.Create(new WebSocketNetworkInterface());
     var endpoint = NetworkEndpoint.Parse(address, port);
@@ -57,7 +59,7 @@ public class ConnectionManager
         Debug.Log("We are now connected to the server.");
 
         // Send the handshake message including the client ID (uuid)
-        PlayerMessage handshakeMessage = new PlayerMessage(_clientUuid, MessageType.NEW_CLIENT_CONNECTION, "test submission");
+        PlayerMessage handshakeMessage = new PlayerMessage(_clientUuid, MessageType.NEW_CLIENT_CONNECTION, _name);
         SendMessageToServer(handshakeMessage);
         Debug.Log("Done with the message sending from the client");
       }

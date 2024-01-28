@@ -87,6 +87,7 @@ public class TransportServer : MonoBehaviour
                     rawMessage = stream.ReadFixedString4096();
                     PlayerMessage playerMessage = JsonUtility.FromJson<PlayerMessage>(rawMessage.ToString());
                     Debug.Log("Received the following from the client: " + playerMessage.MessageType + " " + playerMessage.MessageContent);
+
                     if (playerMessage.MessageType == MessageType.NEW_CLIENT_CONNECTION)
                     {
                         registerNewPlayer(playerMessage, m_Connections[i]);
@@ -112,7 +113,7 @@ public class TransportServer : MonoBehaviour
 
     private void registerNewPlayer(PlayerMessage playerMessage, NetworkConnection networkConnection)
     {
-        Debug.Log("Registering new client (player): " + playerMessage.PlayerUuid);
+        Debug.Log("Registering new client (player): " + playerMessage.MessageContent);
         playerToNetworkConnection.Add(playerMessage.PlayerUuid, networkConnection);
     }
 
