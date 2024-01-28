@@ -373,6 +373,33 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!1 &425916163 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1641463113231187042, guid: bd76dba4367656d4bb0c80e4ca974b4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8869451815575596270}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &425916168
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425916163}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10.000002, y: 2, z: 10.000002}
+  m_Center: {x: 0, y: -1, z: 0}
 --- !u!1 &442764062
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,6 +884,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   closingLines: {fileID: 11400000, guid: 8e7e334d0c0974e859414d8cacdbe10e, type: 2}
   comedian: {fileID: 1390283586}
+  TomatoPrefab: {fileID: 8010021435862385690, guid: 946b13ed41356429f83d904b3b21b9bb,
+    type: 3}
+  MinTomatoForce: 8
+  MaxTomatoForce: 12
 --- !u!114 &938063552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1636,10 +1667,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: comedy-club
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7405697386608483077, guid: bd76dba4367656d4bb0c80e4ca974b4e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1641463113231187042, guid: bd76dba4367656d4bb0c80e4ca974b4e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 425916168}
   m_SourcePrefab: {fileID: 100100000, guid: bd76dba4367656d4bb0c80e4ca974b4e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

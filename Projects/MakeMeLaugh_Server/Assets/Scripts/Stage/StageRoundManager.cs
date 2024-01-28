@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using UnityEngine.Windows.Speech;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(UIDocument))]
 public class StageRoundManager : MonoBehaviour
@@ -34,6 +35,9 @@ public class StageRoundManager : MonoBehaviour
         _subtitle = _uiHost.rootVisualElement.Q<Label>("Subtitle");
         _subtitle.text = String.Empty;
         CurrentJoke = null;
+        
+        if (TransportServer.Instance != null)
+            TransportServer.Instance.OnPlayerMessageReceived += OnPlayerMessageReceived;
 
         if (Jokes == null)
         {
@@ -51,6 +55,99 @@ public class StageRoundManager : MonoBehaviour
                 { Text = "It's really none of our goddamned business." });
             Jokes = new[] { joke, joke2, joke3 };
         }
+    }
+
+    void OnDisable()
+    {
+        if (TransportServer.Instance != null)
+            TransportServer.Instance.OnPlayerMessageReceived -= OnPlayerMessageReceived;
+    }
+
+    private void OnPlayerMessageReceived(object sender, PlayerMessageEventArgs e)
+    {
+        switch (e.EventPlayerMessage.MessageType)
+        {
+            case MessageType.PLAYER_DEPLOY_TOMATO:
+            {
+                ThrowTomato();
+                break;
+            }
+
+            case MessageType.PLAYER_DEPLOY_ROSE:
+            {
+                ThrowRose();
+                break;
+            }
+
+            case MessageType.PLAYER_DEPLOY_RIMSHOT:
+            {
+                DoRimshot();
+                break;
+            }
+
+            case MessageType.PLAYER_DEPLOY_TRUMPET:
+            {
+                DoTrumpet();
+                break;
+            }
+
+            case MessageType.PLAYER_LAUGHED:
+            {
+                throw new NotImplementedException();
+            }
+
+            default:
+            {
+                break;
+            }
+        }
+    }
+
+    [ContextMenu("Do trumpet")]
+    private void DoTrumpet()
+    {
+        
+    }
+
+    [ContextMenu("Do rimshot")]
+    private void DoRimshot()
+    {
+        
+    }
+
+    [ContextMenu("Throw rose")]
+    private void ThrowRose()
+    {
+        
+    }
+
+    public GameObject TomatoPrefab;
+    public float MinTomatoForce = 8f;
+    public float MaxTomatoForce = 12f;
+
+    [ContextMenu("Throw tomato")]
+    private void ThrowTomato()
+    {
+        // We want an x offset which is off the screen, so between (-1,0) or (1, 2)
+        var xOffset = UnityEngine.Random.Range(-1, 1);
+        if (xOffset >= 0)
+            xOffset += 1;
+
+        var yOffset = 0.25f;
+
+        var spawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(xOffset, yOffset, -1));
+        var tomato = Instantiate(TomatoPrefab, spawnPosition, Quaternion.identity);
+
+        var aimPort = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 2f));
+        var throwDirection = (aimPort - spawnPosition).normalized;
+        if (throwDirection.y < 0.2f)
+        {
+            throwDirection.y = 0.2f;
+            throwDirection.Normalize();
+        }
+        
+        // Throw the tomato upwards and towards the center of the screen
+        tomato.GetComponent<Rigidbody>().AddForce((aimPort - spawnPosition).normalized * UnityEngine.Random.Range(MinTomatoForce, MaxTomatoForce), ForceMode.Impulse);
     }
 
     [UsedImplicitly]
