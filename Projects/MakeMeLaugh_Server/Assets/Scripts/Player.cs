@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum PlayerState
 {
@@ -9,51 +10,61 @@ public enum PlayerState
 
 public class Player
 {
-    private PlayerState m_state;
-    private int m_id;
-    private string m_name;
-    
-    public Player(int id, string name)
+    public PlayerState State { get; set; }
+    public string Uuid { get; }
+    public string Name { get; }
+
+    public Player(string uuid, string name)
     {
-        m_id = id;
-        m_name = name;
-        m_state = PlayerState.Done;
+        Uuid = uuid;
+        Name = name;
+        State = PlayerState.Done;
+        
+        // TransportServer.Instance.OnPlayerMessageReceived += TransportServer_OnPlayerMessageReceived;
     }
     
+    private void TransportServer_OnPlayerMessageReceived (object sender, PlayerMessageEventArgs eventArgs) {
+        Debug.Log("(ATTENTION!) Received the following from the client: " + eventArgs.EventPlayerMessage.MessageType + " " + eventArgs.EventPlayerMessage.MessageContent);
+
+        if(eventArgs.EventPlayerMessage.PlayerUuid != Uuid)
+        {
+            return;
+        }
+        
+        // Debug.Log("(ATTENTION!) Received the following from the client: " + eventArgs.EventPlayerMessage.MessageType + " " + eventArgs.EventPlayerMessage.MessageContent);
+        
+        switch (eventArgs.EventPlayerMessage.MessageType)
+        {
+            case (MessageType.PLAYER_SETUP_RESPONSE):
+                Debug.Log("Received a player setup submission");
+                break;
+            case (MessageType.PLAYER_PUNCHLINE_RESPONSE):
+                Debug.Log("Received a player punchline submission");
+                break;
+            
+        }
+    }
     
     void UpdatePlayerState()
     {
         // Poll events from players and update state
     }
 
-    public void SendPunchline(string setup, List<PunchlineSegment> punchlineSegments)
+    public void SendPunchline(Joke joke)
     {
-        m_state = PlayerState.Waiting;
-        m_state = PlayerState.Done;
+        PlayerPunchlineRequest request = new PlayerPunchlineRequest(joke.Setup, joke.CurrentPunchlineTemplate(), joke.JokeId);
+        TransportServer.Instance.SendMessageToPlayer(Uuid,  MessageType.SERVER_SETUP_REQUEST, JsonUtility.ToJson(request));
+        State = PlayerState.Waiting;
     }
 
-    public void SendSetupTemplate(string template)
+    public void SendSetupTemplate(Joke joke)
     {
         // Push setup to client 
         // "Why did the _BLANK_ cross the road?";
         // "Why did the <filled> cross the road?";
-
-        m_state = PlayerState.Waiting;
-        m_state = PlayerState.Done;
+        PlayerSetupRequest request = new PlayerSetupRequest(joke.Setup, joke.JokeId);
+        TransportServer.Instance.SendMessageToPlayer(Uuid,  MessageType.SERVER_SETUP_REQUEST, JsonUtility.ToJson(request));
+        State = PlayerState.Waiting;
     }
     
-    public PlayerState GetState()
-    {
-        return m_state;
-    }
-    
-    public string GetName()
-    {
-         return m_name;
-    }
-    
-    public int GetId()
-    {
-        return m_id;
-    }
 }
