@@ -1360,7 +1360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UserAvatarTemplate: {fileID: 9197481963319205126, guid: 1e45900dc681343b48a18966a32efef0,
     type: 3}
-  EnableStartAtPlayerCount: 2
+  EnableStartAtPlayerCount: 1
 --- !u!82 &1099996522
 AudioSource:
   m_ObjectHideFlags: 0
