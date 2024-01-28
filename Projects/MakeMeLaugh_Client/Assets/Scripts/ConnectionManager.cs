@@ -1,6 +1,11 @@
 using System;
+using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Networking.Transport;
+using Unity.Networking.Transport.Relay;
+using Unity.Services.Authentication;
+using Unity.Services.Core;
+using Unity.Services.Relay;
 using UnityEngine;
 
 
@@ -17,6 +22,7 @@ public class ConnectionManager
   public event Action Connected;
   public event Action<PlayerSetupRequest> JokeSetupRequested;
   public event Action<PlayerPunchlineRequest> JokePunchlineRequested;
+  public event Action SceneTransitionRequested;
 
   public ConnectionManager(string address, ushort port, string name)
   {
@@ -41,8 +47,67 @@ public class ConnectionManager
     }
   }
 
+  private Task _relayConnectTask;
+
+  public ConnectionManager(string joinCode, string name)
+  {
+    _clientUuid = System.Guid.NewGuid().ToString();
+    _name = name;
+
+    _relayConnectTask = ConnectWithJoinCode(joinCode);
+  }
+
+  private async Task ConnectWithJoinCode(string joinCode)
+  {
+    await UnityServices.InitializeAsync();
+    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    var allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+
+    string connectionType;
+    #if PLATFORM_WEBGL
+    connectionType = "wss";
+    #else
+    connectionType = "udp";
+    #endif
+
+    var relayData = new RelayServerData(allocation, connectionType);
+    
+    var settings = new NetworkSettings();
+    settings.WithRelayParameters(ref relayData);
+    
+#if PLATFORM_WEBGL
+      _driver = NetworkDriver.Create(new WebSocketNetworkInterface(), settings);
+#else
+    _driver = NetworkDriver.Create(settings);
+#endif
+
+    _driver.Bind(NetworkEndpoint.AnyIpv4);
+    _connection = _driver.Connect();
+    
+    _driver.ScheduleUpdate().Complete();
+
+    if (_connection.IsCreated)
+    {
+      Debug.Log("Created connection: " + _connection);
+    }
+    else
+    {
+      Debug.Log("Connection missing " + _connection);
+    }
+  }
+
   public void ExecuteUpdate()
   {
+    if (_relayConnectTask != null && _relayConnectTask.IsCompleted)
+    {
+      if (_relayConnectTask.IsFaulted)
+        Debug.LogException(_relayConnectTask.Exception);
+      _relayConnectTask = null;
+    }
+
+    if (!_driver.IsCreated)
+      return;
+    
     _driver.ScheduleUpdate().Complete();
 
     if (!_connection.IsCreated)
@@ -83,7 +148,10 @@ public class ConnectionManager
           Debug.Log("Client got a punchline request from server");
           PlayerPunchlineRequest request = JsonUtility.FromJson<PlayerPunchlineRequest>(playerMessage.MessageContent);
           JokePunchlineRequested?.Invoke(request);
-          
+        }
+        else if (playerMessage.MessageType == MessageType.SERVER_SCENE_CHANGE_STAGE)
+        {
+          SceneTransitionRequested?.Invoke();
         }
       }
       else if (cmd == NetworkEvent.Type.Disconnect)

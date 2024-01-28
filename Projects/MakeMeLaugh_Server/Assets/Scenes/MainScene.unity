@@ -1042,6 +1042,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &919574664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 919574667}
+  - component: {fileID: 919574666}
+  - component: {fileID: 919574665}
+  m_Layer: 0
+  m_Name: RelayStateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &919574665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919574664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: bf4691036213e783a9c9d6b08b548281, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: b67b58f139aad4f7caec4f753a5a59a5,
+    type: 3}
+  m_SortingOrder: 0
+--- !u!114 &919574666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919574664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a51a2bf07767b4a4eaaf6415a31915b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JoinCode: 
+--- !u!4 &919574667
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919574664}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.390127, y: -1.6026216, z: 2.5687733}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &956829221
 GameObject:
   m_ObjectHideFlags: 0
@@ -1109,7 +1172,9 @@ MonoBehaviour:
   _port: 0
   _ip: 
   _transportServer: {fileID: 498178904}
-  waitingPlayersUI: {fileID: 1099996518}
+  waitingPlayersUI: {fileID: 0}
+  _useRelay: 1
+  relayStateManager: {fileID: 919574666}
 --- !u!1001 &975723757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1360,7 +1425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UserAvatarTemplate: {fileID: 9197481963319205126, guid: 1e45900dc681343b48a18966a32efef0,
     type: 3}
-  EnableStartAtPlayerCount: 2
+  EnableStartAtPlayerCount: 1
 --- !u!82 &1099996522
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1948,3 +2013,4 @@ SceneRoots:
   - {fileID: 956829223}
   - {fileID: 1526021023}
   - {fileID: 1099996520}
+  - {fileID: 919574667}

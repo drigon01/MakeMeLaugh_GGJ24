@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Net;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class MainUIViewModel : MonoBehaviour
@@ -12,6 +14,7 @@ public class MainUIViewModel : MonoBehaviour
   private VisualElement _popupHost;
 
   [SerializeField] private VisualTreeAsset _serverSettingsTemplate;
+  [SerializeField] private VisualTreeAsset _serverSettingsRelayTemplate;
   [SerializeField] private VisualTreeAsset _waitingScreenTemplate;
   [SerializeField] private VisualTreeAsset _jokePunchlineTemplate;
   [SerializeField] private VisualTreeAsset _jokeSetupTemplate;
@@ -20,6 +23,7 @@ public class MainUIViewModel : MonoBehaviour
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
   [SerializeField] private string _name;
+  [SerializeField] private string _joinCode;
 
   public static ConnectionManager ConnectionManager { get; private set; }
 
@@ -28,7 +32,8 @@ public class MainUIViewModel : MonoBehaviour
   private VisualElement _jokeEditor;
   private JokeEditorController _jokeEditController;
   private Button _connectButton;
-
+  private VisualElement _setupEditor;
+  private VisualElement _jokePunchline;
 
   [ContextMenu("TestSetup")]
   void TestSetup()
@@ -69,7 +74,8 @@ public class MainUIViewModel : MonoBehaviour
   private void CreateJokesScreen()
   {
     _jokeEditor = new VisualElement();
-    _jokeEditController = new JokeEditorController(_jokeEditor, _jokePunchlineTemplate, _jokeSetupTemplate);
+    _jokeEditController = new JokeEditorController(_jokePunchlineTemplate, _jokeSetupTemplate);
+    _jokeEditController.Done += OnDone;
 
     _rootElement.Add(_jokeEditor);
   }
@@ -85,26 +91,37 @@ public class MainUIViewModel : MonoBehaviour
   private void CreateServerSettings()
   {
     _settingsView = new VisualElement();
-    _serverSettingsTemplate.CloneTree(_settingsView);
 
     _ip = PlayerPrefs.GetString("DefaultIPAddress", DefaultIPAddress);
     _port = (ushort)PlayerPrefs.GetInt("DefaultPort", DefaultPort);
     _name = PlayerPrefs.GetString("DefaultPlayerName", DefaultPlayerName);
+    
+    if (UseRelay)
+    {
+      _serverSettingsRelayTemplate.CloneTree(_settingsView);
+      
+      var joinCode = _settingsView.Q<TextField>("JoinCode");
+      joinCode.RegisterValueChangedCallback(OnJoinCodeChanged);
+    }
+    else
+    {
+      _serverSettingsTemplate.CloneTree(_settingsView);
+      
+      var serverIP = _settingsView.Q<TextField>("IP");
+      serverIP.RegisterValueChangedCallback(OnIPChanged);
+      serverIP.value = _ip;
 
-    _connectButton = _settingsView.Q<Button>("Connect");
-    var serverIP = _settingsView.Q<TextField>("IP");
-    var serverPort = _settingsView.Q<TextField>("Port");
+      var serverPort = _settingsView.Q<TextField>("Port");
+      serverPort.RegisterValueChangedCallback(OnPortChanged);
+      serverPort.value = _port.ToString();
+    }
+
     var nameField = _settingsView.Q<TextField>("Name");
-
-    _connectButton.clicked += OnConnectButtonClicked;
-
-    serverIP.RegisterValueChangedCallback(OnIPChanged);
-    serverPort.RegisterValueChangedCallback(OnPortChanged);
     nameField.RegisterValueChangedCallback(OnNameChanged);
-
-    serverIP.value = _ip;
-    serverPort.value = _port.ToString();
     nameField.value = _name;
+    
+    _connectButton = _settingsView.Q<Button>("Connect");
+    _connectButton.clicked += OnConnectButtonClicked;
   }
 
   private void SaveToPlayerPrefs()
@@ -132,13 +149,27 @@ public class MainUIViewModel : MonoBehaviour
     _connectButton.SetEnabled(ValidateSettings());
   }
 
+  private void OnJoinCodeChanged(ChangeEvent<string> evt)
+  {
+    _joinCode = evt.newValue;
+    _connectButton.SetEnabled(ValidateSettings());
+  }
+
   private bool ValidateSettings()
   {
-    if (string.IsNullOrWhiteSpace(_ip))
-      return false;
+    if (UseRelay)
+    {
+      if (string.IsNullOrWhiteSpace(_joinCode))
+        return false;
+    }
+    else
+    {
+      if (string.IsNullOrWhiteSpace(_ip))
+        return false;
 
-    if (_port == 0)
-      return false;
+      if (_port == 0)
+        return false;
+    }
 
     if (string.IsNullOrWhiteSpace(_name))
       return false;
@@ -146,6 +177,8 @@ public class MainUIViewModel : MonoBehaviour
     return true;
   }
 
+  public bool UseRelay;
+  
   private void OnConnectButtonClicked()
   {
     if (!ValidateSettings())
@@ -155,10 +188,19 @@ public class MainUIViewModel : MonoBehaviour
 
     if (ConnectionManager == null)
     {
-      ConnectionManager = new ConnectionManager(_ip, _port, _name);
+      if (UseRelay)
+      {
+        ConnectionManager = new ConnectionManager(_joinCode, _name);
+      }
+      else
+      {
+        ConnectionManager = new ConnectionManager(_ip, _port, _name);
+      }
+
       ConnectionManager.Connected += OnConnectedToServer;
       ConnectionManager.JokeSetupRequested += OnJokeSetupRequested;
       ConnectionManager.JokePunchlineRequested += OnJokePunchlineRequested;
+      ConnectionManager.SceneTransitionRequested += OnSceneTransitionRequested;
     }
 
     //should we validate befoore closing?
@@ -171,22 +213,34 @@ public class MainUIViewModel : MonoBehaviour
     ShowPopUp(_waitingScreen);
   }
 
+  private void OnSceneTransitionRequested()
+  {
+    SceneManager.LoadScene("StageModeScene", LoadSceneMode.Additive);
+
+    _popupHost.RemoveAt(0);
+  }
+
   private void OnJokeSetupRequested(PlayerSetupRequest request)
   {
     ClosePopUp(_waitingScreen);
-    //ClosePopUp(_settingsView);
-
-    _jokeEditController.ShowSetupEditor(request);
+    _setupEditor = _jokeEditController.CreateSetupEditor(request);
+    ShowPopUp(_setupEditor);
   }
 
   private void OnJokePunchlineRequested(PlayerPunchlineRequest request)
   {
-    //ClosePopUp(_waitingScreen);
-    //ClosePopUp(_settingsView);
-
-    _jokeEditController.ShowPunchlineEditor(request);
+    ClosePopUp(_setupEditor);
+    _jokePunchline = _jokeEditController.CreatePunchlineEditor(request);
+    ShowPopUp(_jokePunchline);
   }
 
+  private void OnDone(MessageType type)
+  {
+    if (MessageType.PLAYER_PUNCHLINE_RESPONSE == type)
+    {
+      ClosePopUp(_jokePunchline);
+    }
+  }
 
   private void OnConnectedToServer()
   {
@@ -220,7 +274,12 @@ public class MainUIViewModel : MonoBehaviour
 
   private void ClosePopUp(VisualElement popupContent)
   {
-    _popupHost.Remove(popupContent);
+    var canRemove = _popupHost.Children().Contains(popupContent);
+
+    if (canRemove)
+    {
+      _popupHost.Remove(popupContent);
+    }
   }
 
   private void SetupLoadingAnimation(VisualElement root)
