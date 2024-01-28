@@ -897,7 +897,8 @@ MonoBehaviour:
   rimshotPlayer: {fileID: 1856051536}
   TomatoPrefab: {fileID: 8010021435862385690, guid: 946b13ed41356429f83d904b3b21b9bb,
     type: 3}
-  RosePrefab: {fileID: 0}
+  RosePrefab: {fileID: 4617583813065458198, guid: 12f0fcd0d36ff2e45867d3993e39457d,
+    type: 3}
   MinThrowForce: 8
   MaxThrowForce: 12
 --- !u!114 &938063552
