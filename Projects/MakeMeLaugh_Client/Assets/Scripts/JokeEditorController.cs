@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class JokeEditorController
@@ -52,17 +53,10 @@ public class JokeEditorController
     new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID, MessageType.PLAYER_PUNCHLINE_RESPONSE, JsonUtility.ToJson(new PlayerPunchlineResponse($"{_fragmentInput.text}", _jokeID)));
     MainUIViewModel.ConnectionManager.SendMessageToServer(message);
 
-    if (root.Q("punchline") is VisualElement punchline)
-    {
-      root.Remove(punchline);
-    }
-
-    if (root.Q("setup") is VisualElement setup)
-    {
-      root.Remove(setup);
-    }
 
     DoneEditing?.Invoke();
+
+    SceneManager.LoadScene("StageModeScene", LoadSceneMode.Additive);
   }
 
   public void ShowSetupEditor(PlayerSetupRequest request)
@@ -95,15 +89,6 @@ public class JokeEditorController
  new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID, MessageType.PLAYER_SETUP_RESPONSE, JsonUtility.ToJson(new PlayerSetupResponse($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID)));
     MainUIViewModel.ConnectionManager.SendMessageToServer(message);
 
-    if (root.Q("punchline") is VisualElement punchline)
-    {
-      root.Remove(punchline);
-    }
-
-    if (root.Q("setup") is VisualElement setup)
-    {
-      root.Remove(setup);
-    }
 
     DoneEditing?.Invoke();
   }
