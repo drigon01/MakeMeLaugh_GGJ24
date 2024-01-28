@@ -14,10 +14,11 @@ public class AnalysisDriver : MonoBehaviour
     private Classifier _classifier;
 
     public string[] classesOfInterest;
-    private int[] classIDsOfInterest;
+    [NonSerialized] public int[] classIDsOfInterest;
     public float[] currentScoresOfInterest;
 
     public string maxClassName;
+    public int maxClassId;
     public float maxClassScore;
     
     void Start()

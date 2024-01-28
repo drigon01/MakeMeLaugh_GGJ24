@@ -11,7 +11,7 @@ public class MainUIViewModel : MonoBehaviour
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
 
-  ConnectionManager _connectionManager;
+  public static ConnectionManager ConnectionManager { get; private set; }
 
   private VisualElement settingsView;
 
@@ -68,8 +68,8 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnConnectButtonClicked()
   {
-    if (_connectionManager == null) {
-      _connectionManager = new ConnectionManager(_ip,_port);
+    if (ConnectionManager == null) {
+      ConnectionManager = new ConnectionManager(_ip,_port);
     }
 
     //TODO: add actual connection logic
@@ -79,9 +79,9 @@ public class MainUIViewModel : MonoBehaviour
 
   private void Update()
   {
-    if (_connectionManager != null)
+    if (ConnectionManager != null)
     {
-      _connectionManager.ExecuteUpdate();
+      ConnectionManager.ExecuteUpdate();
     }
   }
 
