@@ -44,7 +44,7 @@ public class JokeEditorController
     _jokeID = request.JokeId;
     _fragments.text = request.PunchlineTemplate;
 
-    setup.text = request.PunchlineTemplate;
+    setup.text = request.Setup;
 
     _submitPunchline.clicked += OnSubmitPunchline;
 
