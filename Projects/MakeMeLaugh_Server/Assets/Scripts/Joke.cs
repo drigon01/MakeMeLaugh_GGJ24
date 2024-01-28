@@ -121,6 +121,7 @@ public class Joke
             if (!s.IsDone)
             {
                 s.Text = segmentText;
+                s.IsDone = true;
                 return;
             }
         }
@@ -159,7 +160,6 @@ public class Joke
             {
                 segment.Author.SendPunchline(this);
                 // Pain
-                segment.IsDone = true;
                 return;
             }
         }
