@@ -4,5 +4,5 @@
     align-self: center;
     justify-content: center;
     flex-grow:1;
-    top: 40%;
+    top:40%;
 }

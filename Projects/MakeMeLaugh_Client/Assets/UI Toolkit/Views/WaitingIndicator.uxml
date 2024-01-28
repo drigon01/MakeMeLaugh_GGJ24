@@ -5,6 +5,6 @@
         <ui:VisualElement name="LoadingIndicator" class="waiting_loading">
             <ui:Label tabindex="-1" text="90%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PercentIndicator" />
         </ui:VisualElement>
-        <ui:Label tabindex="-1" text="..." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Description" />
+        <ui:Label tabindex="-1" text="..." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Description" class="waiting_decription" />
     </ui:VisualElement>
 </ui:UXML>

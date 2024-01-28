@@ -44,6 +44,8 @@ public class MainUIViewModel : MonoBehaviour
   {
     _waitingScreen = new VisualElement();
     _waitingScreenTemplate.CloneTree(_waitingScreen);
+
+    SetupLoadingAnimation(_waitingScreen);
   }
 
   private void CreateServerSettings()
@@ -106,7 +108,6 @@ public class MainUIViewModel : MonoBehaviour
     var waitingInfo = new WaitingInfo("TEST", "asdas", "42%");
 
     UpdateWaitingScreeen(waitingInfo);
-
     ShowPopUp(_waitingScreen);
   }
 
@@ -116,11 +117,9 @@ public class MainUIViewModel : MonoBehaviour
     var description = _waitingScreen.Q<Label>("Description");
     var percentage = _waitingScreen.Q<Label>("PercentIndicator");
 
-
     title.text = info.Title;
     description.text = info.Text;
     percentage.text = info.Percent;
-
   }
 
   private void Update()
@@ -134,11 +133,19 @@ public class MainUIViewModel : MonoBehaviour
   private void ShowPopUp(VisualElement popupContent)
   {
     _popupHost.Insert(0, popupContent);
-    
   }
 
   private void ClosePopUp(VisualElement popupContent)
   {
     _popupHost.Remove(popupContent);
+  }
+
+  private void SetupLoadingAnimation(VisualElement root)
+  {
+    var indicator = root.Q<VisualElement>("LoadingIndicator");
+    // When the animation ends, the callback toggles a class to rotate
+    indicator.RegisterCallback<TransitionEndEvent>(evt => indicator.ToggleInClassList("rotate-indicator"));
+    // Schedule the first transition 100 milliseconds after the root.schedule.Execute method is called.
+    root.schedule.Execute(() => indicator.ToggleInClassList("rotate-indicator")).StartingIn(100);
   }
 }
