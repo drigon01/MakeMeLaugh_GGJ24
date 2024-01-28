@@ -38,7 +38,7 @@ public class StageViewUIController : MonoBehaviour
         _rimshot.clicked += OnRimshotClicked;
         _trumpet.clicked += OnTrumpetClicked;
 
-        _laughterDetected.style.visibility = Visibility.Hidden;
+        _laughterDetected.SetEnabled(false);
     }
 
     public float CooldownBetweenLaughterDetections = 0.5f;
@@ -47,12 +47,12 @@ public class StageViewUIController : MonoBehaviour
     public void Update()
     {
         bool laughterDetected = _analysisDriver.classIDsOfInterest.Contains(_analysisDriver.maxClassId);
-        if (laughterDetected && (_lastLaughterAt + CooldownBetweenLaughterDetections < Time.time))
+        if (laughterDetected && (_lastLaughterAt + CooldownBetweenLaughterDetections < Time.time) && MainUIViewModel.ConnectionManager != null)
         {
             var message = new PlayerMessage(PlayerUUID, MessageType.PLAYER_LAUGHED);
             MainUIViewModel.ConnectionManager.SendMessageToServer(message);
         }
-        _laughterDetected.style.visibility = laughterDetected ? Visibility.Visible : Visibility.Hidden;
+        _laughterDetected.SetEnabled(laughterDetected);
     }
 
     private string PlayerUUID => MainUIViewModel.ConnectionManager.ClientUUID;
@@ -88,6 +88,6 @@ public class StageViewUIController : MonoBehaviour
         _rimshot.clicked -= OnRimshotClicked;
         _trumpet.clicked -= OnTrumpetClicked;
 
-        _laughterDetected.style.visibility = Visibility.Hidden;
+        _laughterDetected.SetEnabled(false);
     }
 }

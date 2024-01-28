@@ -1,0 +1,15 @@
+#laughter-detected {
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 3px;
+    -unity-font-style: bold;
+    font-size: 35px;
+    white-space: normal;
+    color: rgb(40, 40, 40);
+}
+
+#laughter-detected:enabled {
+    -unity-text-outline-color: rgb(255, 255, 255);
+    color: rgb(255, 0, 0);
+}
+
+

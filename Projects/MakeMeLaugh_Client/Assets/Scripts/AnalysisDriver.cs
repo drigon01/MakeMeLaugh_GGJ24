@@ -48,6 +48,7 @@ public class AnalysisDriver : MonoBehaviour
         {
             if (classScores[i] > maxClassScore)
             {
+                maxClassId = i;
                 maxClassScore = classScores[i];
                 maxClassName = classMap[i];
             }
