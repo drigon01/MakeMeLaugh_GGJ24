@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Networking.Transport;
 using Unity.Collections;
+using Unity.Networking.Transport.Relay;
 
 public class TransportServer : MonoBehaviour
 {
@@ -29,6 +30,26 @@ public class TransportServer : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    public void StartServerWithRelay(RelayServerData relayData)
+    {
+        var settings = new NetworkSettings();
+        settings.WithRelayParameters(ref relayData);
+        
+        isInitialized = true;
+        // For the server we do not need to specify WebsocketNetworkInterface
+        // because we will connect to Relay using normal protocols
+        m_Driver = NetworkDriver.Create(settings);
+        m_Connections = new NativeList<NetworkConnection>(serverPlayerCapacity, Allocator.Persistent);
+
+        if (m_Driver.Bind(NetworkEndpoint.AnyIpv4) != 0)
+        {
+            Debug.LogError("Failed to bind");
+            return;
+        }
+        m_Driver.Listen();
+        Debug.Log($"Started listening for relay connections");
     }
     
     public void StartServer(string ip, ushort port)
