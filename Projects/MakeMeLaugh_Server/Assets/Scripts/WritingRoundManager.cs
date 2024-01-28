@@ -135,6 +135,7 @@ public class WritingRoundManager: MonoBehaviour
             // Debug.Log("RoundManager Done");
             m_text.text = "Awesome Jokes Everyone!";
             StageRoundManager.BeginSet(m_jokes);
+            TransportServer.Instance.BroadcastMessage(MessageType.SERVER_SCENE_CHANGE_STAGE, "");
             SceneManager.LoadScene("stage");
             return;
         }
