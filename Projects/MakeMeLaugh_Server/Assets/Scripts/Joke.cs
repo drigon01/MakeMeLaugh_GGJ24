@@ -92,13 +92,13 @@ public class Joke
     public string JokeId { get; }
     
     private Player m_author;
-    private int m_points;
+    public int Points { get; set; }
     
     public Joke(Player author, List<Player> coauthors)
     {
         JokeId = Guid.NewGuid().ToString();
         m_author = author;
-        m_points = 0;
+        Points = 0;
         PunchlineSegments = new List<PunchlineSegment>();
         foreach (var coauthor in coauthors)
         {
@@ -184,12 +184,12 @@ public class Joke
     }
 
     // TODO: call this when the joke is done presenting
-    void UpdatePlayerPoints()
+    public void AwardPlayerPoints()
     {
-        m_author.Points += m_points;
+        m_author.Points += Points;
         foreach (var segment in PunchlineSegments)
         {
-            segment.Author.Points += (int)(m_points * COAUTHOR_POINTS_MULTIPLIER);
+            segment.Author.Points += (int)(Points * COAUTHOR_POINTS_MULTIPLIER);
         }
         
     }

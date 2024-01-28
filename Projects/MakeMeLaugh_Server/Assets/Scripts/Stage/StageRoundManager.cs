@@ -91,7 +91,12 @@ public class StageRoundManager : MonoBehaviour
 
             case MessageType.PLAYER_LAUGHED:
             {
-                throw new NotImplementedException();
+                if (CurrentJoke != null)
+                {
+                    CurrentJoke.Points++;
+                }
+
+                break;
             }
 
             default:
@@ -257,6 +262,8 @@ public class StageRoundManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.5f);
             }
+            
+            joke.AwardPlayerPoints();
         }
         
         yield return SpeakComedian(closingLines.GetRandomLine());
