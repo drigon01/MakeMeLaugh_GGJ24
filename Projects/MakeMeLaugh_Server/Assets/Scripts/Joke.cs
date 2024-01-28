@@ -7,10 +7,10 @@ public class PunchlineSegment
     {
         Author = author;
         IsDone = false;
-        Segment = "";
+        Text = "";
     }
     
-    public string Segment { get; set; }
+    public string Text { get; set; }
     public Player Author { get; }
     public bool IsDone { get; set; }
     
@@ -52,14 +52,19 @@ public class Joke
         Setup = GetSetupTemplate();
     }
     
-    public void AddPunchlineSegment(string segmentText)
+    public void AddPunchlineSegment(PunchlineSegment segment)
+    {
+        PunchlineSegments.Add(segment);
+    }
+    
+    public void AddPunchlineSegmentText(string segmentText)
     {
         // find the first segment that is not done
         foreach (var s in PunchlineSegments)
         {
             if (!s.IsDone)
             {
-                s.Segment = segmentText;
+                s.Text = segmentText;
                 return;
             }
         }
@@ -85,6 +90,8 @@ public class Joke
         return jokeTemplates[UnityEngine.Random.Range(0, jokeTemplates.Length)];
         
     }
+
+    public string CompletedPunchline => string.Join(" ", PunchlineSegments);
 
     public void RunNextPunchlineSegment()
     {

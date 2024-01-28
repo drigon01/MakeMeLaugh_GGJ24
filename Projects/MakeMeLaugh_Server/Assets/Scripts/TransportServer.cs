@@ -86,6 +86,7 @@ public class TransportServer : MonoBehaviour
                     FixedString4096Bytes rawMessage = new FixedString4096Bytes();
                     rawMessage = stream.ReadFixedString4096();
                     PlayerMessage playerMessage = JsonUtility.FromJson<PlayerMessage>(rawMessage.ToString());
+                    Debug.Log("Received the following from the client: " + playerMessage.MessageType + " " + playerMessage.MessageContent);
                     if (playerMessage.MessageType == MessageType.NEW_CLIENT_CONNECTION)
                     {
                         registerNewPlayer(playerMessage, m_Connections[i]);

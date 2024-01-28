@@ -54,26 +54,24 @@ public class ClientTester : MonoBehaviour {
 
             PlayerMessage message = new PlayerMessage(ClientUuid, MessageType.PLAYER_SETUP_RESPONSE, JsonUtility.ToJson(new PlayerSetupResponse("HERE IS MY SETUP", "1")));
             m_Driver.BeginSend(m_Connection, out var writer);
-            NativeArray<byte> messageBytes = PlayerMessage.GetBytes(message);
+            string json = JsonUtility.ToJson(message);
                 
-            writer.WriteBytes(messageBytes);
+            writer.WriteFixedString4096(json);
                 
             m_Driver.EndSend(writer);
-            messageBytes.Dispose();
         }
         
         if (Input.GetKeyDown(KeyCode.P)) {
             Debug.Log("CLIENT PUNCHLINE SEND");
 
             PlayerMessage message = new PlayerMessage(ClientUuid, MessageType.PLAYER_PUNCHLINE_RESPONSE, JsonUtility.ToJson(new PlayerPunchlineResponse("HERE IS MY PUNCHLINE", "1")));
-            ;
+            
             m_Driver.BeginSend(m_Connection, out var writer);
-            NativeArray<byte> messageBytes = PlayerMessage.GetBytes(message);
+            string json = JsonUtility.ToJson(message);
                 
-            writer.WriteBytes(messageBytes);
+            writer.WriteFixedString4096(json);
                 
             m_Driver.EndSend(writer);
-            messageBytes.Dispose();
         }
 
         Unity.Collections.DataStreamReader stream;
@@ -112,12 +110,11 @@ public class ClientTester : MonoBehaviour {
 
                     PlayerMessage message = new PlayerMessage(ClientUuid, MessageType.PLAYER_SETUP_RESPONSE, JsonUtility.ToJson(new PlayerSetupResponse("HERE IS MY SETUP", request.JokeId)));
                     m_Driver.BeginSend(m_Connection, out var writer);
-                    NativeArray<byte> messageBytes = PlayerMessage.GetBytes(message);
+                    string json = JsonUtility.ToJson(message);
                 
-                    writer.WriteBytes(messageBytes);
+                    writer.WriteFixedString4096(json);
                 
                     m_Driver.EndSend(writer);
-                    messageBytes.Dispose();
                 }
                 else if (playerMessage.MessageType == MessageType.SERVER_PUNCHLINE_REQUEST)
                 {
@@ -126,12 +123,11 @@ public class ClientTester : MonoBehaviour {
 
                     PlayerMessage message = new PlayerMessage(ClientUuid, MessageType.PLAYER_PUNCHLINE_RESPONSE, JsonUtility.ToJson(new PlayerPunchlineResponse("HERE IS MY PUNCHLINE", request.JokeId)));
                     m_Driver.BeginSend(m_Connection, out var writer);
-                    NativeArray<byte> messageBytes = PlayerMessage.GetBytes(message);
+                    string json = JsonUtility.ToJson(message);
                 
-                    writer.WriteBytes(messageBytes);
+                    writer.WriteFixedString4096(json);
                 
                     m_Driver.EndSend(writer);
-                    messageBytes.Dispose();
                 }
             }
             else if (cmd == NetworkEvent.Type.Disconnect)

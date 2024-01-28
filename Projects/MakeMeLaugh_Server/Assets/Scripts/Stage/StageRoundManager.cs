@@ -38,7 +38,7 @@ public class StageRoundManager : MonoBehaviour
         if (Jokes == null)
         {
             // Install some default jokes for now, for testing
-            var testPlayer = new Player(0, "Nobody");
+            var testPlayer = new Player("0", "Nobody");
 
             var joke = new Joke(testPlayer, new List<Player> { testPlayer });
             joke.AddPunchlineSegment(new PunchlineSegment(testPlayer) {Text = "To get to"});
@@ -119,7 +119,7 @@ public class StageRoundManager : MonoBehaviour
         {
             CurrentJoke = joke;
             AcceptingLaughs = false; // Don't accept laughs until we've at least started the punchline
-            yield return SpeakComedian(joke.GetSetup());
+            yield return SpeakComedian(joke.Setup);
 
             AcceptingLaughs = true;
             yield return SpeakComedian(joke.CompletedPunchline);

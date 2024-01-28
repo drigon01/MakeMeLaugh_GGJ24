@@ -124,7 +124,7 @@ public class WritingRoundManager: MonoBehaviour
                 Debug.Log("Received a player punchline submission");
                 PlayerPunchlineResponse punchlineResponse = JsonUtility.FromJson<PlayerPunchlineResponse>(eventArgs.EventPlayerMessage.MessageContent);
                 Joke relevantJoke = m_jokes.Find(joke => joke.JokeId == punchlineResponse.JokeId);
-                relevantJoke.AddPunchlineSegment(punchlineResponse.PunchlineSegment);
+                relevantJoke.AddPunchlineSegmentText(punchlineResponse.PunchlineSegment);
                 relevantPlayer.State = PlayerState.Done;
                 break;
         }
