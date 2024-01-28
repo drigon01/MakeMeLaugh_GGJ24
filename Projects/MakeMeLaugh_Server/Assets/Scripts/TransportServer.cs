@@ -27,6 +27,7 @@ public class TransportServer : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(this.gameObject);
     }
     
     void Start()
@@ -91,15 +92,13 @@ public class TransportServer : MonoBehaviour
                     if (playerMessage.MessageType == MessageType.NEW_CLIENT_CONNECTION)
                     {
                         registerNewPlayer(playerMessage, m_Connections[i]);
+
                         
                         // EXAMPLE: how to send data to a specific player
                         // SendMessageToPlayer(playerMessage.PlayerUuid, MessageType.PLAYER_ANSWER_SUBMISSION, "hello from server");
                     }
-                    else
-                    {
-                        // propagate the player event containing data
-                        OnPlayerMessageReceived?.Invoke(this, new PlayerMessageEventArgs(playerMessage));
-                    }
+                    OnPlayerMessageReceived?.Invoke(this, new PlayerMessageEventArgs(playerMessage));
+
                 }
                 else if (cmd == NetworkEvent.Type.Disconnect)
                 {

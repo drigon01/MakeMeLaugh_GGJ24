@@ -71,7 +71,7 @@ public class WritingRoundManager: MonoBehaviour
     public void Start()
     {
         m_text.text = "Hello World";
-        m_players = GetComponentInParent<GameManager>().GetPlayers();
+        m_players = GameObject.Find("GameManager").GetComponent<GameManager>().GetPlayers();
         m_jokes = new List<Joke>();
 
         foreach (var player in m_players)
@@ -161,6 +161,11 @@ public class WritingRoundManager: MonoBehaviour
             // Debug.Log("RoundManager Done");
             m_text.text = "Awesome Jokes Everyone!";
             // SwitchScene();
+            // print out jokes
+            foreach (Joke joke in m_jokes)
+            {
+                Debug.Log(joke.CompletedJoke);
+            }
             return;
             
         }

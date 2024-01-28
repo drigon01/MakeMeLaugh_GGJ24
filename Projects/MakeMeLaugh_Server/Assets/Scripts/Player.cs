@@ -53,7 +53,7 @@ public class Player
     public void SendPunchline(Joke joke)
     {
         PlayerPunchlineRequest request = new PlayerPunchlineRequest(joke.Setup, joke.CurrentPunchlineTemplate(), joke.JokeId);
-        TransportServer.Instance.SendMessageToPlayer(Uuid,  MessageType.SERVER_SETUP_REQUEST, JsonUtility.ToJson(request));
+        TransportServer.Instance.SendMessageToPlayer(Uuid,  MessageType.SERVER_PUNCHLINE_REQUEST, JsonUtility.ToJson(request));
         State = PlayerState.Waiting;
     }
 
