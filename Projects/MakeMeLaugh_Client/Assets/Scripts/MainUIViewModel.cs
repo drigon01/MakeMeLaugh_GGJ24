@@ -59,14 +59,11 @@ public class MainUIViewModel : MonoBehaviour
 
     connectButton.clicked += OnConnectButtonClicked;
 
-    serverIP.value = "127.0.0.1";
-    serverPort.value = "7777";
-
-    _ip = serverIP.value;
-    _port = ushort.Parse(serverPort.value);
-
     serverIP.RegisterValueChangedCallback(OnIPChanged);
     serverPort.RegisterValueChangedCallback(OnPortChanged);
+
+    serverIP.value = "127.0.0.1";
+    serverPort.value = "7777";
   }
 
   private void OnPortChanged(ChangeEvent<string> evt)
