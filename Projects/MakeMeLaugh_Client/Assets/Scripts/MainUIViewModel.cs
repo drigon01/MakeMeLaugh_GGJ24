@@ -230,6 +230,7 @@ public class MainUIViewModel : MonoBehaviour
   private void OnJokePunchlineRequested(PlayerPunchlineRequest request)
   {
     ClosePopUp(_setupEditor);
+    ClosePopUp(_waitingScreen);
     _jokePunchline = _jokeEditController.CreatePunchlineEditor(request);
     ShowPopUp(_jokePunchline);
   }
@@ -239,6 +240,14 @@ public class MainUIViewModel : MonoBehaviour
     if (MessageType.PLAYER_PUNCHLINE_RESPONSE == type)
     {
       ClosePopUp(_jokePunchline);
+      UpdateWaitingScreeen(new WaitingInfo("Waiting for a new punchline", "...", "65%"));
+      ShowPopUp(_waitingScreen);
+    }
+    if(MessageType.PLAYER_SETUP_RESPONSE == type)
+    {
+      ClosePopUp(_setupEditor);
+      UpdateWaitingScreeen(new WaitingInfo("Waiting for a new punchline", "...", "34%"));
+      ShowPopUp(_waitingScreen);
     }
   }
 
