@@ -150,6 +150,8 @@ public class MainUIViewModel : MonoBehaviour
     return true;
   }
 
+  public bool UseRelay;
+  
   private void OnConnectButtonClicked()
   {
     if (!ValidateSettings())
@@ -159,7 +161,15 @@ public class MainUIViewModel : MonoBehaviour
 
     if (ConnectionManager == null)
     {
-      ConnectionManager = new ConnectionManager(_ip, _port, _name);
+      if (UseRelay)
+      {
+        ConnectionManager = new ConnectionManager(_ip, _name);
+      }
+      else
+      {
+        ConnectionManager = new ConnectionManager(_ip, _port, _name);
+      }
+
       ConnectionManager.Connected += OnConnectedToServer;
       ConnectionManager.JokeSetupRequested += OnJokeSetupRequested;
       ConnectionManager.JokePunchlineRequested += OnJokePunchlineRequested;
