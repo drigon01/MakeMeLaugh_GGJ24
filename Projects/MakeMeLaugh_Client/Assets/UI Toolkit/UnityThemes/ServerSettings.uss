@@ -1,6 +1,7 @@
 .server-settings__container {
     flex-grow: 1;
-    background-image: url('project://database/Assets/TutorialInfo/Icons/URP.png?fileID=2800000&guid=727a75301c3d24613a3ebcec4a24c2c8&type=3#URP');
+    background-image: resource('serveroptions');
+    -unity-background-scale-mode: scale-and-crop;
 }
 
 .server-settings__ip {
@@ -10,4 +11,12 @@
 }
 
 .server-settings__connect {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+#unity-text-input {
+    padding: 0;
+    border-color: transparent;
+    background-color: transparent;
 }

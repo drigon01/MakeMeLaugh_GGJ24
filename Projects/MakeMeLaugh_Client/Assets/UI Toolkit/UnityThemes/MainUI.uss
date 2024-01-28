@@ -3,7 +3,6 @@
     align-items: center;
     align-self: center;
     justify-content: center;
-    height: 25%;
-    width: 45%;
-    top: 45%;
+    flex-grow:1;
+    top: 40%;
 }

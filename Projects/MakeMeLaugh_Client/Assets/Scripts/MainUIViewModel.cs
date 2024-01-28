@@ -6,9 +6,10 @@ using UnityEngine.UIElements;
 public class MainUIViewModel : MonoBehaviour
 {
   private VisualElement _rootElement;
-
+  private VisualElement _popupHost;
   [SerializeField] private VisualTreeAsset _serverSettingsTemplate;
   [SerializeField] private VisualTreeAsset _waitingScreenTemplate;
+  [SerializeField] private StyleSheet _mainStyleSheet;
 
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
@@ -23,6 +24,12 @@ public class MainUIViewModel : MonoBehaviour
   {
     var document = GetComponent<UIDocument>();
     _rootElement = document.rootVisualElement;
+    _popupHost = new VisualElement() { name = "PopupHost" };
+
+    _popupHost.styleSheets.Add(_mainStyleSheet);
+    _popupHost.AddToClassList("popup");
+
+    _rootElement.panel.visualTree.Add(_popupHost);
   }
 
   private void Start()
@@ -124,15 +131,14 @@ public class MainUIViewModel : MonoBehaviour
     }
   }
 
-  private void ShowPopUp(VisualElement popup)
+  private void ShowPopUp(VisualElement popupContent)
   {
-    popup.AddToClassList("popup");
-    _rootElement.Insert(0, popup);
+    _popupHost.Insert(0, popupContent);
+    
   }
 
-  private void ClosePopUp(VisualElement popup)
+  private void ClosePopUp(VisualElement popupContent)
   {
-    _rootElement.Remove(popup);
-
+    _popupHost.Remove(popupContent);
   }
 }
