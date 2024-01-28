@@ -26,7 +26,7 @@ public class MainUIViewModel : MonoBehaviour
   private VisualElement _settingsView;
   private VisualElement _waitingScreen;
   private VisualElement _jokeEditor;
-
+  private JokeEditorController _jokeEditController;
   private Button _connectButton;
 
   // Start is called before the first frame update
@@ -54,7 +54,7 @@ public class MainUIViewModel : MonoBehaviour
   private void CreateJokesScreen()
   {
     _jokeEditor = new VisualElement();
-    new JokeEditorController(_jokeEditor, ConnectionManager, _jokePunchlineTemplate, _jokeSetupTemplate);
+   _jokeEditController=  new JokeEditorController(_jokeEditor, ConnectionManager, _jokePunchlineTemplate, _jokeSetupTemplate);
 
     _rootElement.Add(_jokeEditor);
   }
@@ -159,24 +159,19 @@ public class MainUIViewModel : MonoBehaviour
   private void OnJokeSetupRequested(PlayerSetupRequest request)
   {
     ClosePopUp(_waitingScreen);
-    UpdateJokes();
+    ClosePopUp(_settingsView);
 
-    ShowPopUp(_jokeEditor);
+    _jokeEditController.ShowSetupEditor(request);
   }
 
   private void OnJokePunchlineRequested(PlayerPunchlineRequest request)
   {
     ClosePopUp(_waitingScreen);
-    UpdateJokes();
+    ClosePopUp(_settingsView);
 
-    ShowPopUp(_jokeEditor);
+    _jokeEditController.ShowPunchlineEditor(request);
   }
 
-  private void UpdateJokes()
-  {
-    //Template logic to update the jokes go here
-
-  }
 
   private void OnConnectedToServer()
   {

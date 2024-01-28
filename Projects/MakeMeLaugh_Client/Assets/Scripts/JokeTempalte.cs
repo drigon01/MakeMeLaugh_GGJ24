@@ -8,7 +8,14 @@ public class JokeEditorController
   private readonly ConnectionManager connectionManager;
   private readonly VisualTreeAsset punchlineTemplate;
   private readonly VisualTreeAsset setupTemplate;
+  private readonly Regex blankRegex = new Regex("(?<part1>.*)_BLANK_(?<part2>.*)");
 
+  private string _jokeID;
+  private Label _setupPart1;
+  private Label _fragments;
+  private TextField _fragmentInput;
+  private Label _setupPart2;
+  private TextField _setupBlank;
 
   public event Action DoneEditing;
 
@@ -30,24 +37,19 @@ public class JokeEditorController
     _fragmentInput = root.Q<TextField>("Fragment");
     var submit = root.Q<Button>();
 
+    _fragments.text = request.PunchlineTemplate;
+
     submit.clicked += OnSubmitPunchline;
   }
 
   private void OnSubmitPunchline()
   {
-    var message = new PlayerPunchlineResponse($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID) { };
+    var message = new PlayerPunchlineResponse($"{_fragmentInput.text}", _jokeID) { };
     connectionManager.SendMessageToServer(message);
 
     DoneEditing?.Invoke();
   }
 
-  Regex blankRegex = new Regex("(?<part1>.*)_BLANK_(?<part2>.*)");
-  private string _jokeID;
-  private Label _setupPart1;
-  private Label _fragments;
-  private TextField _fragmentInput;
-  private Label _setupPart2;
-  private TextField _setupBlank;
 
   public void ShowSetupEditor(PlayerSetupRequest request)
   {
@@ -66,13 +68,11 @@ public class JokeEditorController
 
     var submit = root.Q<Button>();
     submit.clicked += OnSubmitSetup;
-
-
   }
 
   private void OnSubmitSetup()
   {
-    var message = new PlayerSetupResponse($"{_fragmentInput.text}", _jokeID) { };
+    var message = new PlayerSetupResponse($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID) { };
     connectionManager.SendMessageToServer(message);
 
     DoneEditing?.Invoke();
