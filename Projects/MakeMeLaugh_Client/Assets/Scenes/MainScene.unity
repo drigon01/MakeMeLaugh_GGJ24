@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18029143, g: 0.22572419, b: 0.30693057, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -600,7 +600,9 @@ MonoBehaviour:
     type: 3}
   _waitingScreenTemplate: {fileID: 9197481963319205126, guid: c609c1e44d3ad2b4e9e32b4b722aa627,
     type: 3}
-  _jokeEditorTemplate: {fileID: 9197481963319205126, guid: 4fdcc71985a04614d9a06646763096c1,
+  _jokePunchlineTemplate: {fileID: 9197481963319205126, guid: bc57a6de4d960cf41921aa9950ea2dab,
+    type: 3}
+  _jokeSetupTemplate: {fileID: 9197481963319205126, guid: 4fdcc71985a04614d9a06646763096c1,
     type: 3}
   _mainStyleSheet: {fileID: 7433441132597879392, guid: d45687f3454384b4bae731c54a4f5b40,
     type: 3}
