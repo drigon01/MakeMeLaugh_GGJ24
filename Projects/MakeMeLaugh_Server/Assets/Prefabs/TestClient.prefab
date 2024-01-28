@@ -44,3 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c4fbe774794cb3a576a57bbba51522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverAddress: 0.0.0.0
+  serverPort: 7777
+  ClientUuid: 
