@@ -17,6 +17,7 @@ public class ConnectionManager
   public event Action Connected;
   public event Action<PlayerSetupRequest> JokeSetupRequested;
   public event Action<PlayerPunchlineRequest> JokePunchlineRequested;
+  public event Action SceneTransitionRequested;
 
   public ConnectionManager(string address, ushort port, string name)
   {
@@ -83,7 +84,11 @@ public class ConnectionManager
           Debug.Log("Client got a punchline request from server");
           PlayerPunchlineRequest request = JsonUtility.FromJson<PlayerPunchlineRequest>(playerMessage.MessageContent);
           JokePunchlineRequested?.Invoke(request);
-          
+
+        }
+        else if (playerMessage.MessageType == MessageType.SERVER_SCENE_CHANGE_STAGE)
+        {
+          SceneTransitionRequested?.Invoke();
         }
       }
       else if (cmd == NetworkEvent.Type.Disconnect)

@@ -53,7 +53,7 @@ public class JokeEditorController
     MainUIViewModel.ConnectionManager.SendMessageToServer(message);
     Done?.Invoke(MessageType.PLAYER_PUNCHLINE_RESPONSE);
 
-    SceneManager.LoadScene("StageModeScene", LoadSceneMode.Additive);
+
   }
 
   public VisualElement CreateSetupEditor(PlayerSetupRequest request)

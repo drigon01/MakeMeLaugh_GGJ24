@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class MainUIViewModel : MonoBehaviour
@@ -161,7 +162,7 @@ public class MainUIViewModel : MonoBehaviour
       ConnectionManager.Connected += OnConnectedToServer;
       ConnectionManager.JokeSetupRequested += OnJokeSetupRequested;
       ConnectionManager.JokePunchlineRequested += OnJokePunchlineRequested;
-
+      ConnectionManager.SceneTransitionRequested += OnSceneTransitionRequested;
     }
 
     //should we validate befoore closing?
@@ -174,11 +175,18 @@ public class MainUIViewModel : MonoBehaviour
     ShowPopUp(_waitingScreen);
   }
 
+  private void OnSceneTransitionRequested()
+  {
+    SceneManager.LoadScene("StageModeScene", LoadSceneMode.Additive);
+
+    _popupHost.RemoveAt(0);
+  }
+
   private void OnJokeSetupRequested(PlayerSetupRequest request)
   {
     ClosePopUp(_waitingScreen);
     _setupEditor = _jokeEditController.CreateSetupEditor(request);
-    ShowPopUp(_setupEditor);    
+    ShowPopUp(_setupEditor);
   }
 
   private void OnJokePunchlineRequested(PlayerPunchlineRequest request)
@@ -192,7 +200,8 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnDone(MessageType type)
   {
-    if (MessageType.PLAYER_PUNCHLINE_RESPONSE == type) {
+    if (MessageType.PLAYER_PUNCHLINE_RESPONSE == type)
+    {
       ClosePopUp(_jokePunchline);
     }
   }
