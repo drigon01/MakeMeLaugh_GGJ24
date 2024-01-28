@@ -82,9 +82,19 @@ public class StageRoundManager : MonoBehaviour
         StartCoroutine(TellJokesCoroutine());
     }
 
+    private IEnumerator SpeakComedianCoroutine(string line)
+    {
+        comedian.HeadTalking();
+        yield return StartCoroutine(PlaybackSubtitleCoroutine(line, 0.05f, 0));
+        _subtitle.text = line;
+        comedian.HeadIdle();
+        yield return new WaitForSeconds(2.0f);
+        _subtitle.text = string.Empty;
+    }
+
     public Coroutine SpeakComedian(string line)
     {
-        return StartCoroutine(PlaybackSubtitleCoroutine(line, 0.05f, 1.0f));
+        return StartCoroutine(SpeakComedianCoroutine(line));
     }
 
     public void SetComedianWalking()
