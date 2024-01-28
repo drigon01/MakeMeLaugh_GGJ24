@@ -1,3 +1,4 @@
+using System;
 using Unity.Collections;
 using Unity.Networking.Transport;
 using UnityEngine;
@@ -10,6 +11,11 @@ public class ConnectionManager
 
   private string _clientUuid;
   public string ClientUUID => _clientUuid;
+
+
+  public event Action Connected;
+
+  public event Action<JokeTempalte> JokesReceived;
 
   public ConnectionManager(string address, ushort port)
   {

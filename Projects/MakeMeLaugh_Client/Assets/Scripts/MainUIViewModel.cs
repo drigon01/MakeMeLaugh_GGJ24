@@ -19,6 +19,7 @@ public class MainUIViewModel : MonoBehaviour
 
   private VisualElement _settingsView;
   private VisualElement _waitingScreen;
+  private VisualElement _jokeEditor;
 
   // Start is called before the first frame update
   private void Awake()
@@ -37,8 +38,15 @@ public class MainUIViewModel : MonoBehaviour
   {
     CreateServerSettings();
     CreateWaitingScreen();
+    CreateJokesScreen();
 
     ShowPopUp(_settingsView);
+  }
+
+  private void CreateJokesScreen()
+  {
+    _jokeEditor = new VisualElement();
+    _jokeEditorTemplate.CloneTree(_jokeEditor);
   }
 
   private void CreateWaitingScreen()
@@ -93,20 +101,41 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnConnectButtonClicked()
   {
-
     if (ConnectionManager == null)
     {
-       ConnectionManager = new ConnectionManager(_ip,_port);
+      ConnectionManager = new ConnectionManager(_ip, _port);
+      ConnectionManager.Connected += OnConnectedToServer;
+      ConnectionManager.JokesReceived += OnJokeReceived;
     }
 
     //should we validate befoore closing?
     ClosePopUp(_settingsView);
 
     //go to waiting popup
-    var waitingInfo = new WaitingInfo("TEST", "asdas", "42%");
+    var waitingInfo = new WaitingInfo("Waiting For Server", "....", "42%");
 
     UpdateWaitingScreeen(waitingInfo);
     ShowPopUp(_waitingScreen);
+  }
+
+  private void OnJokeReceived(JokeTempalte obj)
+  {
+    ClosePopUp(_waitingScreen);
+    UpdateJokes();
+
+    ShowPopUp(_jokeEditor);
+  }
+
+  private void UpdateJokes()
+  {
+     //Template logic to update the jokes go here
+
+  }
+
+  private void OnConnectedToServer()
+  {
+    var waitingInfo = new WaitingInfo("Waiting For Players to Join", "....", "69%");
+    UpdateWaitingScreeen(waitingInfo);
   }
 
   private void UpdateWaitingScreeen(WaitingInfo info)
