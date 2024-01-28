@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Returning players");
         return m_players;
     }
-
+    
+    
 
     private void TransportServer_OnPlayerMessageReceived(object sender, PlayerMessageEventArgs eventArgs)
     {
@@ -38,13 +39,17 @@ public class GameManager : MonoBehaviour
                 string [] names = {"Jami", "Olga", "Kalman", "Layla", "James", "Richard", "August", "Lily", "Bob", "PotatoMan"};
                 Player player = new Player(eventArgs.EventPlayerMessage.PlayerUuid, names[Random.Range(0, names.Length)]);
                 m_players.Add(player);
-                if (m_players.Count >= 4)
-                {
-                    TransportServer.Instance.BroadcastMessage(MessageType.SERVER_SCENE_CHANGE_WRITING_ROOM, "");
-                    SceneManager.LoadScene("WritingRoom");
-                }
-
                 break;
         }
+    }
+
+    public static void ChangeToWritingRoom()
+    {
+        {
+            TransportServer.Instance.BroadcastMessage(MessageType.SERVER_SCENE_CHANGE_WRITING_ROOM, "");
+            SceneManager.LoadScene("WritingRoom");
+        }
+
+        return;
     }
 }
