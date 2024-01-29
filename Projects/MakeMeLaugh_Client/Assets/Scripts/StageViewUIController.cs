@@ -47,12 +47,19 @@ public class StageViewUIController : MonoBehaviour
     public void Update()
     {
         bool laughterDetected = _analysisDriver.classIDsOfInterest.Contains(_analysisDriver.maxClassId);
-        if (laughterDetected && (_lastLaughterAt + CooldownBetweenLaughterDetections < Time.time) && MainUIViewModel.ConnectionManager != null)
+        if (laughterDetected && (_lastLaughterAt + CooldownBetweenLaughterDetections < Time.time))
         {
-            var message = new PlayerMessage(PlayerUUID, MessageType.PLAYER_LAUGHED);
-            MainUIViewModel.ConnectionManager.SendMessageToServer(message);
+            if (MainUIViewModel.ConnectionManager != null)
+            {
+                var message = new PlayerMessage(PlayerUUID, MessageType.PLAYER_LAUGHED);
+                MainUIViewModel.ConnectionManager.SendMessageToServer(message);
+            }
+            _laughterDetected.SetEnabled(true);    
         }
-        _laughterDetected.SetEnabled(laughterDetected);
+        else if (!laughterDetected && _lastLaughterAt + CooldownBetweenLaughterDetections < Time.time)
+        {
+            _laughterDetected.SetEnabled(false);
+        }
     }
 
     private string PlayerUUID => MainUIViewModel.ConnectionManager.ClientUUID;
