@@ -1,0 +1,33 @@
+.setup-editor__container {
+    flex-grow: 1;
+    -unity-font-definition: resource('Quicksand-VariableFont_wght SDF');
+    background-image: none;
+    -unity-background-scale-mode: scale-and-crop;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    -unity-font-style: bold;
+    height: auto;
+    margin-top: 0;
+    justify-content: flex-end;
+    align-items: center;
+    align-self: stretch;
+    max-height: 90%;
+    max-width: 90%;
+    opacity: 1;
+}
+
+.setup-editor__jokeview {
+    flex-grow: 1;
+    -unity-font-definition: resource('Quicksand-VariableFont_wght SDF');
+    flex-direction: column;
+    flex-wrap: wrap;
+    -unity-text-align: middle-left;
+    text-overflow: clip;
+    align-items: center;
+    justify-content: space-around;
+    align-self: center;
+}
+
+.setup-editor__title {
+    flex-wrap: wrap;
+}
