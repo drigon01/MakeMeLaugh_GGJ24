@@ -1,0 +1,22 @@
+{
+    "name": "QRCoder.Unity",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "QRCoder.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.modules.uielements",
+            "expression": "[0.0.1,999.999.999]",
+            "define": "ENABLE_UIELEMENTS_CONTROLS"
+        }
+    ],
+    "noEngineReferences": false
+}
