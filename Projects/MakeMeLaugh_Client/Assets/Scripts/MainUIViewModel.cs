@@ -92,19 +92,28 @@ public class MainUIViewModel : MonoBehaviour
   {
     _settingsView = new VisualElement();
 
-    _ip = PlayerPrefs.GetString("DefaultIPAddress", DefaultIPAddress);
-    _port = (ushort)PlayerPrefs.GetInt("DefaultPort", DefaultPort);
     _name = PlayerPrefs.GetString("DefaultPlayerName", DefaultPlayerName);
     
     if (UseRelay)
     {
+      if (!string.IsNullOrEmpty(Application.absoluteURL))
+      {
+        var query = new Uri(Application.absoluteURL).Query;
+        var parameters = System.Web.HttpUtility.ParseQueryString(query);
+        _joinCode = parameters["joinCode"];
+      }
+
       _serverSettingsRelayTemplate.CloneTree(_settingsView);
       
       var joinCode = _settingsView.Q<TextField>("JoinCode");
       joinCode.RegisterValueChangedCallback(OnJoinCodeChanged);
+      joinCode.value = _joinCode;
     }
     else
     {
+      _ip = PlayerPrefs.GetString("DefaultIPAddress", DefaultIPAddress);
+      _port = (ushort)PlayerPrefs.GetInt("DefaultPort", DefaultPort);
+      
       _serverSettingsTemplate.CloneTree(_settingsView);
       
       var serverIP = _settingsView.Q<TextField>("IP");
