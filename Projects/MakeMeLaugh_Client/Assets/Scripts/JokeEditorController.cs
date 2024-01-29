@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class JokeEditorController
 {
-  private readonly ConnectionManager connectionManager;
   private readonly VisualTreeAsset punchlineTemplate;
   private readonly VisualTreeAsset setupTemplate;
+
+  //Todo: create a joke parser class
   private readonly Regex blankRegex = new Regex("(?<part1>.*)_BLANK_(?<part2>.*)");
 
   private string _jokeID;
@@ -26,7 +26,6 @@ public class JokeEditorController
 
   public JokeEditorController(VisualTreeAsset punchlineTemplate, VisualTreeAsset setupTemplate)
   {
-    this.connectionManager = MainUIViewModel.ConnectionManager;
     this.punchlineTemplate = punchlineTemplate;
     this.setupTemplate = setupTemplate;
   }
@@ -51,20 +50,6 @@ public class JokeEditorController
     return _punchlineEditor;
   }
 
-  private void OnSubmitPunchline()
-  {
-    var message =
-    new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID,
-    MessageType.PLAYER_PUNCHLINE_RESPONSE, 
-    JsonUtility.ToJson(new PlayerPunchlineResponse($"{_fragmentInput.text}", _jokeID)));
-    MainUIViewModel.ConnectionManager.SendMessageToServer(message);
-
-
-    _submitPunchline.clicked -= OnSubmitPunchline;
-
-    Done?.Invoke(MessageType.PLAYER_PUNCHLINE_RESPONSE);
-  }
-
   public VisualElement CreateSetupEditor(PlayerSetupRequest request)
   {
     _setupEditor = new VisualElement() { name = "setup" };
@@ -87,14 +72,26 @@ public class JokeEditorController
     return _setupEditor;
   }
 
+  private void OnSubmitPunchline()
+  {
+    var message = new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID,
+      MessageType.PLAYER_PUNCHLINE_RESPONSE,
+      JsonUtility.ToJson(new PlayerPunchlineResponse($"{_fragmentInput.text}", _jokeID)));
+
+    MainUIViewModel.ConnectionManager.SendMessageToServer(message);
+    _submitPunchline.clicked -= OnSubmitPunchline;
+
+    Done?.Invoke(MessageType.PLAYER_PUNCHLINE_RESPONSE);
+  }
+
   private void OnSubmitSetup()
   {
+    var message = new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID,
+      MessageType.PLAYER_SETUP_RESPONSE,
+      JsonUtility.ToJson(new PlayerSetupResponse($"{_setupPart1.text}{_setupBlank.text}{_setupPart2.text}", _jokeID)));
 
-    var message =
- new PlayerMessage(MainUIViewModel.ConnectionManager.ClientUUID, 
- MessageType.PLAYER_SETUP_RESPONSE, 
- JsonUtility.ToJson(new PlayerSetupResponse($"{_setupPart1.text} {_setupBlank.text} {_setupPart2.text}", _jokeID)));
     MainUIViewModel.ConnectionManager.SendMessageToServer(message);
+    _submitPunchline.clicked -= OnSubmitSetup;
 
     Done?.Invoke(MessageType.PLAYER_SETUP_RESPONSE);
   }

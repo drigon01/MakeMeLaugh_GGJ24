@@ -64,17 +64,17 @@ public class ConnectionManager
     var allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
     string connectionType;
-    #if PLATFORM_WEBGL
+#if PLATFORM_WEBGL
     connectionType = "wss";
-    #else
+#else
     connectionType = "udp";
-    #endif
+#endif
 
     var relayData = new RelayServerData(allocation, connectionType);
-    
+
     var settings = new NetworkSettings();
     settings.WithRelayParameters(ref relayData);
-    
+
 #if PLATFORM_WEBGL
       _driver = NetworkDriver.Create(new WebSocketNetworkInterface(), settings);
 #else
@@ -83,7 +83,7 @@ public class ConnectionManager
 
     _driver.Bind(NetworkEndpoint.AnyIpv4);
     _connection = _driver.Connect();
-    
+
     _driver.ScheduleUpdate().Complete();
 
     if (_connection.IsCreated)
@@ -107,7 +107,7 @@ public class ConnectionManager
 
     if (!_driver.IsCreated)
       return;
-    
+
     _driver.ScheduleUpdate().Complete();
 
     if (!_connection.IsCreated)
@@ -135,23 +135,26 @@ public class ConnectionManager
         PlayerMessage playerMessage = JsonUtility.FromJson<PlayerMessage>(rawMessage.ToString());
         Debug.Log("Got a message from server " + playerMessage.MessageContent);
 
-        // _connection.Disconnect(m_Driver);
-        // _connection = default;
-        if (playerMessage.MessageType == MessageType.SERVER_SETUP_REQUEST)
+        switch (playerMessage.MessageType)
         {
-          Debug.Log("Client got a setup request from server");
-          PlayerSetupRequest request = JsonUtility.FromJson<PlayerSetupRequest>(playerMessage.MessageContent);
-          JokeSetupRequested?.Invoke(request);
-        }
-        else if (playerMessage.MessageType == MessageType.SERVER_PUNCHLINE_REQUEST)
-        {
-          Debug.Log("Client got a punchline request from server");
-          PlayerPunchlineRequest request = JsonUtility.FromJson<PlayerPunchlineRequest>(playerMessage.MessageContent);
-          JokePunchlineRequested?.Invoke(request);
-        }
-        else if (playerMessage.MessageType == MessageType.SERVER_SCENE_CHANGE_STAGE)
-        {
-          SceneTransitionRequested?.Invoke();
+          case MessageType.SERVER_SETUP_REQUEST:
+            {
+              Debug.Log("Client got a setup request from server");
+              PlayerSetupRequest request = JsonUtility.FromJson<PlayerSetupRequest>(playerMessage.MessageContent);
+              JokeSetupRequested?.Invoke(request);
+              break;
+            }
+          case MessageType.SERVER_PUNCHLINE_REQUEST:
+            {
+              Debug.Log("Client got a punchline request from server");
+              PlayerPunchlineRequest request = JsonUtility.FromJson<PlayerPunchlineRequest>(playerMessage.MessageContent);
+              JokePunchlineRequested?.Invoke(request);
+              break;
+            }
+          case MessageType.SERVER_SCENE_CHANGE_STAGE:
+            {
+              SceneTransitionRequested?.Invoke(); break;
+            }
         }
       }
       else if (cmd == NetworkEvent.Type.Disconnect)
@@ -162,7 +165,7 @@ public class ConnectionManager
     }
   }
 
-  public void SendMessageToServer<T>(T message)
+  public void SendMessageToServer(PlayerMessage message)
   {
     _driver.BeginSend(_connection, out var writer);
     string json = JsonUtility.ToJson(message);
