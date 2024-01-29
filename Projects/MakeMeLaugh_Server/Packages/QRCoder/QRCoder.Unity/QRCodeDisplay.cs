@@ -10,6 +10,7 @@ namespace QRCoder.Unity
         public QRCodeDisplay()
         {
             value = null;
+            style.unityBackgroundScaleMode = ScaleMode.ScaleToFit;
         }
 
         public void Update(string value, QRCodeGenerator.ECCLevel eccLevel, int pixelsPerModule)
