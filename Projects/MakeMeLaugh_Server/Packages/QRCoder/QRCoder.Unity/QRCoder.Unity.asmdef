@@ -11,6 +11,12 @@
     ],
     "autoReferenced": false,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.modules.uielements",
+            "expression": "[0.0.1,999.999.999]",
+            "define": "ENABLE_UIELEMENTS_CONTROLS"
+        }
+    ],
     "noEngineReferences": false
 }
