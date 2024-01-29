@@ -30,6 +30,8 @@
     margin-top: 0;
     margin-bottom: 15%;
     white-space: nowrap;
+    margin-right: 6%;
+    margin-left: 6%;
 }
 
 .setup-editor__title {
@@ -83,10 +85,13 @@
 
 .setup-editor__setup-part_2 {
     flex-wrap: wrap;
+    flex-grow: 1;
+    white-space: normal;
 }
 
 .setup-editor__setup-part_1 {
     flex-wrap: wrap;
+    white-space: normal;
 }
 
 .setup-editor__blank {

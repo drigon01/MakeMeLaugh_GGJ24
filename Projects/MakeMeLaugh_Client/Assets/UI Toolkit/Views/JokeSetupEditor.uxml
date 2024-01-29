@@ -5,7 +5,7 @@
         <ui:VisualElement name="JokeView" class="setup-editor__jokeview">
             <ui:Label tabindex="-1" text="The setup of the joke." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Setup_Part1" class="setup-editor__setup-part_1" />
             <ui:TextField picking-mode="Ignore" value="_BLANK_" name="BLANK" class="setup-editor__blank" />
-            <ui:Label tabindex="-1" text="Now tell me the best filler!" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="false" name="Setup_Part2" class="setup-editor__setup-part_2" />
+            <ui:Label tabindex="-1" text="Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!" parse-escape-sequences="false" display-tooltip-when-elided="false" enable-rich-text="false" name="Setup_Part2" class="setup-editor__setup-part_2" />
             <ui:Button text="Submit" parse-escape-sequences="true" display-tooltip-when-elided="true" class="setup-editor__submit" style="height: auto; width: 100%;" />
         </ui:VisualElement>
     </ui:VisualElement>

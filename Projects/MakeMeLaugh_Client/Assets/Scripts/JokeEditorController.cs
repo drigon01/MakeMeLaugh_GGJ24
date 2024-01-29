@@ -15,6 +15,7 @@ public class JokeEditorController
   private Label _setupPart1;
   private Label _fragments;
   private TextField _fragmentInput;
+  private Button _submitSetup;
   private Button _submitPunchline;
   private Label _setupPart2;
   private TextField _setupBlank;
@@ -66,8 +67,8 @@ public class JokeEditorController
 
     _jokeID = request.JokeId;
 
-    var submit = _setupEditor.Q<Button>();
-    submit.clicked += OnSubmitSetup;
+    _submitSetup = _setupEditor.Q<Button>();
+    _submitSetup.clicked += OnSubmitSetup;
 
     return _setupEditor;
   }
@@ -91,8 +92,8 @@ public class JokeEditorController
       JsonUtility.ToJson(new PlayerSetupResponse($"{_setupPart1.text}{_setupBlank.text}{_setupPart2.text}", _jokeID)));
 
     MainUIViewModel.ConnectionManager.SendMessageToServer(message);
-    _submitPunchline.clicked -= OnSubmitSetup;
 
     Done?.Invoke(MessageType.PLAYER_SETUP_RESPONSE);
+    _submitSetup.clicked -= OnSubmitSetup;
   }
 }
