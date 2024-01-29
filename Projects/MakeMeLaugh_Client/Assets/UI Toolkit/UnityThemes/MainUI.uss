@@ -3,7 +3,12 @@
     align-items: center;
     align-self: center;
     justify-content: center;
-    flex-grow:1;
-    width:100%;
-    height:100%;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+}
+
+#setup {
+    width: 90%;
+    height: 90%;
 }

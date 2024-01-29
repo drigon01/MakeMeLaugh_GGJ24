@@ -1,13 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/UnityThemes/JokeEditor.uss?fileID=7433441132597879392&amp;guid=bc1f2c51f8f168349a14982f76a36eb8&amp;type=3#JokeEditor" />
-    <ui:VisualElement name="Container" class="setup-editor__container">
-        <ui:VisualElement style="flex-grow: 1;" />
+    <ui:VisualElement name="Container" class="setup-editor__container" style="align-items: center; opacity: 0.96;">
         <ui:Label tabindex="-1" text="Complete the below setup!" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="setup-editor__title" />
         <ui:VisualElement name="JokeView" class="setup-editor__jokeview">
-            <ui:Label tabindex="-1" text="The setup of the joke." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Setup_Part1" style="flex-wrap: wrap;" />
-            <ui:TextField picking-mode="Ignore" value="_BLANK_" name="BLANK" style="color: rgb(0, 0, 0);" />
-            <ui:Label tabindex="-1" text="Now tell me the best filler!" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="false" name="Setup_Part2" style="flex-wrap: wrap;" />
-            <ui:Button text="Submit" parse-escape-sequences="true" display-tooltip-when-elided="true" style="background-image: resource(&apos;Sign&apos;);" />
+            <ui:Label tabindex="-1" text="The setup of the joke." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Setup_Part1" class="setup-editor__setup-part_1" />
+            <ui:TextField picking-mode="Ignore" value="_BLANK_" name="BLANK" class="setup-editor__blank" />
+            <ui:Label tabindex="-1" text="Now tell me the best filler!" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="false" name="Setup_Part2" class="setup-editor__setup-part_2" />
+            <ui:Button text="Submit" parse-escape-sequences="true" display-tooltip-when-elided="true" class="setup-editor__submit" style="height: auto; width: 100%;" />
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:VisualElement name="VisualElement" class="setup-editor__microphone" />
 </ui:UXML>
