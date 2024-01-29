@@ -43,10 +43,12 @@
     font-size: 24px;
     margin-right: 5%;
     margin-bottom: 0;
-    margin-left: 5%;
+    margin-left: 15%;
     flex-grow: 1;
     -unity-text-align: middle-left;
     justify-content: center;
+    white-space: normal;
+    height: 20%;
 }
 
 .setup-editor__microphone {
