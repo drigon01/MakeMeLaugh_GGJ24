@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -10,8 +9,10 @@ public class MainUIViewModel : MonoBehaviour
   private const string DefaultIPAddress = "127.0.0.1";
   private const int DefaultPort = 7777;
   private const string DefaultPlayerName = "JerrySeinfeld";
+  private string _joinCode;
+  
   private VisualElement _rootElement;
-  private VisualElement _popupHost;
+  private TemplateContainer _popupHost;
 
   [SerializeField] private VisualTreeAsset _serverSettingsTemplate;
   [SerializeField] private VisualTreeAsset _serverSettingsRelayTemplate;
@@ -23,10 +24,11 @@ public class MainUIViewModel : MonoBehaviour
   [SerializeField] private ushort _port;
   [SerializeField] private string _ip;
   [SerializeField] private string _name;
-  [SerializeField] private string _joinCode;
+  [SerializeField] private bool _useRelay;
 
   public static ConnectionManager ConnectionManager { get; private set; }
 
+  //these should probably be organised into separate custom controls
   private VisualElement _settingsView;
   private VisualElement _waitingScreen;
   private VisualElement _jokeEditor;
@@ -35,26 +37,11 @@ public class MainUIViewModel : MonoBehaviour
   private VisualElement _setupEditor;
   private VisualElement _jokePunchline;
 
-  [ContextMenu("TestSetup")]
-  void TestSetup()
-  {
-    StartCoroutine(nameof(CreateJokesScreen));
-    StartCoroutine(nameof(OnJokeSetupRequested), new PlayerSetupRequest("asd _BLANK_ asd", "312"));
-  }
-
-  [ContextMenu("TestPunchiles")]
-  void TestPunchiles()
-  {
-
-    StartCoroutine(nameof(OnJokePunchlineRequested), new PlayerPunchlineRequest("setup", "whatever", "312"));
-  }
-
-  // Start is called before the first frame update
   private void Awake()
   {
     var document = GetComponent<UIDocument>();
     _rootElement = document.rootVisualElement;
-    _popupHost = new VisualElement() { name = "PopupHost" };
+    _popupHost = new TemplateContainer() { name = "PopupHost" };
 
     _popupHost.styleSheets.Add(_mainStyleSheet);
     _popupHost.AddToClassList("popup");
@@ -64,6 +51,7 @@ public class MainUIViewModel : MonoBehaviour
 
   private void Start()
   {
+    //todo: create custom controls for each
     CreateServerSettings();
     CreateWaitingScreen();
     CreateJokesScreen();
@@ -73,6 +61,8 @@ public class MainUIViewModel : MonoBehaviour
 
   private void CreateJokesScreen()
   {
+    if (_jokeEditController != null) return;
+
     _jokeEditor = new VisualElement();
     _jokeEditController = new JokeEditorController(_jokePunchlineTemplate, _jokeSetupTemplate);
     _jokeEditController.Done += OnDone;
@@ -93,8 +83,8 @@ public class MainUIViewModel : MonoBehaviour
     _settingsView = new VisualElement();
 
     _name = PlayerPrefs.GetString("DefaultPlayerName", DefaultPlayerName);
-    
-    if (UseRelay)
+
+    if (_useRelay)
     {
       if (!string.IsNullOrEmpty(Application.absoluteURL))
       {
@@ -104,7 +94,7 @@ public class MainUIViewModel : MonoBehaviour
       }
 
       _serverSettingsRelayTemplate.CloneTree(_settingsView);
-      
+
       var joinCode = _settingsView.Q<TextField>("JoinCode");
       joinCode.RegisterValueChangedCallback(OnJoinCodeChanged);
       joinCode.value = _joinCode;
@@ -113,9 +103,9 @@ public class MainUIViewModel : MonoBehaviour
     {
       _ip = PlayerPrefs.GetString("DefaultIPAddress", DefaultIPAddress);
       _port = (ushort)PlayerPrefs.GetInt("DefaultPort", DefaultPort);
-      
+
       _serverSettingsTemplate.CloneTree(_settingsView);
-      
+
       var serverIP = _settingsView.Q<TextField>("IP");
       serverIP.RegisterValueChangedCallback(OnIPChanged);
       serverIP.value = _ip;
@@ -128,7 +118,7 @@ public class MainUIViewModel : MonoBehaviour
     var nameField = _settingsView.Q<TextField>("Name");
     nameField.RegisterValueChangedCallback(OnNameChanged);
     nameField.value = _name;
-    
+
     _connectButton = _settingsView.Q<Button>("Connect");
     _connectButton.clicked += OnConnectButtonClicked;
   }
@@ -166,7 +156,7 @@ public class MainUIViewModel : MonoBehaviour
 
   private bool ValidateSettings()
   {
-    if (UseRelay)
+    if (_useRelay)
     {
       if (string.IsNullOrWhiteSpace(_joinCode))
         return false;
@@ -186,8 +176,7 @@ public class MainUIViewModel : MonoBehaviour
     return true;
   }
 
-  public bool UseRelay;
-  
+
   private void OnConnectButtonClicked()
   {
     if (!ValidateSettings())
@@ -197,7 +186,7 @@ public class MainUIViewModel : MonoBehaviour
 
     if (ConnectionManager == null)
     {
-      if (UseRelay)
+      if (_useRelay)
       {
         ConnectionManager = new ConnectionManager(_joinCode, _name);
       }
@@ -246,17 +235,19 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnDone(MessageType type)
   {
-    if (MessageType.PLAYER_PUNCHLINE_RESPONSE == type)
+    switch (type)
     {
-      ClosePopUp(_jokePunchline);
-      UpdateWaitingScreeen(new WaitingInfo("Waiting for a new punchline", "...", "65%"));
-      ShowPopUp(_waitingScreen);
-    }
-    if(MessageType.PLAYER_SETUP_RESPONSE == type)
-    {
-      ClosePopUp(_setupEditor);
-      UpdateWaitingScreeen(new WaitingInfo("Waiting for a new punchline", "...", "34%"));
-      ShowPopUp(_waitingScreen);
+      case MessageType.PLAYER_PUNCHLINE_RESPONSE:
+        ClosePopUp(_jokePunchline);
+        UpdateWaitingScreeen(new WaitingInfo("Waiting for a new punchline", "...", "65%"));
+        ShowPopUp(_waitingScreen);
+        break;
+
+      case MessageType.PLAYER_SETUP_RESPONSE:
+        ClosePopUp(_setupEditor);
+        UpdateWaitingScreeen(new WaitingInfo("Waiting for a new punchline", "...", "34%"));
+        ShowPopUp(_waitingScreen);
+        break;
     }
   }
 
@@ -273,7 +264,7 @@ public class MainUIViewModel : MonoBehaviour
     var percentage = _waitingScreen.Q<Label>("PercentIndicator");
 
     title.text = info.Title;
-    description.text = info.Text;
+    description.text = info.SubText;
     percentage.text = info.Percent;
   }
 
@@ -308,4 +299,31 @@ public class MainUIViewModel : MonoBehaviour
     // Schedule the first transition 100 milliseconds after the root.schedule.Execute method is called.
     root.schedule.Execute(() => indicator.ToggleInClassList("rotate-indicator")).StartingIn(100);
   }
+
+  #region Runtime Testing Functions
+
+  [ContextMenu("TestSetup")]
+  private void TestSetup()
+  {
+    StartCoroutine(nameof(Awake));
+    StartCoroutine(nameof(CreateJokesScreen));
+    StartCoroutine(nameof(OnJokeSetupRequested),
+      new PlayerSetupRequest(
+      "A long joke would _BLANK_ stay within bounds",
+      "312"));
+  }
+
+  [ContextMenu("TestPunchiles")]
+  private void TestPunchiles()
+  {
+    StartCoroutine(nameof(Awake));
+    StartCoroutine(nameof(CreateJokesScreen));
+    StartCoroutine(nameof(OnJokePunchlineRequested),
+      new PlayerPunchlineRequest(
+        "Setup for the punchline would be shown this way",
+      "some words might be already here",
+      "312"));
+  }
+
+  #endregion // Runtime Testing Functions
 }
