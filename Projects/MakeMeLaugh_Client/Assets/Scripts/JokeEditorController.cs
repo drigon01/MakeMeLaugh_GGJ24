@@ -92,6 +92,7 @@ public class JokeEditorController
       JsonUtility.ToJson(new PlayerSetupResponse($"{_setupPart1.text}{_setupBlank.text}{_setupPart2.text}", _jokeID)));
 
     MainUIViewModel.ConnectionManager.SendMessageToServer(message);
+    _submitPunchline.clicked -= OnSubmitSetup;
 
     Done?.Invoke(MessageType.PLAYER_SETUP_RESPONSE);
     _submitSetup.clicked -= OnSubmitSetup;
