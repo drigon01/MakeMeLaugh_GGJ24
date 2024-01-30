@@ -12,3 +12,8 @@
     width: 90%;
     height: 90%;
 }
+
+#punchline {
+    width: 90%;
+    height: 90%;
+}
