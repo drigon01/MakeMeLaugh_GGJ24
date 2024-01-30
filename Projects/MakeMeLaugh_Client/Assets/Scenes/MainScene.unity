@@ -612,6 +612,10 @@ MonoBehaviour:
   _ip: 
   _name: 
   _useRelay: 1
+  _horizontalTheme: {fileID: -4733365628477956816, guid: 457603037c763fe4f964490e13cfdde2,
+    type: 3}
+  _verticalTheme: {fileID: -4733365628477956816, guid: 0b263ea97aba95145a65888942101708,
+    type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

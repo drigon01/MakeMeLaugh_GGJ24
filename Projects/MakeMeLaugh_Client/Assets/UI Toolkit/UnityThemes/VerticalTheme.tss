@@ -1,0 +1,5 @@
+@import url("UnityDefaultRuntimeTheme.tss");
+
+@import url("/Assets/UI Toolkit/Styles/JokeEditor.uss");
+
+VisualElement {}

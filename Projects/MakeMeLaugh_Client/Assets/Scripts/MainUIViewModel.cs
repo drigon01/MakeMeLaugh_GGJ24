@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -10,7 +11,7 @@ public class MainUIViewModel : MonoBehaviour
   private const int DefaultPort = 7777;
   private const string DefaultPlayerName = "JerrySeinfeld";
   private string _joinCode;
-  
+  private UIDocument _uiDocument;
   private VisualElement _rootElement;
   private TemplateContainer _popupHost;
 
@@ -25,6 +26,9 @@ public class MainUIViewModel : MonoBehaviour
   [SerializeField] private string _ip;
   [SerializeField] private string _name;
   [SerializeField] private bool _useRelay;
+
+  [SerializeField] private ThemeStyleSheet _horizontalTheme;
+  [SerializeField] private ThemeStyleSheet _verticalTheme;
 
   public static ConnectionManager ConnectionManager { get; private set; }
 
@@ -41,8 +45,8 @@ public class MainUIViewModel : MonoBehaviour
 
   private void Awake()
   {
-    var document = GetComponent<UIDocument>();
-    _rootElement = document.rootVisualElement;
+    _uiDocument = GetComponent<UIDocument>();
+    _rootElement = _uiDocument.rootVisualElement;
     _popupHost = new TemplateContainer() { name = "PopupHost" };
 
     _rootElement.RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
@@ -60,9 +64,13 @@ public class MainUIViewModel : MonoBehaviour
 
   private void OnGeometryChanged(GeometryChangedEvent evt)
   {
-    if (evt.newRect.width > evt.newRect.height) 
+    if (evt.newRect.width > evt.newRect.height)
     {
-      
+      _uiDocument.panelSettings.themeStyleSheet = _horizontalTheme;
+    }
+    else 
+    {
+      _uiDocument.panelSettings.themeStyleSheet = _verticalTheme;
     }
   }
 

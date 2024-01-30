@@ -7,3 +7,11 @@
     width: 100%;
     height: 100%;
 }
+
+#setup {
+    width: 100%;
+}
+
+#punchline {
+    width: 100%;
+}
