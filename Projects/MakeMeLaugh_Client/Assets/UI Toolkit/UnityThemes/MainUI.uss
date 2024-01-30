@@ -9,11 +9,11 @@
 }
 
 #setup {
-    width: 90%;
+    width: 100%;
     height: 90%;
 }
 
 #punchline {
-    width: 90%;
+    width: 100%;
     height: 90%;
 }
