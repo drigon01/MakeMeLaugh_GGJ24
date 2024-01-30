@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/UnityThemes/JokeEditor.uss?fileID=7433441132597879392&amp;guid=bc1f2c51f8f168349a14982f76a36eb8&amp;type=3#JokeEditor" />
-    <ui:VisualElement name="Container" class="setup-editor__container" style="align-items: center; opacity: 0.96;">
+    <ui:VisualElement name="Container" class="setup-editor__container">
         <ui:Label tabindex="-1" text="Complete the below setup!" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="setup-editor__title" />
         <ui:VisualElement name="JokeView" class="setup-editor__jokeview">
             <ui:Label tabindex="-1" text="The setup of the joke." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Setup_Part1" class="setup-editor__setup-part_1" />

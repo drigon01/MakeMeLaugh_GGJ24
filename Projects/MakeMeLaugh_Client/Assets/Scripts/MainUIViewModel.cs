@@ -28,6 +28,8 @@ public class MainUIViewModel : MonoBehaviour
 
   public static ConnectionManager ConnectionManager { get; private set; }
 
+  public static event EventHandler LayoutChanged; 
+
   //these should probably be organised into separate custom controls
   private VisualElement _settingsView;
   private VisualElement _waitingScreen;
@@ -43,10 +45,25 @@ public class MainUIViewModel : MonoBehaviour
     _rootElement = document.rootVisualElement;
     _popupHost = new TemplateContainer() { name = "PopupHost" };
 
+    _rootElement.RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
+
     _popupHost.styleSheets.Add(_mainStyleSheet);
     _popupHost.AddToClassList("popup");
 
     _rootElement.panel.visualTree.Add(_popupHost);
+  }
+
+  private void OnDestroy()
+  {
+    _rootElement.UnregisterCallback<GeometryChangedEvent>(OnGeometryChanged);
+  }
+
+  private void OnGeometryChanged(GeometryChangedEvent evt)
+  {
+    if (evt.newRect.width > evt.newRect.height) 
+    {
+      
+    }
   }
 
   private void Start()
@@ -56,7 +73,7 @@ public class MainUIViewModel : MonoBehaviour
     CreateWaitingScreen();
     CreateJokesScreen();
 
-    ShowPopUp(_settingsView);
+    ShowPopUp(_settingsView);    
   }
 
   private void CreateJokesScreen()
