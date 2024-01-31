@@ -46,7 +46,7 @@ public class MainUIViewModel : MonoBehaviour
   {
     _uiDocument = GetComponent<UIDocument>();
     _rootElement = _uiDocument.rootVisualElement;
-    _popupHost = new TemplateContainer() { name = "PopupHost" };
+    _popupHost = new TemplateContainer() { name = "PopupHost", pickingMode = PickingMode.Ignore };
 
     _rootElement.RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
 
