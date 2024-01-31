@@ -54,6 +54,8 @@ public class MainUIViewModel : MonoBehaviour
     _popupHost.styleSheets.Add(_mainStyleSheet);
     _popupHost.AddToClassList("popup");
 
+    _uiDocument.panelSettings.themeStyleSheet = _verticalTheme;
+
     _rootElement.panel.visualTree.Add(_popupHost);
   }
 
