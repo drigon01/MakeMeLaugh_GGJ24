@@ -1090,6 +1090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JoinCode: 
+  ClientHostURI: https://richard-fine.itch.io/the-laugh-hole?secret=jal3L5588KAmK3SErcfq9IpPAw
 --- !u!4 &919574667
 Transform:
   m_ObjectHideFlags: 0
@@ -1626,6 +1627,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 533207255203037922, guid: d417c714d628342f1b330d7e213396a0,
+        type: 3}
+      propertyPath: serverPlayerCapacity
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2609039995174558122, guid: d417c714d628342f1b330d7e213396a0,
         type: 3}
       propertyPath: m_LocalPosition.x
