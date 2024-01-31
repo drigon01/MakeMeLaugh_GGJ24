@@ -1,11 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="Container" style="flex-grow: 1; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); background-image: resource(&apos;Sign&apos;); -unity-background-scale-mode: scale-and-crop; color: rgb(255, 255, 255); font-size: 14px; -unity-font-style: bold; height: 250px; max-width: 250px; margin-top: 0; justify-content: flex-end; align-items: center; align-self: center;">
-        <ui:Label tabindex="-1" text="Complete the below setup!" parse-escape-sequences="true" display-tooltip-when-elided="true" />
-        <ui:VisualElement name="JokeView" style="flex-grow: 1; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); flex-direction: column; flex-wrap: wrap; -unity-text-align: middle-left; text-overflow: clip; align-items: center; justify-content: space-around; align-self: flex-end;">
-            <ui:Label tabindex="-1" text="The setup of the joke." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Setup_Part1" style="flex-wrap: wrap;" />
-            <ui:TextField picking-mode="Ignore" value="_BLANK_" name="BLANK" style="color: rgb(0, 0, 0);" />
-            <ui:Label tabindex="-1" text="Now tell me the best filler!" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="false" name="Setup_Part2" style="flex-wrap: wrap;" />
-            <ui:Button text="Submit" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+    <ui:VisualElement name="Container" class="setup-editor__container" style="justify-content: center;">
+        <ui:Label tabindex="-1" text="Complete the below setup!" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="setup-editor__title" />
+        <ui:VisualElement name="JokeView" class="setup-editor__jokeview">
+            <ui:Label tabindex="-1" text="The setup of the joke." parse-escape-sequences="false" display-tooltip-when-elided="false" name="Setup_Part1" enable-rich-text="false" class="setup-editor__setup-part_1" />
+            <ui:TextField picking-mode="Ignore" value="_BLANK_" name="BLANK" class="setup-editor__blank" />
+            <ui:Label tabindex="-1" text="Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!Now tell me the best filler!" parse-escape-sequences="false" display-tooltip-when-elided="false" enable-rich-text="false" name="Setup_Part2" class="setup-editor__setup-part_1" />
+            <ui:Button text="Submit" parse-escape-sequences="true" display-tooltip-when-elided="true" class="setup-editor__submit" />
         </ui:VisualElement>
+        <ui:VisualElement name="VisualElement" class="setup-editor__microphone" style="align-self: center; left: 16%;" />
     </ui:VisualElement>
 </ui:UXML>

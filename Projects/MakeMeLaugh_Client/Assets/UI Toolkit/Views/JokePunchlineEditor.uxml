@@ -1,11 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="Container" style="flex-grow: 1; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); background-image: resource(&apos;Sign&apos;); color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 24px; max-width: 300px; flex-wrap: nowrap;">
-        <ui:Label tabindex="-1" text="Setup" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Setup" style="flex-grow: 1; white-space: normal;" />
-        <ui:Label tabindex="-1" text="Existing fragements:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Fragments" style="flex-wrap: wrap; flex-grow: 1;" />
-        <ui:Label tabindex="-1" text="Add your punchline fragment!" parse-escape-sequences="true" display-tooltip-when-elided="true" style="flex-wrap: wrap; flex-grow: 1; width: 300px; white-space: normal;" />
-        <ui:VisualElement name="JokeView" style="flex-grow: 0; -unity-font-definition: resource(&apos;Quicksand-VariableFont_wght SDF&apos;); white-space: normal; flex-direction: row;">
-            <ui:TextField picking-mode="Ignore" value="continue the punchlie" name="Fragment" style="color: rgb(0, 0, 0);" />
+    <ui:VisualElement name="Container" class="setup-editor__container">
+        <ui:Label tabindex="-1" text="Setup" parse-escape-sequences="false" display-tooltip-when-elided="false" name="Setup" enable-rich-text="false" class="setup-editor__title punchline-editor__setup" style="flex-shrink: 1;" />
+        <ui:VisualElement name="JokeView" class="setup-editor__jokeview">
+            <ui:Label tabindex="-1" text="Existing fragements:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Fragments" class="setup-editor__setup-part_1" />
+            <ui:Label tabindex="-1" text="Add your punchline fragment!" parse-escape-sequences="true" display-tooltip-when-elided="true" class="setup-editor__setup-part_1" />
+            <ui:TextField picking-mode="Ignore" value="continue the punchlie" name="Fragment" multiline="false" class="setup-editor__blank" />
+            <ui:Button text="Submit" parse-escape-sequences="true" display-tooltip-when-elided="true" class="setup-editor__submit" />
         </ui:VisualElement>
-        <ui:Button text="Submit" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+        <ui:VisualElement name="VisualElement" class="setup-editor__microphone" />
     </ui:VisualElement>
 </ui:UXML>
